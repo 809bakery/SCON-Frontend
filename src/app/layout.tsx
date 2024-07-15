@@ -23,11 +23,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="kr" className={`${pretendard.variable}`}>
+    <html lang="kr" className={`${pretendard.variable} text-[60%]`}>
       <body
-        className={`${pretendard.className} w-full flex justify-center items-center `}
+        className={`${pretendard.className} flex items-center justify-center`}
       >
-        <div className="max-w-[600px] min-w-[600px] border-l-2 border-r-2 border-[#f9f9f9]">
+        <div className="w-full max-w-[600px] sm:border-l-2 sm:border-r-2 border-none border-[#f9f9f9]">
           <Provider>{children}</Provider>
         </div>
       </body>
