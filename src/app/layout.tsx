@@ -27,7 +27,7 @@ export default function RootLayout({
       <body
         className={`${pretendard.className} flex items-center justify-center`}
       >
-        <div className="max-w-[600px] sm:border-l-2 sm:border-r-2 border-none border-[#f9f9f9]">
+        <div className="w-full max-w-[600px] sm:border-l-2 sm:border-r-2 border-none border-[#f9f9f9]">
           <Provider>{children}</Provider>
         </div>
       </body>

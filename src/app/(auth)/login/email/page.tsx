@@ -29,7 +29,7 @@ export default function EmailLoginPage() {
             type="text"
             placeholder="이메일을 입력해주세요."
           />
-          <XMarkSVG className="absolute mr-6 right-0 bottom-[50%] transform translate-y-1/2" />
+          <XMarkSVG className="w-7 h-7 absolute mr-6 right-0 bottom-[50%] transform translate-y-1/2" />
         </div>
         <div className="relative pl-8 pr-32 py-6 border-2 border-[#E4E4E4] focus-within:border-[#FFC90D] rounded-xl">
           <input
@@ -37,8 +37,8 @@ export default function EmailLoginPage() {
             type="password"
             placeholder="비밀번호를 입력해주세요."
           />
-          <EyesOnSVG className="absolute mr-20 right-0 bottom-[50%] transform translate-y-1/2" />
-          <XMarkSVG className="absolute mr-6 right-0 bottom-[50%] transform translate-y-1/2" />
+          <EyesOnSVG className="w-7 h-7 absolute mr-20 right-0 bottom-[50%] transform translate-y-1/2" />
+          <XMarkSVG className="w-7 h-7  absolute mr-6 right-0 bottom-[50%] transform translate-y-1/2" />
         </div>
 
         <div>
