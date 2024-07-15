@@ -9,8 +9,8 @@ export default function EmailLoginPage() {
   return (
     <div className="flex flex-col items-center">
       {/* 이메일로 로그인 */}
-      <div className="w-full relative flex items-center justify-center py-[14px] mb-[3.75rem] border-b border-[#d6d5d5] text-center text-[#565551]">
-        <Link href="/login" className="absolute left-0 cursor-pointer">
+      <div className="w-full relative flex items-center justify-center py-[14px] mb-[60px] border-b border-[#d6d5d5] text-center text-[#565551]">
+        <Link href="/login" className="absolute left-7 cursor-pointer">
           <BackSVG />
         </Link>
         <span className="font-bold text-[1.5rem]">이메일로 로그인</span>
