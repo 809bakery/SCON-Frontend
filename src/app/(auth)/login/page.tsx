@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import GoogleSVG from '@/static/svg/google-login.svg'
 import KakaoSVG from '@/static/svg/kakao-login.svg'
 import LogoSVG from '@/static/svg/main-icon.svg'
@@ -19,14 +21,15 @@ export default function LoginPage() {
         <KakaoSVG className="cursor-pointer" />
         <NaverSVG className="cursor-pointer" />
         <GoogleSVG className="cursor-pointer" />
-        <SconSVG className="cursor-pointer" />
-
-        <div className="text-[#A0A0A0] flex items-center justify-end">
+        <Link href="/login/email">
+          <SconSVG className="cursor-pointer" />
+        </Link>
+        <div className="text-[#A0A0A0] text-xl flex items-center justify-end">
           <span className="cursor-pointer">아이디·비밀번호 찾기</span>
         </div>
       </div>
 
-      <div className="text-[#A0A0A0] mb-[212px] flex gap-x-2 justify-between items-center">
+      <div className="text-[#A0A0A0] text-xl mb-[212px] flex gap-x-2 justify-between items-center">
         <span>아직 스콘의 회원이 아니시라면?</span>
         <strong className="font-bold cursor-pointer">회원가입</strong>
       </div>
