@@ -21,6 +21,14 @@
     "node": true
   },
   "plugins": ["import", "react", "@typescript-eslint", "prettier"],
+  "overrides": [
+    {
+      "files": ["*.mjs"],
+      "parserOptions": {
+        "sourceType": "module"
+      }
+    }
+  ],
   "rules": {
     "no-restricted-imports": [
       // 절대 경로가 아니면 ESLint 오류가 나도록 설정
