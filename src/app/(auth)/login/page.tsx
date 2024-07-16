@@ -13,7 +13,7 @@ export default function LoginPage() {
           <br />
           <span className="text-primary">스콘</span>입니다.
         </p>
-        <LogoSVG />
+        <LogoSVG height={97} />
       </div>
       <div className="flex flex-col gap-4">
         <KakaoSVG />
