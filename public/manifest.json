@@ -1,5 +1,5 @@
 {
-    "short_name": "809bakery.com",
+    "short_name": "SCON",
     "name": "SCON",
     "icons": [
       {
@@ -10,7 +10,8 @@
       {
         "src": "/images/icon192.png",
         "sizes": "192x192",
-        "type": "image/png"
+        "type": "image/png",
+        "purpose": "any maskable"
       },
       {
         "src": "/images/icon512.png",
@@ -31,5 +32,5 @@
     "display": "standalone",
     "orientation": "portrait",
     "theme_color": "#000000",
-    "background_color": "#FFFFFF"
+    "background_color": "#FFC90D"
   }
