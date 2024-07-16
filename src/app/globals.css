@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn-disabled {
+    @apply bg-[#E5E5ED] text-[#6B6E78];
+  }
+}
