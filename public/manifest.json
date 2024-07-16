@@ -1,0 +1,35 @@
+{
+    "short_name": "809bakery.com",
+    "name": "SCON",
+    "icons": [
+      {
+        "src": "/images/favicon.ico",
+        "sizes": "64x64",
+        "type": "image/x-icon"
+      },
+      {
+        "src": "/images/icon192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/images/icon512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+"screenshots": [    
+   {
+     "src": "/images/icon512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+ ],
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "theme_color": "#000000",
+    "background_color": "#FFFFFF"
+  }
