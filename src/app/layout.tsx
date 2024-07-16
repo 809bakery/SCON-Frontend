@@ -15,6 +15,11 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: 'SCON',
   description: '당신만의 스테이지, 스콘이 연결합니다.',
+  appleWebApp: {
+    title: 'SCON',
+    statusBarStyle: 'default',
+    capable: true,
+  },
 }
 
 export default function RootLayout({
@@ -24,6 +29,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="kr" className={`${pretendard.variable} text-[60%]`}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+      </head>
       <body
         className={`${pretendard.className} flex items-center justify-center`}
       >
