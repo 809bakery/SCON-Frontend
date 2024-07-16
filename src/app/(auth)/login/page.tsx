@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+import A2HSModal from '@/components/a2hs/index.tsx'
 import GoogleSVG from '@/static/svg/google-login.svg'
 import KakaoSVG from '@/static/svg/kakao-login.svg'
 import LogoSVG from '@/static/svg/main-icon.svg'
@@ -33,6 +34,8 @@ export default function LoginPage() {
         <span>아직 스콘의 회원이 아니시라면?</span>
         <strong className="font-bold cursor-pointer">회원가입</strong>
       </div>
+
+      <A2HSModal />
     </div>
   )
 }
