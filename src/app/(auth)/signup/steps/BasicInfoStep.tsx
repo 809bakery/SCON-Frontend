@@ -160,264 +160,266 @@ export default function BasicInfoStep() {
     !termsOfService[3]
 
   return (
-    <div className="px-7 flex flex-col justify-start py-14">
-      <div className="flex flex-col gap-7">
-        <LogoSVG height={60} width={196} />
-        <Step1SVG />
-      </div>
-      <div className="mt-16 flex flex-col gap-5">
-        <h2 className="font-medium text-[2rem]">기본 정보를 입력해주세요.</h2>
-
-        <div className="flex flex-col gap-4">
-          <label
-            htmlFor="email"
-            className="font-normal text-2xl flex space-x-1"
-          >
-            <span>이메일</span>
-            <Required />
-          </label>
-          <div className="flex flex-col gap-3">
-            <div className="border-2 border-gray-300  rounded-xl focus-within:border-primary flex justify-between px-4  py-6">
-              <input
-                id="email"
-                type="email"
-                name="email"
-                autoComplete="off"
-                disabled={isEmailConfirmSuccess}
-                placeholder="이메일을 입력해주세요."
-                onChange={onChange}
-                value={email}
-                className="w-full px-4 text-2xl rounded-xl outline-none"
-              />
-              {isEmailConfirmSuccess && (
-                <div className="min-w-min">
-                  <Checked className="w-7 h-7" />
-                </div>
-              )}
-            </div>
-            {emailErrorMessages && (
-              <p className="whitespace-pre-wrap text-warning pl-4">
-                {emailErrorMessages}
-              </p>
-            )}
-          </div>
+    <div className="px-7 flex flex-col justify-start pt-14 pb-[7.5rem]">
+      <div>
+        <div className="flex flex-col gap-7">
+          <LogoSVG height={60} width={196} />
+          <Step1SVG />
         </div>
+        <div className="mt-16 flex flex-col gap-5">
+          <h2 className="font-medium text-[2rem]">기본 정보를 입력해주세요.</h2>
 
-        <div className="flex flex-col gap-4">
-          <label
-            htmlFor="emailConfirm"
-            className="font-normal text-2xl flex space-x-1"
-          >
-            <span>이메일 인증코드</span>
-            <Required />
-          </label>
-          <div className="flex flex-col gap-3">
-            <div className="flex space-x-4 w-full">
-              <div className="flex items-center w-full border-2 border-gray-300  rounded-xl focus-within:border-primary px-4  py-6">
+          <div className="flex flex-col gap-4">
+            <label
+              htmlFor="email"
+              className="font-normal text-2xl flex space-x-1"
+            >
+              <span>이메일</span>
+              <Required />
+            </label>
+            <div className="flex flex-col gap-3">
+              <div className="border-2 border-gray-300  rounded-xl focus-within:border-primary flex justify-between px-4  py-6">
                 <input
-                  id="emailConfirm"
+                  id="email"
                   type="email"
-                  name="emailConfirm"
+                  name="email"
                   autoComplete="off"
-                  disabled={!isEmailButtonClicked || isEmailConfirmSuccess}
-                  placeholder="인증코드를 입력해주세요."
+                  disabled={isEmailConfirmSuccess}
+                  placeholder="이메일을 입력해주세요."
                   onChange={onChange}
-                  value={emailConfirm}
-                  className="outline-none rounded-xl text-2xl pl-4 pr-8 w-full"
+                  value={email}
+                  className="w-full px-4 text-2xl rounded-xl outline-none"
                 />
-                {isEmailButtonClicked && !isEmailConfirmSuccess && (
-                  <Timer key={timerKey} />
-                )}
                 {isEmailConfirmSuccess && (
                   <div className="min-w-min">
                     <Checked className="w-7 h-7" />
                   </div>
                 )}
               </div>
-              <button
-                type="button"
-                className={`cursor-pointer text-center px-4  rounded-xl font-medium text-xl min-w-max ${
-                  isEmailConfirmSuccess || !isEmailValid
-                    ? 'btn-disabled'
-                    : 'bg-primary'
-                }`}
-                onClick={handleButtonClick}
-                disabled={isEmailConfirmSuccess || !isEmailValid}
-              >
-                <span>
-                  {isEmailButtonClicked
-                    ? isEmailConfirmSuccess
-                      ? '인증완료'
-                      : '재전송'
-                    : '인증요청'}
-                </span>
-              </button>
+              {emailErrorMessages && (
+                <p className="whitespace-pre-wrap text-warning pl-4">
+                  {emailErrorMessages}
+                </p>
+              )}
             </div>
-            {emailConfirmErrorMessages && (
-              <p className="whitespace-pre-wrap text-warning pl-4">
-                {emailConfirmErrorMessages}
-              </p>
-            )}
-            {emailConfirmSuccessMessage && (
-              <p className="whitespace-pre-wrap text-success pl-4">
-                인증이 완료되었습니다.
-              </p>
-            )}
           </div>
 
           <div className="flex flex-col gap-4">
             <label
-              htmlFor="password"
+              htmlFor="emailConfirm"
               className="font-normal text-2xl flex space-x-1"
             >
-              <span>비밀번호</span>
+              <span>이메일 인증코드</span>
               <Required />
             </label>
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center w-full border-2 border-gray-300  rounded-xl focus-within:border-primary px-4  py-6">
-                <input
-                  id="password"
-                  name="password"
-                  type={isPasswordVisible ? 'text' : 'password'}
-                  autoComplete="off"
-                  placeholder="비밀번호를 입력해주세요."
-                  onChange={onChange}
-                  value={password}
-                  className="outline-none rounded-xl text-2xl pl-4 pr-8 w-full"
-                />
-                {isPasswordValid && (
-                  <div className="min-w-min mr-6">
-                    <Checked className="w-7 h-7" />
-                  </div>
-                )}
-                <div
-                  role="presentation"
-                  className="cursor-pointer"
-                  onClick={() => setIsPasswordVisible((prev) => !prev)}
-                >
-                  {isPasswordVisible ? <HideSVG /> : <ShowSVG />}
+            <div className="flex flex-col gap-3">
+              <div className="flex space-x-4 w-full">
+                <div className="flex items-center w-full border-2 border-gray-300  rounded-xl focus-within:border-primary px-4  py-6">
+                  <input
+                    id="emailConfirm"
+                    type="email"
+                    name="emailConfirm"
+                    autoComplete="off"
+                    disabled={!isEmailButtonClicked || isEmailConfirmSuccess}
+                    placeholder="인증코드를 입력해주세요."
+                    onChange={onChange}
+                    value={emailConfirm}
+                    className="outline-none rounded-xl text-2xl pl-4 pr-8 w-full"
+                  />
+                  {isEmailButtonClicked && !isEmailConfirmSuccess && (
+                    <Timer key={timerKey} />
+                  )}
+                  {isEmailConfirmSuccess && (
+                    <div className="min-w-min">
+                      <Checked className="w-7 h-7" />
+                    </div>
+                  )}
                 </div>
+                <button
+                  type="button"
+                  className={`cursor-pointer text-center px-4  rounded-xl font-medium text-xl min-w-max ${
+                    isEmailConfirmSuccess || !isEmailValid
+                      ? 'btn-disabled'
+                      : 'bg-primary'
+                  }`}
+                  onClick={handleButtonClick}
+                  disabled={isEmailConfirmSuccess || !isEmailValid}
+                >
+                  <span>
+                    {isEmailButtonClicked
+                      ? isEmailConfirmSuccess
+                        ? '인증완료'
+                        : '재전송'
+                      : '인증요청'}
+                  </span>
+                </button>
               </div>
-              {passwordErrorMessages && (
+              {emailConfirmErrorMessages && (
                 <p className="whitespace-pre-wrap text-warning pl-4">
-                  {passwordErrorMessages}
+                  {emailConfirmErrorMessages}
                 </p>
               )}
-              <div className="flex items-center w-full border-2 border-gray-300  rounded-xl focus-within:border-primary px-4  py-6">
-                <input
-                  id="passwordConfirm"
-                  name="passwordConfirm"
-                  type={isPasswordConfirmVisible ? 'text' : 'password'}
-                  autoComplete="off"
-                  placeholder="비밀번호를 한 번 더 입력해주세요."
-                  onChange={onChange}
-                  value={passwordConfirm}
-                  className="outline-none rounded-xl text-2xl pl-4 pr-8 w-full"
-                />
-                {isPasswordValid && isPasswordConfirmValid && (
-                  <div className="min-w-min mr-6">
-                    <Checked className="w-7 h-7" />
-                  </div>
-                )}
-                <div
-                  role="presentation"
-                  className="cursor-pointer"
-                  onClick={() => setIsPasswordConfirmVisible((prev) => !prev)}
-                >
-                  {isPasswordConfirmVisible ? <HideSVG /> : <ShowSVG />}
-                </div>
-              </div>
-              {passwordConfirmErrorMessages && (
-                <p className="whitespace-pre-wrap text-warning pl-4">
-                  {passwordConfirmErrorMessages}
+              {emailConfirmSuccessMessage && (
+                <p className="whitespace-pre-wrap text-success pl-4">
+                  인증이 완료되었습니다.
                 </p>
               )}
             </div>
-            <div className="border-[3px] rounded-xl border-gray-300 px-8 pt-8 pb-7">
-              <div className="flex space-x-5">
-                <div
-                  role="presentation"
-                  className="cursor-pointer"
-                  onClick={() => handleTermsOfService('all')}
-                >
-                  {termsOfService.every((term) => term) ? (
-                    <Checked className="w-9 h-9" />
-                  ) : (
-                    <UnChecked className="w-9 h-9" />
-                  )}
-                </div>
 
-                <h3 className="text-2xl font-normal">모두 동의합니다.</h3>
+            <div className="flex flex-col gap-4">
+              <label
+                htmlFor="password"
+                className="font-normal text-2xl flex space-x-1"
+              >
+                <span>비밀번호</span>
+                <Required />
+              </label>
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center w-full border-2 border-gray-300  rounded-xl focus-within:border-primary px-4  py-6">
+                  <input
+                    id="password"
+                    name="password"
+                    type={isPasswordVisible ? 'text' : 'password'}
+                    autoComplete="off"
+                    placeholder="비밀번호를 입력해주세요."
+                    onChange={onChange}
+                    value={password}
+                    className="outline-none rounded-xl text-2xl pl-4 pr-8 w-full"
+                  />
+                  {isPasswordValid && (
+                    <div className="min-w-min mr-6">
+                      <Checked className="w-7 h-7" />
+                    </div>
+                  )}
+                  <div
+                    role="presentation"
+                    className="cursor-pointer"
+                    onClick={() => setIsPasswordVisible((prev) => !prev)}
+                  >
+                    {isPasswordVisible ? <HideSVG /> : <ShowSVG />}
+                  </div>
+                </div>
+                {passwordErrorMessages && (
+                  <p className="whitespace-pre-wrap text-warning pl-4">
+                    {passwordErrorMessages}
+                  </p>
+                )}
+                <div className="flex items-center w-full border-2 border-gray-300  rounded-xl focus-within:border-primary px-4  py-6">
+                  <input
+                    id="passwordConfirm"
+                    name="passwordConfirm"
+                    type={isPasswordConfirmVisible ? 'text' : 'password'}
+                    autoComplete="off"
+                    placeholder="비밀번호를 한 번 더 입력해주세요."
+                    onChange={onChange}
+                    value={passwordConfirm}
+                    className="outline-none rounded-xl text-2xl pl-4 pr-8 w-full"
+                  />
+                  {isPasswordValid && isPasswordConfirmValid && (
+                    <div className="min-w-min mr-6">
+                      <Checked className="w-7 h-7" />
+                    </div>
+                  )}
+                  <div
+                    role="presentation"
+                    className="cursor-pointer"
+                    onClick={() => setIsPasswordConfirmVisible((prev) => !prev)}
+                  >
+                    {isPasswordConfirmVisible ? <HideSVG /> : <ShowSVG />}
+                  </div>
+                </div>
+                {passwordConfirmErrorMessages && (
+                  <p className="whitespace-pre-wrap text-warning pl-4">
+                    {passwordConfirmErrorMessages}
+                  </p>
+                )}
               </div>
-              <hr className="my-5" />
-              <div className="text-disabled font-normal text-xl gap-4 flex flex-col">
-                <div className="flex space-x-4">
+              <div className="border-[3px] rounded-xl border-gray-300 px-8 pt-8 pb-7">
+                <div className="flex space-x-5">
                   <div
                     role="presentation"
                     className="cursor-pointer"
-                    onClick={() => handleTermsOfService('term1')}
+                    onClick={() => handleTermsOfService('all')}
                   >
-                    {termsOfService[1] ? (
-                      <Checked className="w-6 h-6" />
+                    {termsOfService.every((term) => term) ? (
+                      <Checked className="w-9 h-9" />
                     ) : (
-                      <UnChecked className="w-6 h-6" />
+                      <UnChecked className="w-9 h-9" />
                     )}
                   </div>
-                  <p>
-                    만 14세 이상입니다.{' '}
-                    <span className="text-warning">(필수)</span>
-                  </p>
+
+                  <h3 className="text-2xl font-normal">모두 동의합니다.</h3>
                 </div>
-                <div className="flex space-x-4">
-                  <div
-                    role="presentation"
-                    className="cursor-pointer"
-                    onClick={() => handleTermsOfService('term2')}
-                  >
-                    {termsOfService[2] ? (
-                      <Checked className="w-6 h-6" />
-                    ) : (
-                      <UnChecked className="w-6 h-6" />
-                    )}
+                <hr className="my-5" />
+                <div className="text-disabled font-normal text-xl gap-4 flex flex-col">
+                  <div className="flex space-x-4">
+                    <div
+                      role="presentation"
+                      className="cursor-pointer"
+                      onClick={() => handleTermsOfService('term1')}
+                    >
+                      {termsOfService[1] ? (
+                        <Checked className="w-6 h-6" />
+                      ) : (
+                        <UnChecked className="w-6 h-6" />
+                      )}
+                    </div>
+                    <p>
+                      만 14세 이상입니다.{' '}
+                      <span className="text-warning">(필수)</span>
+                    </p>
                   </div>
-                  <p>
-                    서비스 이용약관에 동의합니다.{' '}
-                    <span className="text-warning">(필수)</span>
-                  </p>
-                </div>
-                <div className="flex space-x-4">
-                  <div
-                    role="presentation"
-                    className="cursor-pointer"
-                    onClick={() => handleTermsOfService('term3')}
-                  >
-                    {termsOfService[3] ? (
-                      <Checked className="w-6 h-6" />
-                    ) : (
-                      <UnChecked className="w-6 h-6" />
-                    )}
+                  <div className="flex space-x-4">
+                    <div
+                      role="presentation"
+                      className="cursor-pointer"
+                      onClick={() => handleTermsOfService('term2')}
+                    >
+                      {termsOfService[2] ? (
+                        <Checked className="w-6 h-6" />
+                      ) : (
+                        <UnChecked className="w-6 h-6" />
+                      )}
+                    </div>
+                    <p>
+                      서비스 이용약관에 동의합니다.{' '}
+                      <span className="text-warning">(필수)</span>
+                    </p>
                   </div>
-                  <p>
-                    개인정보의 수집 · 이용에 동의합니다.{' '}
-                    <span className="text-warning">(필수)</span>
-                  </p>
-                </div>
-                <div className="flex space-x-4">
-                  <div
-                    role="presentation"
-                    className="cursor-pointer"
-                    onClick={() => handleTermsOfService('term4')}
-                  >
-                    {termsOfService[4] ? (
-                      <Checked className="w-6 h-6 min-w-max" />
-                    ) : (
-                      <UnChecked className="w-6 h-6 min-w-max" />
-                    )}
+                  <div className="flex space-x-4">
+                    <div
+                      role="presentation"
+                      className="cursor-pointer"
+                      onClick={() => handleTermsOfService('term3')}
+                    >
+                      {termsOfService[3] ? (
+                        <Checked className="w-6 h-6" />
+                      ) : (
+                        <UnChecked className="w-6 h-6" />
+                      )}
+                    </div>
+                    <p>
+                      개인정보의 수집 · 이용에 동의합니다.{' '}
+                      <span className="text-warning">(필수)</span>
+                    </p>
                   </div>
-                  <p>
-                    마케팅 수집 · 홍보 목적의 개인정보 수집 및 이용에 동의
-                    합니다. (선택)
-                  </p>
+                  <div className="flex space-x-4">
+                    <div
+                      role="presentation"
+                      className="cursor-pointer"
+                      onClick={() => handleTermsOfService('term4')}
+                    >
+                      {termsOfService[4] ? (
+                        <Checked className="w-6 h-6 min-w-max" />
+                      ) : (
+                        <UnChecked className="w-6 h-6 min-w-max" />
+                      )}
+                    </div>
+                    <p>
+                      마케팅 수집 · 홍보 목적의 개인정보 수집 및 이용에 동의
+                      합니다. (선택)
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

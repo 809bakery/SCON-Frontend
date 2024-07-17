@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="kr" className={`${pretendard.variable}`}>
       <body
-        className={`${pretendard.className} w-full flex justify-center items-center `}
+        className={`${pretendard.className} w-full h-100dvh flex justify-center items-center `}
       >
         <div className="max-w-[600px] min-w-[600px] border-l-2 border-r-2 border-[#f9f9f9]">
           <Provider>{children}</Provider>
