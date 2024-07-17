@@ -10,6 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         primary: '#FFC90D',
+        warning: '#F85252',
+        success: '#489D59',
+        disabled: '#6B6E78',
       },
     },
   },
