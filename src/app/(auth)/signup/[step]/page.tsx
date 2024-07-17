@@ -1,4 +1,5 @@
 import BasicInfoStep from '@/app/(auth)/signup/steps/BasicInfoStep.tsx'
+import JoinStep from '@/app/(auth)/signup/steps/JoinStep.tsx'
 import MoreInfoStep from '@/app/(auth)/signup/steps/MoreInfoStep.tsx'
 import ProfileStep from '@/app/(auth)/signup/steps/ProfileStep.tsx'
 import Step from '@/components/Step.tsx'
@@ -15,6 +16,9 @@ export default function SignupPage() {
       </Step>
       <Step name="more">
         <MoreInfoStep />
+      </Step>
+      <Step name="join">
+        <JoinStep />
       </Step>
     </div>
   )
