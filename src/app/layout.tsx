@@ -28,7 +28,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="kr" className={`${pretendard.variable} text-[60%]`}>
+    <html
+      lang="kr"
+      className={`${pretendard.variable} text-[12px] sm:text-[16px]`}
+    >
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link
