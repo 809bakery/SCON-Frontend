@@ -9,9 +9,9 @@ import SconSVG from '@/static/svg/scon-login.svg'
 
 export default function LoginPage() {
   return (
-    <div className="w-full flex flex-col gap-[5.75rem] items-center">
+    <div className="w-full flex flex-col gap-23 items-center">
       <div className="w-full flex flex-col items-center gap-11">
-        <p className="text-center font-bold mt-[15.25rem] text-2xl">
+        <p className="text-center font-bold mt-49 text-2xl">
           스테이지와 관객을 잇는 플랫폼,
           <br />
           <span className="text-primary">스콘</span>입니다.
@@ -50,7 +50,7 @@ client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_RIDI
         </div>
       </div>
 
-      <div className="text-[#A0A0A0] text-xl mb-[13.25rem] flex gap-x-2 justify-between items-center">
+      <div className="text-[#A0A0A0] text-xl mb-36 flex gap-x-2 justify-between items-center">
         <span>아직 스콘의 회원이 아니시라면?</span>
         <strong className="font-bold cursor-pointer">회원가입</strong>
       </div>
