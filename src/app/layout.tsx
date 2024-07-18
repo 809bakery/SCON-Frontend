@@ -51,7 +51,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
       </head>
       <body
-        className={`${pretendard.className} w-full h-100dvh flex justify-center items-center `}
+        className={`${pretendard.className} w-full h-dvh flex justify-center items-center`}
       >
         <div className="w-full max-w-[600px] sm:border-l-2 sm:border-r-2 border-none border-[#f9f9f9]">
           <Provider>{children}</Provider>
