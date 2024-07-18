@@ -16,7 +16,7 @@ export default function LoginPage() {
           <br />
           <span className="text-primary">스콘</span>입니다.
         </p>
-        <LogoSVG width={317} height={97} />
+        <LogoSVG className="w-80 h-24" />
       </div>
       <div className="w-full px-7 flex flex-col gap-4">
         <Link
