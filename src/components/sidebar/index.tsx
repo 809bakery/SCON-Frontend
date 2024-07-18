@@ -39,7 +39,7 @@ function SideBar() {
         {user === 'oven' && <SideBarMenu text="오븐 관리하기" />}
       </div>
 
-      <div className="w-full px-14 mt-[22.375rem] mb-[9.4375rem]">
+      <div className="w-full px-14 my-[9.375rem]">
         {user !== 'oven' && (
           <button
             type="button"

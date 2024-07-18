@@ -18,7 +18,7 @@ export default function EmailLoginPage() {
 
       {/* scon logo */}
       <div className="mb-[5rem]">
-        <LogoSVG width={196} height={60} />
+        <LogoSVG className="w-48 h-14" />
       </div>
 
       {/* form */}
@@ -60,7 +60,7 @@ export default function EmailLoginPage() {
         </div>
       </form>
 
-      <div className="text-[#A0A0A0] text-xl mb-[151px] mt-[389px] flex gap-x-2 justify-between items-center">
+      <div className="text-[#A0A0A0] text-xl my-[9.375rem] flex gap-x-2 justify-between items-center">
         <span>아직 스콘의 회원이 아니시라면?</span>
         <strong className="font-bold cursor-pointer">회원가입</strong>
       </div>
