@@ -178,7 +178,7 @@ export default function BasicInfoStep() {
               <Required />
             </label>
             <div className="flex flex-col gap-3">
-              <div className="border-2 border-gray-300  rounded-xl focus-within:border-primary flex justify-between px-4  py-6">
+              <div className="border-2 border-border  rounded-xl focus-within:border-primary flex justify-between px-4  py-6">
                 <input
                   id="email"
                   type="email"
@@ -214,7 +214,7 @@ export default function BasicInfoStep() {
             </label>
             <div className="flex flex-col gap-3">
               <div className="flex space-x-4 w-full">
-                <div className="flex items-center w-full border-2 border-gray-300  rounded-xl focus-within:border-primary px-4  py-6">
+                <div className="flex items-center w-full border-2 border-border  rounded-xl focus-within:border-primary px-4  py-6">
                   <input
                     id="emailConfirm"
                     type="email"
@@ -275,7 +275,7 @@ export default function BasicInfoStep() {
                 <Required />
               </label>
               <div className="flex flex-col gap-4">
-                <div className="flex items-center w-full border-2 border-gray-300  rounded-xl focus-within:border-primary px-4  py-6">
+                <div className="flex items-center w-full border-2 border-border  rounded-xl focus-within:border-primary px-4  py-6">
                   <input
                     id="password"
                     name="password"
@@ -304,7 +304,7 @@ export default function BasicInfoStep() {
                     {passwordErrorMessages}
                   </p>
                 )}
-                <div className="flex items-center w-full border-2 border-gray-300  rounded-xl focus-within:border-primary px-4  py-6">
+                <div className="flex items-center w-full border-2 border-border  rounded-xl focus-within:border-primary px-4  py-6">
                   <input
                     id="passwordConfirm"
                     name="passwordConfirm"
@@ -334,7 +334,7 @@ export default function BasicInfoStep() {
                   </p>
                 )}
               </div>
-              <div className="border-[3px] rounded-xl border-gray-300 px-8 pt-8 pb-7">
+              <div className="border-2 rounded-xl border-border px-8 pt-8 pb-7">
                 <div className="flex space-x-5">
                   <div
                     role="presentation"

@@ -130,7 +130,7 @@ export default function ProfileStep() {
               <Required />
             </label>
             <div className="flex flex-col gap-3">
-              <div className="border-2 border-gray-300  rounded-xl focus-within:border-primary flex justify-between px-4  py-6">
+              <div className="border-2 border-border  rounded-xl focus-within:border-primary flex justify-between px-4  py-6">
                 <input
                   id="nickname"
                   type="text"
