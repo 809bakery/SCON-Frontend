@@ -4,13 +4,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import BackSVG from '@/static/svg/chevron-left.svg'
+import BackSVG from '@/static/svg/arrow-left-icon.svg'
+import XMarkSVG from '@/static/svg/close-circle-icon.svg'
 import EyesOffSVG from '@/static/svg/eye-close.svg'
 import EyesOnSVG from '@/static/svg/eye-open.svg'
-import LogoSVG from '@/static/svg/main-icon.svg'
-import RememberOffSVG from '@/static/svg/remember-off-icon.svg'
-import RememberOnSVG from '@/static/svg/remember-on-icon.svg'
-import XMarkSVG from '@/static/svg/xmark-circle.svg'
+import LogoSVG from '@/static/svg/logo/logo-icon.svg'
+import RememberOnSVG from '@/static/svg/square-fill-icon.svg'
+import RememberOffSVG from '@/static/svg/square-unfill-icon.svg'
 
 export default function EmailLoginPage() {
   const [email, setEmail] = useState<string>('')

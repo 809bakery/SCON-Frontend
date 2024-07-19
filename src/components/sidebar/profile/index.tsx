@@ -1,6 +1,6 @@
-import ArrowRightSVG from '@/static/svg/chevron-right.svg'
-import OvenMarkSVG from '@/static/svg/ovner-mark.svg'
-import ProfileSVG from '@/static/svg/sidebar-profile.svg'
+import ArrowRightSVG from '@/static/svg/arrow-right-icon.svg'
+import OvenMarkSVG from '@/static/svg/checked-ovener-icon.svg'
+import ProfileSVG from '@/static/svg/sidebar/sidebar-profile.svg'
 
 interface SideBarProfileProps {
   nickname: string

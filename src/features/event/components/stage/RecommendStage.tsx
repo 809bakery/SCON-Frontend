@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
-import DummySVG from '@/static/svg/dummy-contents.svg'
+import DummySVG from '@/static/svg/dummy/dummy-stage-contents.svg'
 
 export default function RecommendStage() {
   const [category, setCategory] = useState<StageCategory>('all')
@@ -57,7 +57,7 @@ export default function RecommendStage() {
           기타
         </button>
       </div>
-      <DummySVG className="w-full mt-9" />
+      <DummySVG className="w-[34rem] h-[24.625rem] mt-9" />
       <div className="w-full flex justify-end mt-6">
         <button
           type="button"

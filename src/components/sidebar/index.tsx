@@ -6,8 +6,8 @@ import { useState } from 'react'
 
 import SideBarMenu from '@/components/sidebar/item/index.tsx'
 import SideBarProfile from '@/components/sidebar/profile/index.tsx'
-import LogoSVG from '@/static/svg/main-icon.svg'
-import SideBarCloseSVG from '@/static/svg/sidebar-close.svg'
+import LogoSVG from '@/static/svg/logo/logo-icon.svg'
+import SideBarCloseSVG from '@/static/svg/sidebar/sidebar-close.svg'
 
 function SideBar() {
   const [user, setUser] = useState<'oven' | 'scon' | undefined>(undefined)

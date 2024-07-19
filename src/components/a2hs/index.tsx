@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-import A2HSLogoSVG from '@/static/svg/a2hs-icon.svg'
+import A2HSLogoSVG from '@/static/svg/logo/logo-a2hs-icon.svg'
 
 import type { BeforeInstallPromptEvent } from '@/types/pwa.d.ts'
 

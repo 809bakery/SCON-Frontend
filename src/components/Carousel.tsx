@@ -13,23 +13,23 @@ import DotIndicatorSVG from '@/static/svg/indicator-icon.svg'
 const CarouselImages = [
   {
     id: 1,
-    url: '/images/carouselSlideImage1.jpg',
+    url: '/images/carouselImage.jpg',
   },
   {
     id: 2,
-    url: '/images/carouselSlideImage2.jpg',
+    url: '/images/carouselImage.jpg',
   },
   {
     id: 3,
-    url: '/images/carouselSlideImage3.jpg',
+    url: '/images/carouselImage.jpg',
   },
   {
     id: 4,
-    url: '/images/carouselSlideImage4.jpg',
+    url: '/images/carouselImage.jpg',
   },
   {
     id: 5,
-    url: '/images/carouselSlideImage5.jpg',
+    url: '/images/carouselImage.jpg',
   },
 ]
 
