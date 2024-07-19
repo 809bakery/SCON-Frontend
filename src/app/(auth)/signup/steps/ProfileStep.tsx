@@ -8,9 +8,9 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import Checked from '@/static/svg/checked-icon.svg'
-import DefaultProfileSVG from '@/static/svg/default-profile.svg'
-import LogoSVG from '@/static/svg/main-icon.svg'
-import Step2SVG from '@/static/svg/progress/step2.svg'
+import DefaultProfileSVG from '@/static/svg/dummy/dummy-profile-image.svg'
+import LogoSVG from '@/static/svg/logo/logo-icon.svg'
+import Step2SVG from '@/static/svg/progress/progress-step2.svg'
 import Required from '@/static/svg/required-star.svg'
 import UploadSVG from '@/static/svg/upload-icon.svg'
 

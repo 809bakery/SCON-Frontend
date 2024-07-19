@@ -3,11 +3,11 @@
 import Link from 'next/link'
 
 import A2HSModal from '@/components/a2hs/index.tsx'
-import GoogleSVG from '@/static/svg/google-login.svg'
-import KakaoSVG from '@/static/svg/kakao-login.svg'
-import LogoSVG from '@/static/svg/main-icon.svg'
-import NaverSVG from '@/static/svg/naver-login.svg'
-import SconSVG from '@/static/svg/scon-login.svg'
+import LogoSVG from '@/static/svg/logo/logo-icon.svg'
+import GoogleSVG from '@/static/svg/social/google-login.svg'
+import KakaoSVG from '@/static/svg/social/kakao-login.svg'
+import NaverSVG from '@/static/svg/social/naver-login.svg'
+import SconSVG from '@/static/svg/social/scon-login.svg'
 
 export default function LoginPage() {
   return (

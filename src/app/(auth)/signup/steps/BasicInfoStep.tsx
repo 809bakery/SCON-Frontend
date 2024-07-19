@@ -7,11 +7,11 @@ import { useState } from 'react'
 
 import Timer from '@/components/timer.tsx'
 import Checked from '@/static/svg/checked-icon.svg'
-import HideSVG from '@/static/svg/hide-icon.svg'
-import LogoSVG from '@/static/svg/main-icon.svg'
-import Step1SVG from '@/static/svg/progress/step1.svg'
+import HideSVG from '@/static/svg/eye-close.svg'
+import ShowSVG from '@/static/svg/eye-open.svg'
+import LogoSVG from '@/static/svg/logo/logo-icon.svg'
+import Step1SVG from '@/static/svg/progress/progress-step1.svg'
 import Required from '@/static/svg/required-star.svg'
-import ShowSVG from '@/static/svg/show-icon.svg'
 import UnChecked from '@/static/svg/unchecked-icon.svg'
 
 // 이메일 정규표현식
@@ -296,7 +296,11 @@ export default function BasicInfoStep() {
                     className="cursor-pointer"
                     onClick={() => setIsPasswordVisible((prev) => !prev)}
                   >
-                    {isPasswordVisible ? <HideSVG /> : <ShowSVG />}
+                    {isPasswordVisible ? (
+                      <HideSVG className="w-7 h-7" />
+                    ) : (
+                      <ShowSVG className="w-7 h-7" />
+                    )}
                   </div>
                 </div>
                 {passwordErrorMessages && (
@@ -325,7 +329,11 @@ export default function BasicInfoStep() {
                     className="cursor-pointer"
                     onClick={() => setIsPasswordConfirmVisible((prev) => !prev)}
                   >
-                    {isPasswordConfirmVisible ? <HideSVG /> : <ShowSVG />}
+                    {isPasswordConfirmVisible ? (
+                      <HideSVG className="w-7 h-7" />
+                    ) : (
+                      <ShowSVG className="w-7 h-7" />
+                    )}
                   </div>
                 </div>
                 {passwordConfirmErrorMessages && (

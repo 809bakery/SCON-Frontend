@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
-import DummySVG from '@/static/svg/dummy-contents.svg'
+import DummySVG from '@/static/svg/dummy/dummy-stage-contents.svg'
 
 export default function AllStage() {
   const [category, setCategory] = useState<StageCategory>('all')

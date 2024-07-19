@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
-import DummySVG from '@/static/svg/dummy-contents.svg'
+import DummySVG from '@/static/svg/dummy/dummy-stage-contents.svg'
 
 const USER = {
   nickname: '민정',
