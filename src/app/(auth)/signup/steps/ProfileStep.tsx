@@ -3,6 +3,7 @@
 
 'use client'
 
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -87,11 +88,12 @@ export default function ProfileStep() {
               <div className="relative">
                 <label htmlFor="file-input" className="cursor-pointer">
                   <div className="w-40 h-40  rounded-full overflow-hidden">
-                    <img
+                    <Image
                       src={imageUrl}
                       alt="profile"
-                      width="160"
-                      height="160"
+                      width={160}
+                      height={160}
+                      layout="fixed"
                     />
                   </div>
                   <UploadSVG className="absolute bottom-0 right-0" />
