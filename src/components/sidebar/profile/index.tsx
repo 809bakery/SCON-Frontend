@@ -17,7 +17,11 @@ function SideBarProfile(props: SideBarProfileProps) {
         {isOven && <OvenMarkSVG className="w-7 h-7" />}
       </p>
 
-      <ArrowRightSVG className="w-8 h-8 cursor-pointer" />
+      <ArrowRightSVG
+        className="w-8 h-8 cursor-pointer"
+        // eslint-disable-next-line no-alert
+        onClick={() => alert('준비 중 입니다🍪')}
+      />
     </div>
   )
 }

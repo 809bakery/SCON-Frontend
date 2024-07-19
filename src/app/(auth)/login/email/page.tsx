@@ -40,7 +40,7 @@ export default function EmailLoginPage() {
     }
 
     // eslint-disable-next-line no-alert
-    alert('아이디 또는 비밀번호가 일치하지 않습니다.')
+    else alert('아이디 또는 비밀번호가 일치하지 않습니다.')
   }
 
   return (
