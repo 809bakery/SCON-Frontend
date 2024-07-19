@@ -16,12 +16,18 @@ function SocialRedirectPage({ params }: { params: { service: string } }) {
       .then((res) => {
         // eslint-disable-next-line no-console
         console.log(res)
+        // eslint-disable-next-line no-alert
+        alert('로그인 성공🍪🍪')
         router.push('/signup/basic')
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err)
-        router.push('/')
+        // eslint-disable-next-line no-alert
+        alert(
+          `아직 소셜 로그인은 준비 중입니다🍪\n ${params.service}의 ${searchParams.get('code')}코드는 확인되었어요!\n 로그인 페이지로 돌아갈게요`,
+        )
+        router.push('/login')
       })
   }
 

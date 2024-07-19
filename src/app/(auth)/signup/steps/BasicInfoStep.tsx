@@ -224,7 +224,7 @@ export default function BasicInfoStep() {
                     placeholder="인증코드를 입력해주세요."
                     onChange={onChange}
                     value={emailConfirm}
-                    className="outline-none rounded-xl text-2xl pl-4 pr-8 w-full"
+                    className="outline-none bg-transparent rounded-xl text-2xl pl-4 pr-8 w-full"
                   />
                   {isEmailButtonClicked && !isEmailConfirmSuccess && (
                     <Timer key={timerKey} />

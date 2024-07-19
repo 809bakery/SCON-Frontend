@@ -1,13 +1,33 @@
+import { useRouter } from 'next/navigation'
+
 interface SideBarMenuProps {
   text: string
+  // eslint-disable-next-line react/require-default-props
+  url?: string
 }
 
 function SideBarMenu(props: SideBarMenuProps) {
-  const { text } = props
+  const { text, url } = props
+
+  const router = useRouter()
+
+  const handleUrl = () => {
+    if (url) {
+      router.push(url)
+    } else {
+      // eslint-disable-next-line no-alert
+      alert('준비 중 입니다🍪')
+    }
+  }
+
   return (
-    <div className="px-14 py-7 font-extrabold text-xl border-b border-[#F2F3F7] cursor-pointer">
+    <button
+      type="button"
+      onClick={handleUrl}
+      className="px-14 py-7 font-extrabold text-xl border-b border-[#F2F3F7] text-start cursor-pointer"
+    >
       <p>{text}</p>
-    </div>
+    </button>
   )
 }
 export default SideBarMenu
