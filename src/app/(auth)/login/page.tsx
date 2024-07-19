@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 
 import A2HSModal from '@/components/a2hs/index.tsx'
@@ -46,13 +48,22 @@ client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_RIDI
           <SconSVG className="cursor-pointer" />
         </Link>
         <div className="text-[#A0A0A0] text-xl flex items-center justify-end">
-          <span className="cursor-pointer">아이디·비밀번호 찾기</span>
+          <button
+            type="button"
+            className="cursor-pointer"
+            // eslint-disable-next-line no-alert
+            onClick={() => alert('준비 중 입니다🍪')}
+          >
+            아이디·비밀번호 찾기
+          </button>
         </div>
       </div>
 
       <div className="text-[#A0A0A0] text-xl mb-36 flex gap-x-2 justify-between items-center">
         <span>아직 스콘의 회원이 아니시라면?</span>
-        <strong className="font-bold cursor-pointer">회원가입</strong>
+        <Link href="/signup/basic" className="font-bold cursor-pointer">
+          회원가입
+        </Link>
       </div>
 
       <A2HSModal />
