@@ -4,7 +4,7 @@ import RecommendStage from '@/features/event/components/stage/RecommendStage.tsx
 
 export default function StageContainer() {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-15">
       <MyStage />
       <RecommendStage />
       <AllStage />

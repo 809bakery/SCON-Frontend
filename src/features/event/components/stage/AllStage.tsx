@@ -14,50 +14,58 @@ export default function AllStage() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col gap-3">
-        <h1 className="font-bold text-2xl">STAGE</h1>
+      <div className="flex flex-col gap-1">
+        <h1 className="font-bold text-2.5xl">STAGE</h1>
         <h2 className="font-medium text-base">
           등록된 스테이지 정보를 확인할 수 있어요!
         </h2>
       </div>
-      <div className="w-full flex space-x-5 justify-start pl-3 text-2xl font-normal pt-5 pb-6">
+      <div className="w-full flex space-x-5 justify-start pl-2 text-2xl font-normal mt-3">
         <button
           type="button"
           onClick={() => handleClick('all')}
-          className={`${category === 'all' ? 'bg-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
+          className={`${category === 'all' ? 'bg-primary border-2 border-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
         >
           전체
         </button>
         <button
           type="button"
           onClick={() => handleClick('performance')}
-          className={`${category === 'performance' ? 'bg-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
+          className={`${category === 'performance' ? 'bg-primary border-2 border-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
         >
           공연
         </button>
         <button
           type="button"
           onClick={() => handleClick('lecture')}
-          className={`${category === 'lecture' ? 'bg-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
+          className={`${category === 'lecture' ? 'bg-primary border-2 border-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
         >
           강연
         </button>
         <button
           type="button"
           onClick={() => handleClick('club')}
-          className={`${category === 'club' ? 'bg-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
+          className={`${category === 'club' ? 'bg-primary border-2 border-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
         >
           소모임
         </button>
         <button
           type="button"
           onClick={() => handleClick('etc')}
-          className={`${category === 'etc' ? 'bg-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
+          className={`${category === 'etc' ? 'bg-primary border-2 border-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
         >
           기타
         </button>
       </div>
-      <DummySVG className="w-full" />
+      <DummySVG className="w-full mt-9" />
+      <div className="w-full flex justify-end mt-6">
+        <button
+          type="button"
+          className="bg-lightgray-2 text-base font-medium px-4 py-1 rounded-xl leading-6"
+        >
+          더보기
+        </button>
+      </div>
     </div>
   )
 }

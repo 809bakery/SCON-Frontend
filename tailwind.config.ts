@@ -17,6 +17,7 @@ const config: Config = {
         disabled: '#6B6E78',
         border: '#D6D5D5',
         yellow: '#FFF0BB',
+        'lightgray-2': '#F2F3F7',
       },
       borderWidth: {
         '0.5': '.0313rem',
@@ -30,9 +31,13 @@ const config: Config = {
       },
       gap: {
         '23': '5.75rem',
+        '15': '3.75rem',
       },
       margin: {
         '49': '12.25rem',
+      },
+      fontSize: {
+        '2.5xl': '1.75rem',
       },
     },
   },
