@@ -57,7 +57,7 @@ export default function RecommendStage() {
           기타
         </button>
       </div>
-      <DummySVG className="w-[34rem] h-[24.625rem] mt-9" />
+      <DummySVG className="w-full mt-9" />
       <div className="w-full flex justify-end mt-6">
         <button
           type="button"

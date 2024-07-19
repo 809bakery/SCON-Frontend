@@ -297,7 +297,7 @@ export default function BasicInfoStep() {
                     onClick={() => setIsPasswordVisible((prev) => !prev)}
                   >
                     {isPasswordVisible ? (
-                      <HideSVG />
+                      <HideSVG className="w-7 h-7" />
                     ) : (
                       <ShowSVG className="w-7 h-7" />
                     )}
@@ -330,7 +330,7 @@ export default function BasicInfoStep() {
                     onClick={() => setIsPasswordConfirmVisible((prev) => !prev)}
                   >
                     {isPasswordConfirmVisible ? (
-                      <HideSVG />
+                      <HideSVG className="w-7 h-7" />
                     ) : (
                       <ShowSVG className="w-7 h-7" />
                     )}
