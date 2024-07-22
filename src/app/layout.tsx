@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="kr"
-      className={`${pretendard.variable} text-[10px] sm:text-[16px]`}
+      className={`${pretendard.variable} text-[10px] sm:text-[16px] w-full min-w-full`}
     >
       <head>
         <link rel="manifest" href="/manifest.json" />
