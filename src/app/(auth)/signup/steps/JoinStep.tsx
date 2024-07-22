@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 
 import CheckGIF from '@/static/gif/checked.gif'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
-import Step4SVG from '@/static/svg/progress/progress-step3.svg'
+import Step4SVG from '@/static/svg/progress/progress-step4.svg'
 
 export default function JoinStep() {
   const router = useRouter()
