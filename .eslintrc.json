@@ -107,6 +107,7 @@
       }
     ],
     "no-unused-vars": "off", // 사용되지 않은 변수에 대한 경고를 비활성화
+    "no-alert": "off",
     "import/no-cycle": "off",
     "import/extensions": ["error", "ignorePackages"], // 라이브러리 패키지 구문을 제외하고 확장자를 사용
     "no-param-reassign": "off",
