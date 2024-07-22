@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="kr"
-      className={`${pretendard.variable} text-[10px] sm:text-[16px]`}
+      className={`${pretendard.variable} text-[10px] sm:text-[16px] w-full min-w-full`}
     >
       <head>
         <link rel="manifest" href="/manifest.json" />
@@ -53,7 +53,7 @@ export default function RootLayout({
       <body
         className={`${pretendard.className} w-full h-full min-h-dvh flex justify-center`}
       >
-        <div className="w-full h-full max-w-[600px] sm:border-l-0.5 sm:border-r-0.5 border-border">
+        <div className="w-full h-full min-h-screen max-w-[600px] sm:border-l-0.5 sm:border-r-0.5 border-border">
           <Provider>{children}</Provider>
         </div>
       </body>

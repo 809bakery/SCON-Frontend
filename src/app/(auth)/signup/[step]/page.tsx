@@ -16,7 +16,7 @@ export default function SignupPage() {
   const router = useRouter()
   return (
     <div className="flex flex-col">
-      <div className="w-full relative flex items-center justify-center py-[14px] mb-[60px] border-b border-[#d6d5d5] text-center text-[#565551]">
+      <div className="w-full relative flex items-center justify-center py-[14px] border-b border-[#d6d5d5] text-center text-[#565551]">
         <button
           type="button"
           onClick={() => router.back()}
@@ -24,7 +24,7 @@ export default function SignupPage() {
         >
           <BackSVG />
         </button>
-        <span className="font-bold text-[1.5rem]">이메일로 로그인</span>
+        <span className="font-bold text-[1.5rem]">회원가입</span>
       </div>
       <Step name="basic">
         <BasicInfoStep />
