@@ -3,6 +3,7 @@ export const DUMMY_POSTER_DATA = [
     title: '빅뱅 서울콘서트',
     location: '올림픽공원 내 체조경기장',
     startDate: '2015-04-25T18:00:00',
+    isEnd: true,
     posterUrl: '/dummy/dummy-poster-bigbang.jpg',
     content: [
       {

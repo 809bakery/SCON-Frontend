@@ -95,6 +95,7 @@ export default function MyStage() {
                 <Card
                   key={data.title}
                   title={data.title}
+                  isEnd={data.isEnd}
                   location={data.location}
                   sDate={data.startDate}
                   content={data.content}

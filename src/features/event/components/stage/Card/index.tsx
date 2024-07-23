@@ -9,6 +9,8 @@ interface CardProps {
   sDate: string
   content: ContentType[]
   posterUrl: string
+  // eslint-disable-next-line react/require-default-props
+  isEnd?: boolean
 }
 
 interface ContentType {
@@ -18,7 +20,7 @@ interface ContentType {
 }
 
 function Card(props: CardProps) {
-  const { title, location, sDate, content, posterUrl } = props
+  const { title, location, sDate, content, posterUrl, isEnd } = props
   const [date, setDate] = useState<string>('')
 
   useEffect(() => {
@@ -40,13 +42,21 @@ function Card(props: CardProps) {
   }
   return (
     <div className="w-[30%] rounded-xl shrink-0 flex flex-col gap-y-3  cursor-pointer">
-      <Image
-        src={posterUrl}
-        alt="poster"
-        width={160}
-        height={219}
-        className="rounded-xl"
-      />
+      <div className="relative">
+        {isEnd && (
+          <div className="absolute z-10 w-full bg-[#4C4C4C] bg-opacity-80 h-full rounded-xl flex flex-col items-center justify-center text-white text-xl">
+            <p>종료된</p>
+            <p>스테이지</p>
+          </div>
+        )}
+        <Image
+          src={posterUrl}
+          alt="poster"
+          width={160}
+          height={219}
+          className="rounded-xl"
+        />
+      </div>
 
       <div className="w-full flex flex-col items-start justify-center gap-y-1">
         <h3 className="w-full font-bold truncate">{title}</h3>
