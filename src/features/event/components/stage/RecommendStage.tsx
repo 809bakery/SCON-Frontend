@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 
+import { DUMMY_POSTER_DATA } from '@/constants/dummy.ts'
+import Card from '@/features/event/components/stage/Card/index.tsx'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
-import DummySVG from '@/static/svg/dummy/dummy-stage-contents.svg'
 
 export default function RecommendStage() {
   const [category, setCategory] = useState<StageCategory>('all')
@@ -16,8 +17,14 @@ export default function RecommendStage() {
     <div className="flex flex-col">
       <div className="flex flex-col gap-1">
         <h1 className="font-bold text-2.5xl">SCON’S PICK</h1>
-        <h2 className="font-medium text-base">
-          스코니님을 위한 추천 스테이지 정보들을 모아봤어요!
+        <h2 className="font-medium text-base flex items-center justify-between">
+          <span>스코니님을 위한 추천 스테이지 정보들을 모아봤어요!</span>
+          <button
+            type="button"
+            className="text-disabled text-base font-medium px-4 py-1 rounded-xl leading-6"
+          >
+            더보기 &gt;
+          </button>
         </h2>
       </div>
       <div className="w-full flex space-x-5 justify-start pl-2 text-2xl font-normal mt-3">
@@ -57,14 +64,19 @@ export default function RecommendStage() {
           기타
         </button>
       </div>
-      <DummySVG className="w-full mt-9" />
-      <div className="w-full flex justify-end mt-6">
-        <button
-          type="button"
-          className="bg-lightgray-2 text-base font-medium px-4 py-1 rounded-xl leading-6"
-        >
-          더보기
-        </button>
+      <div className="mt-9 flex flex-wrap items-center justify-between gap-y-8 gap-x-3">
+        {DUMMY_POSTER_DATA.map((data) => {
+          return (
+            <Card
+              key={data.title}
+              title={data.title}
+              location={data.location}
+              sDate={data.startDate}
+              content={data.content}
+              posterUrl={data.posterUrl}
+            />
+          )
+        })}
       </div>
     </div>
   )

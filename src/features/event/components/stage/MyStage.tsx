@@ -3,8 +3,9 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import { DUMMY_POSTER_DATA } from '@/constants/dummy.ts'
+import Card from '@/features/event/components/stage/Card/index.tsx'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
-import DummySVG from '@/static/svg/dummy/dummy-stage-contents.svg'
 
 const USER = {
   nickname: '민정',
@@ -37,8 +38,16 @@ export default function MyStage() {
         <h1 className="font-bold text-2.5xl">
           {isAuthenticated ? `${USER?.nickname}'s` : 'MY'} STAGE
         </h1>
-        <h2 className="font-medium text-base">
-          스코니님이 좋아요를 누른 스테이지들을 한 눈에 확인할 수 있어요!
+        <h2 className="font-medium text-base flex items-center justify-between">
+          <span>
+            스코니님이 좋아요를 누른 스테이지들을 한 눈에 확인할 수 있어요!
+          </span>
+          <button
+            type="button"
+            className="text-disabled text-base font-medium px-4 py-1 rounded-xl leading-6"
+          >
+            더보기 &gt;
+          </button>
         </h2>
       </div>
       {isAuthenticated ? (
@@ -80,14 +89,19 @@ export default function MyStage() {
               기타
             </button>
           </div>
-          <DummySVG className="w-full mt-9" />
-          <div className="w-full flex justify-end mt-6">
-            <button
-              type="button"
-              className="bg-lightgray-2 text-base font-medium px-4 py-1 rounded-xl leading-6"
-            >
-              더보기
-            </button>
+          <div className="mt-9 flex flex-wrap items-center justify-between gap-y-8 gap-x-3">
+            {DUMMY_POSTER_DATA.map((data) => {
+              return (
+                <Card
+                  key={data.title}
+                  title={data.title}
+                  location={data.location}
+                  sDate={data.startDate}
+                  content={data.content}
+                  posterUrl={data.posterUrl}
+                />
+              )
+            })}
           </div>
         </>
       ) : (
