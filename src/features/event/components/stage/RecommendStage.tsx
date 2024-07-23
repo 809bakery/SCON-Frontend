@@ -27,39 +27,39 @@ export default function RecommendStage() {
           </button>
         </h2>
       </div>
-      <div className="w-full flex space-x-5 justify-start pl-2 text-2xl font-normal mt-3">
+      <div className="w-full flex space-x-4 justify-start text-xl mt-5">
         <button
           type="button"
           onClick={() => handleClick('all')}
-          className={`${category === 'all' ? 'bg-primary border-2 border-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
+          className={`${category === 'all' ? 'bg-primary border border-primary' : 'border border-[#CECCCC]'} py-2 px-6 rounded-full min-w-max`}
         >
           전체
         </button>
         <button
           type="button"
           onClick={() => handleClick('performance')}
-          className={`${category === 'performance' ? 'bg-primary border-2 border-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
+          className={`${category === 'performance' ? 'bg-primary border border-primary' : 'border border-[#CECCCC]'} py-2 px-6 rounded-full min-w-max`}
         >
           공연
         </button>
         <button
           type="button"
           onClick={() => handleClick('lecture')}
-          className={`${category === 'lecture' ? 'bg-primary border-2 border-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
+          className={`${category === 'lecture' ? 'bg-primary border border-primary' : 'border border-[#CECCCC]'} py-2 px-6 rounded-full min-w-max`}
         >
           강연
         </button>
         <button
           type="button"
           onClick={() => handleClick('club')}
-          className={`${category === 'club' ? 'bg-primary border-2 border-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
+          className={`${category === 'club' ? 'bg-primary border border-primary' : 'border border-[#CECCCC]'} py-2 px-6 rounded-full min-w-max`}
         >
           소모임
         </button>
         <button
           type="button"
           onClick={() => handleClick('etc')}
-          className={`${category === 'etc' ? 'bg-primary border-2 border-primary' : 'border-2 border-[#CECCCC]'} py-2 px-5 rounded-full min-w-max`}
+          className={`${category === 'etc' ? 'bg-primary border border-primary' : 'border border-[#CECCCC]'} py-2 px-6 rounded-full min-w-max`}
         >
           기타
         </button>
@@ -70,6 +70,7 @@ export default function RecommendStage() {
             <Card
               key={data.title}
               title={data.title}
+              isEnd={data.isEnd}
               location={data.location}
               sDate={data.startDate}
               content={data.content}
