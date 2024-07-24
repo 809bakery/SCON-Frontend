@@ -15,8 +15,10 @@ const config: Config = {
         warning: '#F85252',
         success: '#489D59',
         disabled: '#6B6E78',
+        'disabled-btn': 'E5E5ED',
         border: '#D6D5D5',
         yellow: '#FFF0BB',
+        'lightgray-1': '#F7F7F7',
         'lightgray-2': '#F2F3F7',
       },
       borderWidth: {
