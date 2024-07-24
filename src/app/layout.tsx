@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 
 import Provider from '@/app/providers.tsx'
+import Navbar from '@/components/Navbar/index.tsx'
 
 const pretendard = localFont({
   src: '../static/fonts/PretendardVariable.woff2',
@@ -54,7 +55,10 @@ export default function RootLayout({
         className={`${pretendard.className} w-full h-full min-h-dvh flex justify-center`}
       >
         <div className="w-full h-full min-h-screen max-w-[600px] sm:border-l-0.5 sm:border-r-0.5 border-border">
-          <Provider>{children}</Provider>
+          <Provider>
+            <Navbar />
+            {children}
+          </Provider>
         </div>
       </body>
     </html>

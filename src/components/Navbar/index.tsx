@@ -1,56 +1,18 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
-import AlarmSVG from '@/static/svg/navbar/nav-alarm-icon.svg'
-import LogoSVG from '@/static/svg/navbar/nav-logo-icon.svg'
-import MenuSVG from '@/static/svg/navbar/nav-menu-icon.svg'
-import SearchSVG from '@/static/svg/navbar/nav-search-icon.svg'
+import NavbarWithGoback from '@/components/Navbar/NavbarWithGoback.tsx'
+import NavbarWithoutGoback from '@/components/Navbar/NavbarWithoutGoback.tsx'
 
 export default function Navbar() {
-  const router = useRouter()
-
-  const handleAlarmClick = () => {}
-
-  const handleLogoClick = () => {
-    router.push('/main')
+  const pathname = usePathname()
+  const domainList = pathname.split('/').filter(Boolean)
+  if (domainList[0] === 'menu') {
+    return null
   }
-
-  const handleSearchClick = () => {
-    router.push('/search')
+  if (domainList[0] === 'main') {
+    return <NavbarWithoutGoback />
   }
-
-  const handleMenuClick = () => {
-    router.push('/menu')
-  }
-
-  return (
-    <div className="w-full h-[60px] flex items-center relative px-7 border-b-0.5 border-border">
-      {/* 왼쪽 div */}
-      <div className="w-full flex justify-start absolute left-7 cursor-pointer">
-        <div role="presentation" id="alarm" onClick={handleAlarmClick}>
-          <AlarmSVG />
-        </div>
-      </div>
-
-      {/* 가운데 div */}
-      <div className="w-full flex justify-center absolute left-1/2 -translate-x-1/2 cursor-pointer">
-        <div role="presentation" id="alarm" onClick={handleLogoClick}>
-          <LogoSVG />
-        </div>
-      </div>
-
-      {/* 오른쪽 div */}
-      <div className="w-full flex gap-2 justify-end absolute right-7 cursor-pointer">
-        <div role="presentation" id="alarm" onClick={handleSearchClick}>
-          <SearchSVG />
-        </div>
-        <div role="presentation" id="alarm" onClick={handleMenuClick}>
-          <MenuSVG />
-        </div>
-      </div>
-    </div>
-  )
+  return <NavbarWithGoback nameList={domainList} />
 }

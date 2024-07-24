@@ -2,30 +2,16 @@
 
 'use client'
 
-import { useRouter } from 'next/navigation'
-
 import BasicInfoStep from '@/app/(auth)/signup/steps/BasicInfoStep.tsx'
 import JoinStep from '@/app/(auth)/signup/steps/JoinStep.tsx'
 import MoreInfoStep from '@/app/(auth)/signup/steps/MoreInfoStep.tsx'
 import ProfileStep from '@/app/(auth)/signup/steps/ProfileStep.tsx'
 import Step from '@/components/Step.tsx'
-import BackSVG from '@/static/svg/arrow-left-icon.svg'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function SignupPage() {
-  const router = useRouter()
   return (
     <div className="flex flex-col">
-      <div className="w-full h-[60px] relative flex items-center justify-center py-[14px] border-b border-[#d6d5d5] text-center text-[#565551]">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="absolute left-7 cursor-pointer"
-        >
-          <BackSVG className="w-8 h-8 min-w-[24px] min-h-[24px]" />
-        </button>
-        <span className="font-bold text-[1.5rem]">회원가입</span>
-      </div>
       <Step name="basic">
         <BasicInfoStep />
       </Step>
