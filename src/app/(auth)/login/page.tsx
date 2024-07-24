@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 
-import A2HSModal from '@/components/a2hs/index.tsx'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import GoogleSVG from '@/static/svg/social/google-login.svg'
 import KakaoSVG from '@/static/svg/social/kakao-login.svg'
@@ -65,8 +64,6 @@ client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_RIDI
           회원가입
         </Link>
       </div>
-
-      <A2HSModal />
     </div>
   )
 }

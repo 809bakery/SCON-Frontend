@@ -24,7 +24,7 @@ export default function SignupPage() {
         >
           <BackSVG className="w-8 h-8 min-w-[24px] min-h-[24px]" />
         </button>
-        <span className="font-bold text-[1.5rem]">이메일로 로그인</span>
+        <span className="font-bold text-[1.5rem]">회원가입</span>
       </div>
       <Step name="basic">
         <BasicInfoStep />

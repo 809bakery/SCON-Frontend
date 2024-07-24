@@ -83,7 +83,7 @@ export default function Carousel() {
       {/* Carousel container */}
       <div
         style={{ height: `calc(${imageHeight}px + 48px)` }}
-        className="relative overflow-hidden w-full rounded-md"
+        className="relative overflow-hidden w-full"
       >
         {/* Image container */}
         <div

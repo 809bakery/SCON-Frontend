@@ -40,6 +40,7 @@ const config: Config = {
       },
       fontSize: {
         '2.5xl': '1.75rem',
+        '2xs': '.625rem',
       },
     },
   },
