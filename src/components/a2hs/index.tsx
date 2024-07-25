@@ -53,7 +53,7 @@ function A2HSModal() {
 
   return (
     <div
-      className={`${a2hs ? '' : 'hidden'} w-full h-[100dvh] fixed flex items-end justify-center bg-[#4C4C4C] bg-opacity-80`}
+      className={`${a2hs ? '' : 'hidden'} w-full h-[100dvh] fixed left-0 top-0 flex items-end justify-center bg-[#4C4C4C] bg-opacity-80`}
     >
       <div className="w-full max-w-[600px] px-7 py-8 flex flex-col justify-center items-center rounded-t-3xl bg-white bottom-0 z-50">
         <A2HSLogoSVG className="w-40 h-40" />
