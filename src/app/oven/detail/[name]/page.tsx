@@ -42,7 +42,6 @@ export default function OvenDetail({ params }: OvenDetailProps) {
   const [activeTab, setActiveTab] = useState<string>('info')
   const name = decodeURIComponent(params.name)
   const user = DUMMY_OVEN_DETAIL_DATA.find((data) => data.ovenName === name)
-  const isStageListEmpty = !DummyStageList || DummyStageList.length === 0
   return (
     <div className="w-full">
       <div className="w-full flex flex-col px-9 py-5">
@@ -94,11 +93,12 @@ export default function OvenDetail({ params }: OvenDetailProps) {
         <div className="w-full flex flex-col gap-7 mt-10">
           <h2 className="font-bold leading-8 text-2xl">스테이지</h2>
           <div className="w-full h-full flex flex-col gap-8 mt-8">
-            {isStageListEmpty && (
+            {/* 등록한 스테이지가 없는 경우 */}
+            {/* {isStageListEmpty && (
               <div className="w-full h-[16.25rem] rounded-xl border-0.5 border-border flex items-center justify-center text-base font-medium text-disabled">
                 등록된 스테이지가 없습니다.
               </div>
-            )}
+            )} */}
             {DummyStageList &&
               DummyStageList.map((stage) => (
                 <StageCard
