@@ -41,7 +41,7 @@ client_id=${process.env.NAVER_CLIENT_ID}&response_type=${process.env.NAVER_RESPO
 client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_RIDIRECT_URI}
 &response_type=${process.env.GOOGLE_RESPONSE_TYPE}&scope=${process.env.GOOGLE_SCOPE}`}
         >
-          <GoogleSVG className="w-full cursor-pointer" />
+          <GoogleSVG className="cursor-pointer" />
         </Link>
         <Link href="/login/email">
           <SconSVG className="cursor-pointer" />
