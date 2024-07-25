@@ -2,15 +2,20 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import { FilterList } from '@/constants/search/index.ts'
+import { FilterType } from '@/constants/search/index.ts'
 import ArrowRight from '@/static/svg/arrow-right-icon.svg'
 
 interface FilterProps {
   filterQuery: string | undefined
   setFilterQuery: (value: string) => void
+  filterList: FilterType[]
 }
 
-export default function Filter({ filterQuery, setFilterQuery }: FilterProps) {
+export default function Filter({
+  filterQuery,
+  setFilterQuery,
+  filterList,
+}: FilterProps) {
   const filterRef = useRef<HTMLDivElement>(null)
   const [openFilter, setOpenFilter] = useState<boolean>(false)
 
@@ -42,14 +47,14 @@ export default function Filter({ filterQuery, setFilterQuery }: FilterProps) {
         className={`w-[7.5rem] h-[2.5rem] text-base leading-6 font-bold sm:font-medium border border-primary flex items-center justify-center cursor-pointer pl-1 ${openFilter ? 'rounded-t' : 'rounded'}`}
         onClick={() => setOpenFilter(!openFilter)}
       >
-        <span className="">{filterQuery || '판매많은순'}</span>
+        <span className="">{filterQuery || filterList[0].label}</span>
         <ArrowRight className="w-4 h-4 rotate-90 mb-[.125rem]" />
       </div>
       <div
-        className={`flex flex-col absolute top-16 bg-white  ${!openFilter && 'hidden'}`}
+        className={`flex flex-col absolute top-16 z-50 bg-white  ${!openFilter && 'hidden'}`}
       >
         {openFilter &&
-          FilterList.map((filter) => (
+          filterList.map((filter) => (
             <button
               type="button"
               key={filter.id}

@@ -6,14 +6,19 @@ import { useState } from 'react'
 
 import Filter from '@/app/(home)/search/_components/Filter.tsx'
 import OvenCard from '@/app/(home)/search/_components/OvenCard.tsx'
-import SearchBar from '@/app/(home)/search/_components/SearchBar.tsx'
 import StageCard from '@/app/(home)/search/_components/StageCard.tsx'
 import Tab from '@/app/(home)/search/_components/Tab.tsx'
-import { OvenList, StageList, TabList } from '@/constants/search/index.ts'
+import SearchBar from '@/components/Searchbar/index.tsx'
+import {
+  OvenList,
+  SearchFilterList,
+  SearchTabList,
+  StageList,
+} from '@/constants/search/index.ts'
 
 export default function SearchPage() {
   const [searchQuery, setSearchQuery] = useState<string | undefined>(undefined)
-  const [activeTab, setActiveTab] = useState<'oven' | 'stage'>('oven')
+  const [activeTab, setActiveTab] = useState<string>('oven')
   const [filterQuery, setFilterQuery] = useState<string | undefined>(undefined)
 
   return (
@@ -22,11 +27,12 @@ export default function SearchPage() {
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       {/* 탭 분류 */}
       <div className="w-full flex">
-        {TabList.map((tab) => (
+        {SearchTabList.map((tab) => (
           <Tab
             key={tab.id}
             name={tab.name}
             label={tab.label}
+            tabCount={SearchTabList.length}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           />
@@ -48,7 +54,11 @@ export default function SearchPage() {
       {/* 탭 === 스테이지 */}
       {activeTab === 'stage' && (
         <div className="w-full flex flex-col items-end pt-6 pb-8 px-7 relative">
-          <Filter filterQuery={filterQuery} setFilterQuery={setFilterQuery} />
+          <Filter
+            filterQuery={filterQuery}
+            setFilterQuery={setFilterQuery}
+            filterList={SearchFilterList}
+          />
           <div className="w-full h-full flex flex-col gap-8 mt-8">
             {StageList.map((stage) => (
               <StageCard
