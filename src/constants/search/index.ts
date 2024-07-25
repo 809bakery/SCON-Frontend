@@ -12,8 +12,14 @@ import DummyStageProfile4 from '@/static/img/dummy/search/dummy-stage-profile4.j
 
 type TabType = {
   id: number
-  name: 'oven' | 'stage'
-  label: '오븐' | '스테이지'
+  name: string
+  label: string
+}
+
+export type FilterType = {
+  id: number
+  name: string
+  label: string
 }
 
 type OvenType = {
@@ -23,7 +29,7 @@ type OvenType = {
   image: string | StaticImageData
 }
 
-type StageType = {
+export type StageType = {
   id: number
   title: string
   location: string
@@ -31,7 +37,7 @@ type StageType = {
   image: string | StaticImageData
 }
 
-export const FilterList = [
+export const SearchFilterList: FilterType[] = [
   {
     id: 1,
     name: '',
@@ -49,7 +55,25 @@ export const FilterList = [
   },
 ]
 
-export const TabList: TabType[] = [
+export const OvenDetailFilterList: FilterType[] = [
+  {
+    id: 1,
+    name: '',
+    label: '인기순',
+  },
+  {
+    id: 2,
+    name: '',
+    label: '가나다순',
+  },
+  {
+    id: 3,
+    name: '',
+    label: '최신등록순',
+  },
+]
+
+export const SearchTabList: TabType[] = [
   {
     id: 1,
     name: 'oven',
@@ -59,6 +83,19 @@ export const TabList: TabType[] = [
     id: 2,
     name: 'stage',
     label: '스테이지',
+  },
+]
+
+export const OvenDetailTabList: TabType[] = [
+  {
+    id: 1,
+    name: 'info',
+    label: '기본정보',
+  },
+  {
+    id: 2,
+    name: 'community',
+    label: '커뮤니티',
   },
 ]
 
