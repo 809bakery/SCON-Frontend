@@ -11,7 +11,6 @@ export default function Mainpage() {
         <StageContainer />
       </div>
       <Footer />
-
       <A2HSModal />
     </div>
   )

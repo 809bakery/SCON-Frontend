@@ -36,7 +36,7 @@ function SideBar() {
       >
         <SideBarMenu text="홈" url="/main" />
         <SideBarMenu text="스테이지" />
-        <SideBarMenu text="오븐 둘러보기" />
+        <SideBarMenu text="오븐 둘러보기" url="/oven/detail" />
         <SideBarMenu text="양도 게시판" />
         <SideBarMenu text="예매 내역 확인하기" />
         <SideBarMenu text="마이페이지" />
