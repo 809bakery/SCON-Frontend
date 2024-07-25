@@ -45,7 +45,7 @@ export const DUMMY_STAGE_DETAIL: StageDetailType = {
     ovenName: '릴파',
     ovenDetail: null,
     account: '2024',
-    accountName: 'admin',
+    accountName: 'lilpa',
     bankName: '왁두은행',
     image: DummyOvenProfile4,
     followCount: 0,
