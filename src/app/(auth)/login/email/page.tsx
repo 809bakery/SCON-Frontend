@@ -23,7 +23,6 @@ export default function EmailLoginPage() {
   const removeItem = (item: string) => {
     if (item === email) {
       setEmail('')
-      return
     }
 
     if (item === password) {
@@ -51,7 +50,7 @@ export default function EmailLoginPage() {
 
       {/* form */}
       <form className="w-full px-7 flex flex-col gap-y-5 text-[#302602] placeholder:text-[#CECCCC] text-2xl">
-        <div className="relative pl-8 pr-16 py-6 border-2 border-[#E4E4E4] focus-within:border-[#FFC90D] rounded-xl">
+        <div className="relative pl-8 pr-16 py-6 border-2 border-border focus-within:border-primary rounded-xl">
           <input
             className="w-full outline-none"
             type="text"
@@ -66,7 +65,7 @@ export default function EmailLoginPage() {
             />
           )}
         </div>
-        <div className="relative pl-8 pr-32 py-6 border-2 border-[#E4E4E4] focus-within:border-[#FFC90D] rounded-xl">
+        <div className="relative pl-8 pr-32 py-6 border-2 border-border focus-within:border-primary rounded-xl">
           <input
             className="w-full outline-none"
             type={isPasswordVisible ? 'text' : 'password'}
@@ -120,7 +119,7 @@ export default function EmailLoginPage() {
         </div>
 
         <button
-          className="w-full px-7 py-6 text-2xl bg-[#FFC90D] rounded-xl font-bold"
+          className="w-full px-7 py-6 text-2xl bg-primary rounded-xl font-bold"
           type="button"
           onClick={handleSubmit}
         >

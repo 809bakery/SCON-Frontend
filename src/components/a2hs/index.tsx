@@ -74,7 +74,7 @@ function A2HSModal() {
             <button
               onClick={installApp}
               type="button"
-              className="py-6 flex-1 flex items-center justify-center bg-[#FFC90D] rounded-xl"
+              className="py-6 flex-1 flex items-center justify-center bg-primary rounded-xl"
             >
               추가하기
             </button>

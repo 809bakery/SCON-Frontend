@@ -56,35 +56,35 @@ export default function MyStage() {
             <button
               type="button"
               onClick={() => handleClick('all')}
-              className={`${category === 'all' ? 'bg-primary border border-primary' : 'border border-[#CECCCC]'} py-2 px-6 rounded-full min-w-max`}
+              className={`${category === 'all' ? 'bg-primary border border-primary' : 'border border-border'} py-2 px-6 rounded-full min-w-max`}
             >
               전체
             </button>
             <button
               type="button"
               onClick={() => handleClick('performance')}
-              className={`${category === 'performance' ? 'bg-primary border border-primary' : 'border border-[#CECCCC]'} py-2 px-6 rounded-full min-w-max`}
+              className={`${category === 'performance' ? 'bg-primary border border-primary' : 'border border-border'} py-2 px-6 rounded-full min-w-max`}
             >
               공연
             </button>
             <button
               type="button"
               onClick={() => handleClick('lecture')}
-              className={`${category === 'lecture' ? 'bg-primary border border-primary' : 'border border-[#CECCCC]'} py-2 px-6 rounded-full min-w-max`}
+              className={`${category === 'lecture' ? 'bg-primary border border-primary' : 'border border-border'} py-2 px-6 rounded-full min-w-max`}
             >
               강연
             </button>
             <button
               type="button"
               onClick={() => handleClick('club')}
-              className={`${category === 'club' ? 'bg-primary border border-primary' : 'border border-[#CECCCC]'} py-2 px-6 rounded-full min-w-max`}
+              className={`${category === 'club' ? 'bg-primary border border-primary' : 'border border-border'} py-2 px-6 rounded-full min-w-max`}
             >
               소모임
             </button>
             <button
               type="button"
               onClick={() => handleClick('etc')}
-              className={`${category === 'etc' ? 'bg-primary border border-primary' : 'border border-[#CECCCC]'} py-2 px-6 rounded-full min-w-max`}
+              className={`${category === 'etc' ? 'bg-primary border border-primary' : 'border border-border'} py-2 px-6 rounded-full min-w-max`}
             >
               기타
             </button>

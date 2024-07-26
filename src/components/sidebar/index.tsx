@@ -45,7 +45,7 @@ function SideBar() {
           <button
             type="button"
             onClick={() => setUser('oven')}
-            className="text-primary px-14 py-7 font-extrabold text-xl border-b border-[#F2F3F7] text-start cursor-pointer"
+            className="text-primary px-14 py-7 font-extrabold text-xl border-b border-border text-start cursor-pointer"
           >
             오브너로 전환하기
           </button>
@@ -55,7 +55,7 @@ function SideBar() {
           <button
             type="button"
             onClick={() => setUser(undefined)}
-            className="text-primary px-14 py-7 font-extrabold text-xl border-b border-[#F2F3F7] text-start cursor-pointer"
+            className="text-primary px-14 py-7 font-extrabold text-xl border-b border-border text-start cursor-pointer"
           >
             오브너에서 로그아웃
           </button>
