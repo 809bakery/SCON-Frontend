@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -19,7 +20,7 @@ function SideBar() {
       <div className="px-7 flex flex-col gap-y-8 mb-8">
         <div className="py-8  flex items-center justify-between">
           <Link href="/main">
-            <LogoSVG className="h-8 w-fit" />
+            <LogoSVG className="w-[6.5625rem] h-8" />
           </Link>
 
           <SideBarCloseSVG

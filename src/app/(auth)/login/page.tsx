@@ -25,7 +25,7 @@ export default function LoginPage() {
 response_type=${process.env.KAKAO_RESPONSE_TYPE}&client_id=${process.env.KAKAO_CLIENT_ID}
 &redirect_uri=${process.env.KAKAO_REDIRECT_URI}`}
         >
-          <KakaoSVG className="w-full cursor-pointer" />
+          <KakaoSVG className="w-full h-[4.8125rem] cursor-pointer" />
         </Link>
 
         <Link
@@ -33,7 +33,7 @@ response_type=${process.env.KAKAO_RESPONSE_TYPE}&client_id=${process.env.KAKAO_C
 client_id=${process.env.NAVER_CLIENT_ID}&response_type=${process.env.NAVER_RESPONSE_TYPE}
 &redirect_uri=${process.env.NAVER_REDIRECT_URI}&state=${process.env.NAVER_STATE}`}
         >
-          <NaverSVG className="w-full cursor-pointer" />
+          <NaverSVG className="w-full h-[4.8125rem] cursor-pointer" />
         </Link>
 
         <Link
@@ -41,12 +41,12 @@ client_id=${process.env.NAVER_CLIENT_ID}&response_type=${process.env.NAVER_RESPO
 client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_RIDIRECT_URI}
 &response_type=${process.env.GOOGLE_RESPONSE_TYPE}&scope=${process.env.GOOGLE_SCOPE}`}
         >
-          <GoogleSVG className="cursor-pointer" />
+          <GoogleSVG className="w-full h-[4.8125rem] cursor-pointer" />
         </Link>
         <Link href="/login/email">
-          <SconSVG className="cursor-pointer" />
+          <SconSVG className="w-full h-[4.8125rem] cursor-pointer" />
         </Link>
-        <div className="text-[#A0A0A0] text-xl flex items-center justify-end">
+        <div className="text-[#080505] text-xl flex items-center justify-end">
           <button
             type="button"
             className="cursor-pointer"
