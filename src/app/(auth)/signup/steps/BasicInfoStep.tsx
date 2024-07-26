@@ -418,9 +418,9 @@ export default function BasicInfoStep() {
                       onClick={() => handleTermsOfService('term4')}
                     >
                       {termsOfService[4] ? (
-                        <Checked className="w-6 h-6 min-w-max" />
+                        <Checked className="w-6 h-6 " />
                       ) : (
-                        <UnChecked className="w-6 h-6 min-w-max" />
+                        <UnChecked className="w-6 h-6" />
                       )}
                     </div>
                     <p>

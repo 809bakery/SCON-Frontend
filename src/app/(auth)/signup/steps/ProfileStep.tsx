@@ -7,8 +7,8 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import DefaultProfile from '@/static/img/dummy/profile/default-profile.jpg'
 import Checked from '@/static/svg/checked-icon.svg'
-import DefaultProfileSVG from '@/static/svg/dummy/dummy-profile-image.svg'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import Step2SVG from '@/static/svg/progress/progress-step2.svg'
 import Required from '@/static/svg/required-star.svg'
@@ -105,7 +105,14 @@ export default function ProfileStep() {
             <div className="flex justify-center items-center mt-10 mb-5">
               <div className="relative w-40 h-40  rounded-full">
                 <label htmlFor="file-input" className="cursor-pointer">
-                  <DefaultProfileSVG />
+                  <Image
+                    src={DefaultProfile}
+                    alt="profile"
+                    width={160}
+                    height={160}
+                    layout="fixed"
+                    className="rounded-full"
+                  />
                   <UploadSVG className="absolute bottom-0 right-0" />
                 </label>
               </div>
