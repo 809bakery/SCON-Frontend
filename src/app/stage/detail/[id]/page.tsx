@@ -5,7 +5,6 @@ import { useState } from 'react'
 
 import { DUMMY_STAGE_DETAIL, DUMMY_TAGS } from '@/constants/stage/index.ts'
 import StageTabComment from '@/features/stage/detail/components/tab/comment/index.tsx'
-import StageTabExpect from '@/features/stage/detail/components/tab/expect/index.tsx'
 import StageTabInfo from '@/features/stage/detail/components/tab/info/index.tsx'
 import StageTabSale from '@/features/stage/detail/components/tab/sale/index.tsx'
 import StageDetailTag from '@/features/stage/detail/components/tag/index.tsx'
@@ -53,7 +52,8 @@ function StageDetailPage() {
 
       {/* title */}
       <div className="w-full px-7 py-5 flex items-center justify-center text-2xl font-bold text-center">
-        {DUMMY_STAGE_DETAIL.title} - {DUMMY_STAGE_DETAIL.detail}
+        {DUMMY_STAGE_DETAIL.title} {DUMMY_STAGE_DETAIL.detail && ' - '}{' '}
+        {DUMMY_STAGE_DETAIL.detail}
       </div>
       {/* tab */}
       <div className="w-full flex justify-between items-center border-b border-border">
@@ -89,7 +89,7 @@ function StageDetailPage() {
       {tab === 0 && <StageTabInfo />}
       {tab === 1 && <StageTabSale />}
       {tab === 2 && <StageTabComment />}
-      {tab === 3 && <StageTabExpect />}
+      {tab === 3 && <StageTabComment />}
 
       {/* footer */}
       <div className="w-full max-w-[598px] py-6 px-3 fixed bottom-0 flex gap-x-7 justify-between items-center bg-white">
