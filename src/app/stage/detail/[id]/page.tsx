@@ -50,6 +50,11 @@ function StageDetailPage() {
           />
         ))}
       </div>
+
+      {/* title */}
+      <div className="w-full px-7 py-5 flex items-center justify-center text-2xl font-bold text-center">
+        {DUMMY_STAGE_DETAIL.title} - {DUMMY_STAGE_DETAIL.detail}
+      </div>
       {/* tab */}
       <div className="w-full flex justify-between items-center">
         <button
@@ -87,7 +92,7 @@ function StageDetailPage() {
       {tab === 3 && <StageTabExpect />}
 
       {/* footer */}
-      <div className="w-full max-w-[598px] p-5 fixed bottom-0 flex gap-x-7 justify-between items-center bg-white">
+      <div className="w-full max-w-[598px] py-6 px-3 fixed bottom-0 flex gap-x-7 justify-between items-center bg-white">
         <button
           type="button"
           className="p-5"
