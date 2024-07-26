@@ -56,7 +56,7 @@ function StageDetailPage() {
         {DUMMY_STAGE_DETAIL.title} - {DUMMY_STAGE_DETAIL.detail}
       </div>
       {/* tab */}
-      <div className="w-full flex justify-between items-center">
+      <div className="w-full flex justify-between items-center border-b border-border">
         <button
           type="button"
           onClick={() => setTab(0)}

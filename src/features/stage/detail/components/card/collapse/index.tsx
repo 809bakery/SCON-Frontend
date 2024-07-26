@@ -16,7 +16,7 @@ function StageDetailCollapseCard(props: StageDetailCollapseCardProps) {
   const { title, image } = props
   return (
     <div
-      className={`w-full relative pt-5 px-5 flex flex-col gap-y-2 border border-border rounded-xl whitespace-pre-wrap ${isCollapsed && 'max-h-[31.25rem] overflow-hidden'}`}
+      className={`w-full relative p-5 flex flex-col gap-y-2 border border-border rounded-xl whitespace-pre-wrap ${isCollapsed && 'max-h-[31.25rem] overflow-hidden'}`}
     >
       <p className="font-bold">{title}</p>
       {image && (
