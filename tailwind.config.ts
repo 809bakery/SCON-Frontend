@@ -14,6 +14,7 @@ const config: Config = {
       colors: {
         primary: '#FFC90D',
         warning: '#F85252',
+        vivired: '#FF0000',
         success: '#489D59',
         disabled: '#6B6E78',
         'disabled-btn': 'E5E5ED',

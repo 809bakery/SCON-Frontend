@@ -5,7 +5,7 @@ import {
 import StageDetailCommentCard from '@/features/stage/detail/components/card/comment/index.tsx'
 import StageCommentInputCard from '@/features/stage/detail/components/card/comment/input/index.tsx'
 import StageDetailCard from '@/features/stage/detail/components/card/index.tsx'
-import DummyOvenProfile6 from '@/static/img/dummy/search/dummy-oven-profile6.jpg'
+import DummyOvenProfile6 from '@/static/img/dummy/stage/dummy-oven-profile6.jpg'
 
 function StageTabComment() {
   return (

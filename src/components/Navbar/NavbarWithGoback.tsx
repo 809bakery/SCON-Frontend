@@ -1,20 +1,11 @@
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
+import { DOMAIN_NAME_MAPPING } from '@/components/Navbar/index.tsx'
 import BackSVG from '@/static/svg/arrow-left-icon.svg'
 
 interface NavbarWithGobackProps {
-  nameList: string[]
-}
-
-const DOMAIN_NAME_MAPPING: {
-  [key: string]: string
-} = {
-  login: '로그인',
-  email: '이메일 로그인',
-  find: '아이디 · 비밀번호',
-  signup: '회원가입',
-  search: '검색',
-  detail: '오븐 상세',
+  name?: string
+  nameList?: string[]
 }
 
 const getNameFromDomainMapping = (nameList: string[]) => {
@@ -24,15 +15,29 @@ const getNameFromDomainMapping = (nameList: string[]) => {
   )
 }
 
-export default function NavbarWithGoback({ nameList }: NavbarWithGobackProps) {
-  const name = getNameFromDomainMapping(nameList)
+export default function NavbarWithGoback({
+  name,
+  nameList,
+}: NavbarWithGobackProps) {
+  const router = useRouter()
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
+  let _name
+  if (nameList) {
+    _name = getNameFromDomainMapping(nameList)
+  } else {
+    _name = name
+  }
 
   return (
     <div className="abolute top-0 w-full h-[60px] relative flex items-center justify-center py-[14px] border-b border-[#d6d5d5] text-center text-[#565551]">
-      <Link href="/login" className="absolute left-7 cursor-pointer">
+      <div
+        role="presentation"
+        onClick={() => router.back()}
+        className="absolute left-7 cursor-pointer"
+      >
         <BackSVG className="w-8 h-8 min-w-[24px] min-h-[24px]" />
-      </Link>
-      <span className="font-bold text-[1.5rem]">{name}</span>
+      </div>
+      <span className="font-bold text-[1.5rem]">{_name}</span>
     </div>
   )
 }
