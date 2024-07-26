@@ -7,15 +7,13 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { nicknameRegExp } from '@/constants/regex/index.ts'
 import DefaultProfile from '@/static/img/dummy/profile/default-profile.jpg'
 import Checked from '@/static/svg/checked-icon.svg'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import Step2SVG from '@/static/svg/progress/progress-step2.svg'
 import Required from '@/static/svg/required-star.svg'
 import UploadSVG from '@/static/svg/upload-icon.svg'
-
-// 닉네임 정규표현식(2~8자 한글, 영문, 숫자만 허용)
-const nicknameRegExp = /^[a-zA-Z0-9가-힣]{2,8}$/
 
 export default function ProfileStep() {
   const router = useRouter()

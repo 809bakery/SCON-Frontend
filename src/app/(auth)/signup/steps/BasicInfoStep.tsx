@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import Timer from '@/components/timer.tsx'
+import { emailRegExp, passwordRegExp } from '@/constants/regex/index.ts'
 import Checked from '@/static/svg/checked-icon.svg'
 import HideSVG from '@/static/svg/eye-close.svg'
 import ShowSVG from '@/static/svg/eye-open.svg'
@@ -13,12 +14,6 @@ import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import Step1SVG from '@/static/svg/progress/progress-step1.svg'
 import Required from '@/static/svg/required-star.svg'
 import UnChecked from '@/static/svg/unchecked-icon.svg'
-
-// 이메일 정규표현식
-const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-
-// 비밀번호 정규표현식(8자 이상, 영문, 숫자, 특수문자 허용)
-const passwordRegExp = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$/
 
 export default function BasicInfoStep() {
   const router = useRouter()
