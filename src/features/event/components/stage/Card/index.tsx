@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 interface CardProps {
@@ -49,13 +50,15 @@ function Card(props: CardProps) {
             <p>스테이지</p>
           </div>
         )}
-        <Image
-          src={posterUrl}
-          alt="poster"
-          width={160}
-          height={219}
-          className="rounded-xl"
-        />
+        <Link href="/stage/detail/1">
+          <Image
+            src={posterUrl}
+            alt="poster"
+            width={160}
+            height={219}
+            className="rounded-xl"
+          />
+        </Link>
       </div>
 
       <div className="w-full flex flex-col items-start justify-center gap-y-1">

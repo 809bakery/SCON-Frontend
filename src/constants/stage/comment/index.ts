@@ -2,7 +2,7 @@ import { StaticImageData } from 'next/image'
 
 import DummyOvenProfile4 from '@/static/img/dummy/search/dummy-oven-profile3.jpg'
 import DummyOvenProfile5 from '@/static/img/dummy/search/dummy-oven-profile4.jpg'
-import DummyOvenProfile6 from '@/static/img/dummy/search/dummy-oven-profile6.jpg'
+import DummyOvenProfile6 from '@/static/img/dummy/stage/dummy-oven-profile6.jpg'
 
 type CommentType = {
   caution: string
