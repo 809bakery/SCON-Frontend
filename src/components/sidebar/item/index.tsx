@@ -24,7 +24,7 @@ function SideBarMenu(props: SideBarMenuProps) {
     <button
       type="button"
       onClick={handleUrl}
-      className="px-14 py-7 font-extrabold text-xl border-b border-[#F2F3F7] text-start cursor-pointer"
+      className="px-14 py-7 font-extrabold text-xl border-b #F2F3F7] text-start cursor-pointer"
     >
       <p>{text}</p>
     </button>

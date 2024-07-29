@@ -29,7 +29,7 @@ export default function NavbarWithGoback({
   }
 
   return (
-    <div className="abolute top-0 w-full h-[60px] relative flex items-center justify-center py-[14px] border-b border-[#d6d5d5] text-center text-[#565551]">
+    <div className="abolute top-0 w-full h-[60px] relative flex items-center justify-center py-[14px] border-b border-border text-center text-[#565551]">
       <div
         role="presentation"
         onClick={() => router.back()}

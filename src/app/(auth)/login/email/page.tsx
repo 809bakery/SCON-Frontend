@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import AlertButton from '@/components/AlertButton.tsx/index.tsx'
 import XMarkSVG from '@/static/svg/close-circle-icon.svg'
 import EyesOffSVG from '@/static/svg/eye-close.svg'
 import EyesOnSVG from '@/static/svg/eye-open.svg'
@@ -12,18 +13,16 @@ import RememberOnSVG from '@/static/svg/square-fill-icon.svg'
 import RememberOffSVG from '@/static/svg/square-unfill-icon.svg'
 
 export default function EmailLoginPage() {
+  const router = useRouter()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false)
   const [isChecked, setIsChecked] = useState<boolean>(false)
 
-  const router = useRouter()
-
   const removeItem = (item: string) => {
     if (item === email) {
       setEmail('')
-      return
     }
 
     if (item === password) {
@@ -44,14 +43,15 @@ export default function EmailLoginPage() {
 
   return (
     <div className="flex flex-col items-center">
-      {/* scon logo */}
+      {/* 로고 */}
       <Link href="/login" className="mt-[3.75rem] mb-20">
         <LogoSVG className="w-48 h-14" />
       </Link>
 
-      {/* form */}
+      {/* 입력폼 */}
       <form className="w-full px-7 flex flex-col gap-y-5 text-[#302602] placeholder:text-[#CECCCC] text-2xl">
-        <div className="relative pl-8 pr-16 py-6 border-2 border-[#E4E4E4] focus-within:border-[#FFC90D] rounded-xl">
+        {/* 이메일 입력 */}
+        <div className="relative pl-8 pr-16 py-6 border-2 border-border focus-within:border-primary rounded-xl">
           <input
             className="w-full outline-none"
             type="text"
@@ -66,7 +66,8 @@ export default function EmailLoginPage() {
             />
           )}
         </div>
-        <div className="relative pl-8 pr-32 py-6 border-2 border-[#E4E4E4] focus-within:border-[#FFC90D] rounded-xl">
+        {/* 비밀번호 입력 */}
+        <div className="relative pl-8 pr-32 py-6 border-2 border-border focus-within:border-primary rounded-xl">
           <input
             className="w-full outline-none"
             type={isPasswordVisible ? 'text' : 'password'}
@@ -94,9 +95,9 @@ export default function EmailLoginPage() {
             </>
           )}
         </div>
-
+        {/* 로그인 상태 유지 */}
         <div>
-          <div className="flex items-center justify-end gap-x-3 text-xl text-[#A0A0A0]">
+          <div className="flex items-center justify-end gap-x-3 text-xl text-disabled">
             {isChecked ? (
               <RememberOnSVG
                 onClick={() => setIsChecked(!isChecked)}
@@ -108,7 +109,6 @@ export default function EmailLoginPage() {
                 className="cursor-pointer"
               />
             )}
-
             <button
               type="button"
               onClick={() => setIsChecked(!isChecked)}
@@ -118,34 +118,26 @@ export default function EmailLoginPage() {
             </button>
           </div>
         </div>
-
+        {/* 로그인 버튼 */}
         <button
-          className="w-full px-7 py-6 text-2xl bg-[#FFC90D] rounded-xl font-bold"
+          className="w-full px-7 py-6 text-2xl bg-primary rounded-xl font-bold"
           type="button"
           onClick={handleSubmit}
         >
           로그인
         </button>
-
-        <div className="text-[#A0A0A0] text-xl flex items-center justify-end">
-          <button
-            type="button"
-            // eslint-disable-next-line no-alert
-            onClick={() => alert('준비 중 입니다🍪')}
-            className="cursor-pointer"
-          >
-            아이디·비밀번호 찾기
-          </button>
+        {/* 아이디·비밀번호 찾기 */}
+        <div className="text-disabled text-xl flex items-center justify-end">
+          <AlertButton text="아이디·비밀번호 찾기" />
         </div>
       </form>
-
-      <div className="text-[#A0A0A0] text-xl my-[9.375rem] flex gap-x-2 justify-between items-center">
+      {/* 회원가입 */}
+      <div className="text-disabled text-xl my-[9.375rem] flex gap-x-2 justify-between items-center">
         <span>아직 스콘의 회원이 아니시라면?</span>
         <Link href="/signup/basic" className="font-bold cursor-pointer">
           회원가입
         </Link>
       </div>
-
       <div />
     </div>
   )

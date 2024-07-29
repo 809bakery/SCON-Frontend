@@ -16,6 +16,7 @@ export default function JoinStep() {
   }
   return (
     <div className="h-full px-7 flex flex-col pt-14 pb-[12.5rem]">
+      {/* 로고 */}
       <div className="flex flex-col gap-7">
         <LogoSVG height={60} width={196} />
         <Step4SVG />
@@ -28,6 +29,7 @@ export default function JoinStep() {
             <span> 스코니가 되신 것을 환영합니다!</span>
           </div>
         </div>
+        {/* 다음 단계 버튼 */}
         <button
           type="button"
           onClick={handleMoveToMain}

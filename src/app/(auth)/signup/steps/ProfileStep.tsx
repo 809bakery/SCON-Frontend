@@ -7,15 +7,13 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { nicknameRegExp } from '@/constants/regex/index.ts'
+import DefaultProfile from '@/static/img/dummy/profile/default-profile.jpg'
 import Checked from '@/static/svg/checked-icon.svg'
-import DefaultProfileSVG from '@/static/svg/dummy/dummy-profile-image.svg'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import Step2SVG from '@/static/svg/progress/progress-step2.svg'
 import Required from '@/static/svg/required-star.svg'
 import UploadSVG from '@/static/svg/upload-icon.svg'
-
-// 닉네임 정규표현식(2~8자 한글, 영문, 숫자만 허용)
-const nicknameRegExp = /^[a-zA-Z0-9가-힣]{2,8}$/
 
 export default function ProfileStep() {
   const router = useRouter()
@@ -49,7 +47,6 @@ export default function ProfileStep() {
     }
   }
 
-  // TODO: 닉네임 중복 체크 API 연동
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
@@ -75,6 +72,7 @@ export default function ProfileStep() {
   return (
     <div className="h-full px-7 flex flex-col justify-between pt-14 pb-[7.5rem]">
       <div>
+        {/* 로고 */}
         <div className="flex flex-col gap-7">
           <LogoSVG height={60} width={196} />
           <Step2SVG />
@@ -83,6 +81,7 @@ export default function ProfileStep() {
           <h2 className="font-medium text-[2rem]">
             프로필 정보를 입력해주세요.
           </h2>
+          {/* 프로필 이미지 입력 */}
           {imageUrl ? (
             <div className="flex justify-center items-center mt-10 mb-5">
               <div className="relative">
@@ -101,11 +100,17 @@ export default function ProfileStep() {
               </div>
             </div>
           ) : (
-            // div의 사이즈는 default-profile.svg의 사이즈에 맞춰서 설정
             <div className="flex justify-center items-center mt-10 mb-5">
               <div className="relative w-40 h-40  rounded-full">
                 <label htmlFor="file-input" className="cursor-pointer">
-                  <DefaultProfileSVG />
+                  <Image
+                    src={DefaultProfile}
+                    alt="profile"
+                    width={160}
+                    height={160}
+                    layout="fixed"
+                    className="rounded-full"
+                  />
                   <UploadSVG className="absolute bottom-0 right-0" />
                 </label>
               </div>
@@ -121,6 +126,7 @@ export default function ProfileStep() {
               onChange={handleFileUpload}
             />
           </div>
+          {/* 닉네임 입력 */}
           <div className="flex flex-col gap-4">
             <label
               htmlFor="nickname"
@@ -161,6 +167,7 @@ export default function ProfileStep() {
           )}
         </div>
       </div>
+      {/* 다음 단계 버튼 */}
       <button
         type="button"
         className={`w-full text-center font-normal text-2xl py-7 rounded-xl mt-8 ${isDisabled ? 'btn-disabled' : 'bg-primary'}`}

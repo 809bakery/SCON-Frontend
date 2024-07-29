@@ -111,7 +111,6 @@ export default function Carousel() {
               }
             />
           </div>
-          {/* Map through data to render images */}
           {CarouselImages.map((item) => (
             <div key={item.id} className="relative h-full w-full shrink-0">
               <Image
@@ -141,10 +140,7 @@ export default function Carousel() {
           </div>
         </div>
         {/* Navigation buttons */}
-        <div
-          // style={{ bottom: `calc(409px - ${imageHeight}px)` }}
-          className="w-full absolute  bottom-0 mt-3 flex justify-center"
-        >
+        <div className="w-full absolute  bottom-0 mt-3 flex justify-center">
           <div className="flex h-8 w-32 space-x-3">
             <div
               role="presentation"
@@ -154,7 +150,7 @@ export default function Carousel() {
               <DotIndicatorSVG
                 width={currentImg % 5 === 0 ? 16 : 12}
                 height={currentImg % 5 === 0 ? 16 : 12}
-                fill={currentImg % 5 === 0 ? '#FFC90D' : '#999999'}
+                fill={currentImg % 5 === 0 ? '#FFC90D' : '#A6A6B1'}
               />
             </div>
             <div
@@ -165,7 +161,7 @@ export default function Carousel() {
               <DotIndicatorSVG
                 width={currentImg === 1 ? 16 : 12}
                 height={currentImg === 1 ? 16 : 12}
-                fill={currentImg === 1 ? '#FFC90D' : '#999999'}
+                fill={currentImg === 1 ? '#FFC90D' : '#A6A6B1'}
               />
             </div>
             <div
@@ -176,7 +172,7 @@ export default function Carousel() {
               <DotIndicatorSVG
                 width={currentImg === 2 ? 16 : 12}
                 height={currentImg === 2 ? 16 : 12}
-                fill={currentImg === 2 ? '#FFC90D' : '#999999'}
+                fill={currentImg === 2 ? '#FFC90D' : '#A6A6B1'}
               />
             </div>
             <div
@@ -187,7 +183,7 @@ export default function Carousel() {
               <DotIndicatorSVG
                 width={currentImg === 3 ? 16 : 12}
                 height={currentImg === 3 ? 16 : 12}
-                fill={currentImg === 3 ? '#FFC90D' : '#999999'}
+                fill={currentImg === 3 ? '#FFC90D' : '#A6A6B1'}
               />
             </div>
             <div
@@ -198,26 +194,11 @@ export default function Carousel() {
               <DotIndicatorSVG
                 width={currentImg === 4 ? 16 : 12}
                 height={currentImg === 4 ? 16 : 12}
-                fill={currentImg === 4 ? '#FFC90D' : '#999999'}
+                fill={currentImg === 4 ? '#FFC90D' : '#A6A6B1'}
               />
             </div>
           </div>
         </div>
-
-        {/* <button
-          disabled={currentImg === 0}
-          onClick={() => setCurrentImg((prev) => prev - 1)}
-          className={`border px-4 py-2 font-bold ${currentImg === 0 && 'opacity-50'}`}
-        >
-          {'<'}
-        </button>
-        <button
-          disabled={currentImg === CarouselImages.length - 1}
-          onClick={() => setCurrentImg((prev) => prev + 1)}
-          className={`border px-4 py-2 font-bold ${currentImg === CarouselImages.length - 1 && 'opacity-50'}`}
-        >
-          {'>'}
-        </button> */}
       </div>
     </div>
   )
