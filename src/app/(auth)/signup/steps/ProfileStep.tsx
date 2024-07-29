@@ -47,7 +47,6 @@ export default function ProfileStep() {
     }
   }
 
-  // TODO: 닉네임 중복 체크 API 연동
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
@@ -73,6 +72,7 @@ export default function ProfileStep() {
   return (
     <div className="h-full px-7 flex flex-col justify-between pt-14 pb-[7.5rem]">
       <div>
+        {/* 로고 */}
         <div className="flex flex-col gap-7">
           <LogoSVG height={60} width={196} />
           <Step2SVG />
@@ -81,6 +81,7 @@ export default function ProfileStep() {
           <h2 className="font-medium text-[2rem]">
             프로필 정보를 입력해주세요.
           </h2>
+          {/* 프로필 이미지 입력 */}
           {imageUrl ? (
             <div className="flex justify-center items-center mt-10 mb-5">
               <div className="relative">
@@ -99,7 +100,6 @@ export default function ProfileStep() {
               </div>
             </div>
           ) : (
-            // div의 사이즈는 default-profile.svg의 사이즈에 맞춰서 설정
             <div className="flex justify-center items-center mt-10 mb-5">
               <div className="relative w-40 h-40  rounded-full">
                 <label htmlFor="file-input" className="cursor-pointer">
@@ -126,6 +126,7 @@ export default function ProfileStep() {
               onChange={handleFileUpload}
             />
           </div>
+          {/* 닉네임 입력 */}
           <div className="flex flex-col gap-4">
             <label
               htmlFor="nickname"
@@ -166,6 +167,7 @@ export default function ProfileStep() {
           )}
         </div>
       </div>
+      {/* 다음 단계 버튼 */}
       <button
         type="button"
         className={`w-full text-center font-normal text-2xl py-7 rounded-xl mt-8 ${isDisabled ? 'btn-disabled' : 'bg-primary'}`}

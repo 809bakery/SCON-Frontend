@@ -11,6 +11,7 @@ export default function MoreInfoStep() {
   return (
     <div className="h-full px-7 flex flex-col justify-between pt-14 pb-[7.5rem]">
       <div>
+        {/* 로고 */}
         <div className="flex flex-col gap-7">
           <LogoSVG height={60} width={196} />
           <Step3SVG />
@@ -27,6 +28,7 @@ export default function MoreInfoStep() {
               본인인증을 해야만 추후 아이디 찾기 기능을 사용할 수 있어요.
             </span>
           </label>
+          {/* 다음 단계 버튼 */}
           <div className="flex flex-col mt-[7.5rem] gap-7">
             <button
               type="button"

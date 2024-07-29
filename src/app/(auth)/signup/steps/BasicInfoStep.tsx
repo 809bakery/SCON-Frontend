@@ -90,12 +90,18 @@ export default function BasicInfoStep() {
           '비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.',
         )
         setIsPasswordValid(false)
+        setIsPasswordConfirmValid(false)
       } else if (passwordRegExp.test(value) && value.length > 0) {
         setPasswordErrorMessages('')
         setIsPasswordValid(true)
+        if (passwordConfirm.length > 0 && password === passwordConfirm) {
+          setPasswordConfirmErrorMessages('')
+          setIsPasswordConfirmValid(true)
+        }
       } else if (value.length === 0) {
         setPasswordErrorMessages('')
         setIsPasswordValid(false)
+        setIsPasswordConfirmValid(false)
       }
     } else if (name === 'passwordConfirm') {
       setPasswordConfirm(value)
@@ -119,8 +125,6 @@ export default function BasicInfoStep() {
 
   const handleTermsOfService = (type: string) => {
     if (type === 'all') {
-      //  termsOfService의 첫 요소가 true일 경우 모두 false로 변경
-      //  termsOfService의 첫 요소가 false일 경우 모두 true로 변경
       setTermsOfService((prev) =>
         prev[0]
           ? [false, false, false, false, false]
@@ -163,7 +167,7 @@ export default function BasicInfoStep() {
         </div>
         <div className="mt-16 flex flex-col gap-5">
           <h2 className="font-medium text-[2rem]">기본 정보를 입력해주세요.</h2>
-
+          {/* 이메일 입력 */}
           <div className="flex flex-col gap-4">
             <label
               htmlFor="email"
@@ -198,7 +202,7 @@ export default function BasicInfoStep() {
               )}
             </div>
           </div>
-
+          {/* 이메일 인증 */}
           <div className="flex flex-col gap-4">
             <label
               htmlFor="emailConfirm"
@@ -260,7 +264,7 @@ export default function BasicInfoStep() {
                 </p>
               )}
             </div>
-
+            {/* 비밀번호 입력 */}
             <div className="flex flex-col gap-4">
               <label
                 htmlFor="password"
@@ -337,6 +341,7 @@ export default function BasicInfoStep() {
                   </p>
                 )}
               </div>
+              {/* 약관동의 */}
               <div className="border-2 rounded-xl border-border px-8 pt-8 pb-7">
                 <div className="flex space-x-5">
                   <div
@@ -350,7 +355,6 @@ export default function BasicInfoStep() {
                       <UnChecked className="w-9 h-9" />
                     )}
                   </div>
-
                   <h3 className="text-2xl font-normal">모두 동의합니다.</h3>
                 </div>
                 <hr className="my-5" />
@@ -429,6 +433,7 @@ export default function BasicInfoStep() {
           </div>
         </div>
       </div>
+      {/* 다음단계로 이동 */}
       <button
         type="button"
         className={`w-full text-center font-normal text-2xl py-7 rounded-xl mt-8 ${isDisabled ? 'btn-disabled' : 'bg-primary'}`}

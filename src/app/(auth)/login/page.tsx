@@ -20,7 +20,7 @@ export default function LoginPage() {
         </p>
         <LogoSVG className="w-80 h-24" />
       </div>
-      {/* 소셜로그인 */}
+      {/* 로그인 */}
       <div className="w-full px-7 flex flex-col gap-4">
         <Link
           href={`https://kauth.kakao.com/oauth/authorize?
@@ -53,11 +53,11 @@ client_id=${process.env.GOOGLE_CLIENT_ID}
         <Link href="/login/email">
           <SconSVG className="cursor-pointer" />
         </Link>
-        <div className="text-[#A0A0A0] text-xl flex items-center justify-end">
+        <div className="text-disabled text-xl flex items-center justify-end">
           <AlertButton text="아이디·비밀번호 찾기" />
         </div>
       </div>
-      <div className="text-[#A0A0A0] text-xl mb-36 flex gap-x-2 justify-between items-center">
+      <div className="text-disabled text-xl mb-36 flex gap-x-2 justify-between items-center">
         <span>아직 스콘의 회원이 아니시라면?</span>
         <Link href="/signup/basic" className="font-bold cursor-pointer">
           회원가입
