@@ -14,7 +14,9 @@ export default function Navbar() {
 
   return (
     <div className="flex flex-col">
-      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <div className="pt-8 px-7">
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      </div>
       <div className="px-7 pt-6 pb-8 relative flex flex-col items-end">
         <Filter
           filterQuery={filterQuery}

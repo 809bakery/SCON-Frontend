@@ -25,6 +25,17 @@ export default function Navbar() {
   if (domainList.includes('detail') && lastDomain !== 'detail') {
     return <NavbarWithGoback name={lastDomain} />
   }
+  if (domainList.includes('list') && lastDomain !== 'list') {
+    let name
+    if (lastDomain === 'all') {
+      name = '전체 스테이지'
+    } else if (lastDomain === 'my') {
+      name = '민정’s 스테이지'
+    } else if (lastDomain === 'pick') {
+      name = 'SCON’S PICK'
+    }
+    return <NavbarWithGoback name={name} />
+  }
   if (domainList[0] === 'menu') {
     return null
   }
