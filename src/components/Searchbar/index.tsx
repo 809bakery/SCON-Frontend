@@ -14,7 +14,7 @@ export default function SearchBar({
   setSearchQuery,
 }: SearchBarProps) {
   return (
-    <div className="mt-8 mx-7 border-2 border-border  rounded-xl focus-within:border-primary flex justify-between items-center px-3  py-4">
+    <div className="w-full border-2 border-border  rounded-xl focus-within:border-primary flex justify-between items-center px-3  py-3">
       <input
         type="text"
         name="search"
