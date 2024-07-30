@@ -54,7 +54,7 @@ export default function OvenDetail({ params }: OvenDetailProps) {
       </div>
       {/* 탭 별 컨텐츠 */}
       {activeTab === 'info' && <InfoTab />}
-      {activeTab === 'community' && <CommunityTab user={user} />}
+      {activeTab === 'community' && <CommunityTab />}
     </div>
   )
 }
