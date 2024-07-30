@@ -24,44 +24,24 @@ export default function LoginPage() {
       <div className="w-full px-7 flex flex-col gap-4">
         <Link
           href={`https://kauth.kakao.com/oauth/authorize?
-<<<<<<< Updated upstream
-response_type=${process.env.KAKAO_RESPONSE_TYPE}
-&client_id=${process.env.KAKAO_CLIENT_ID}
-&redirect_uri=${process.env.KAKAO_REDIRECT_URI}`}
-=======
 response_type=${process.env.NEXT_PUBLIC_KAKAO_RESPONSE_TYPE}&client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}
 &redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}`}
->>>>>>> Stashed changes
         >
           <KakaoSVG className="w-full h-[4.8125rem] cursor-pointer" />
         </Link>
 
         <Link
           href={`https://nid.naver.com/oauth2.0/authorize?
-<<<<<<< Updated upstream
-client_id=${process.env.NAVER_CLIENT_ID}
-&response_type=${process.env.NAVER_RESPONSE_TYPE}
-&redirect_uri=${process.env.NAVER_REDIRECT_URI}
-&state=${process.env.NAVER_STATE}`}
-=======
 client_id=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&response_type=${process.env.NEXT_PUBLIC_NAVER_RESPONSE_TYPE}
 &redirect_uri=${process.env.NEXT_PUBLIC_NAVER_REDIRECT_URI}&state=${process.env.NEXT_PUBLIC_NAVER_STATE}`}
->>>>>>> Stashed changes
         >
           <NaverSVG className="w-full h-[4.8125rem] cursor-pointer" />
         </Link>
 
         <Link
           href={`https://accounts.google.com/o/oauth2/v2/auth?
-<<<<<<< Updated upstream
-client_id=${process.env.GOOGLE_CLIENT_ID}
-&redirect_uri=${process.env.GOOGLE_RIDIRECT_URI}
-&response_type=${process.env.GOOGLE_RESPONSE_TYPE}
-&scope=${process.env.GOOGLE_SCOPE}`}
-=======
 client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_RIDIRECT_URI}
 &response_type=${process.env.NEXT_PUBLIC_GOOGLE_RESPONSE_TYPE}&scope=${process.env.NEXT_PUBLIC_GOOGLE_SCOPE}`}
->>>>>>> Stashed changes
         >
           <GoogleSVG className="w-full h-[4.8125rem] cursor-pointer" />
         </Link>
