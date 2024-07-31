@@ -18,7 +18,9 @@ export default function StageCard({
     <div className="w-full rounded-xl border-0.5 border-border px-5 py-[1.875rem] flex hover:bg-lightgray-1 cursor-pointer">
       <Image
         src={image}
-        className="w-[10rem] rounded-xl object-cover object-center"
+        width={160}
+        height={200}
+        className="min-h-[12.5rem] object-cover"
         alt="profile"
       />
       <div className="w-full flex flex-col ml-7 gap-5">
