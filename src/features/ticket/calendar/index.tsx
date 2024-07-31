@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Calendar from 'react-calendar'
 
 import { DUMMY_STAGE_DETAIL } from '@/constants/stage/index.ts'
+import StageScheduleCard from '@/features/ticket/card/stage/index.tsx'
 
 type ValuePiece = Date | null
 type Value = ValuePiece | [ValuePiece, ValuePiece]
@@ -21,6 +22,9 @@ function TicketCalendar() {
   }, [])
 
   const handleDisabledDate = ({ date }: { date: Date }) => {
+    if (date.getDay() === null) {
+      return false
+    }
     if (stageList) {
       return !stageList.some((stage) => {
         const year1 = date.getFullYear()
@@ -36,22 +40,27 @@ function TicketCalendar() {
     }
     return false
   }
+
   return (
-    <div className="w-full p-5 border border-border rounded-xl">
-      <Calendar
-        locale="ko-kr"
-        onChange={setClickedDate}
-        tileDisabled={handleDisabledDate}
-        value={clickedDate}
-        next2Label={null}
-        prev2Label={null}
-        calendarType="hebrew"
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        formatDay={(locale, date) =>
-          date.toLocaleDateString('en', { day: 'numeric' })
-        }
-      />
-    </div>
+    <>
+      <div className="w-full p-5 mb-3 border border-border rounded-xl">
+        <Calendar
+          locale="ko-kr"
+          onChange={setClickedDate}
+          tileDisabled={handleDisabledDate}
+          value={clickedDate}
+          next2Label={null}
+          prev2Label={null}
+          calendarType="hebrew"
+          // eslint-disable-next-line @typescript-eslint/no-shadow
+          formatDay={(locale, date) =>
+            date.toLocaleDateString('en', { day: 'numeric' })
+          }
+          minDetail="month"
+        />
+      </div>
+      {clickedDate && <StageScheduleCard date={clickedDate as Date} />}
+    </>
   )
 }
 
