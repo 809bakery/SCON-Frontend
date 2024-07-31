@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
+import Loader from '@/components/loader/index.tsx'
 import SearchBar from '@/components/Searchbar/index.tsx'
 import { DUMMY_POSTER_DATA } from '@/constants/dummy.ts'
 import Card from '@/features/event/components/stage/Card/index.tsx'
@@ -10,9 +11,35 @@ import { StageCategory } from '@/features/event/types/StageCategory.ts'
 export default function AllStageList() {
   const [searchQuery, setSearchQuery] = useState<string | undefined>(undefined)
   const [category, setCategory] = useState<StageCategory>('all')
+  const [loading, setLoading] = useState(false)
+  const loaderRef = useRef(null)
+
   const handleClick = (cat: StageCategory) => {
     setCategory(cat)
   }
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      const first = entries[0]
+      if (first.isIntersecting) {
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+        }, 1500)
+      }
+    })
+
+    const currentLoader = loaderRef.current
+    if (currentLoader) {
+      observer.observe(currentLoader)
+    }
+
+    return () => {
+      if (currentLoader) {
+        observer.unobserve(currentLoader)
+      }
+    }
+  }, [])
 
   return (
     <div className="flex flex-col py-8 px-7 items-center gap-5">
@@ -54,7 +81,31 @@ export default function AllStageList() {
           기타
         </button>
       </div>
-      <div className="mt-9 flex flex-wrap items-center justify-between gap-y-3 gap-x-3 px-5 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-y-3 gap-x-3 px-5 py-3">
+        {DUMMY_POSTER_DATA.map((data) => {
+          return (
+            <Card
+              key={data.title}
+              title={data.title}
+              location={data.location}
+              sDate={data.startDate}
+              content={data.content}
+              posterUrl={data.posterUrl}
+            />
+          )
+        })}
+        {DUMMY_POSTER_DATA.map((data) => {
+          return (
+            <Card
+              key={data.title}
+              title={data.title}
+              location={data.location}
+              sDate={data.startDate}
+              content={data.content}
+              posterUrl={data.posterUrl}
+            />
+          )
+        })}
         {DUMMY_POSTER_DATA.map((data) => {
           return (
             <Card
@@ -68,6 +119,7 @@ export default function AllStageList() {
           )
         })}
       </div>
+      <div ref={loaderRef}>{loading && <Loader />}</div>
     </div>
   )
 }
