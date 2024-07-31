@@ -15,7 +15,7 @@ export default function StageCard({
   image,
 }: StageCardProps) {
   return (
-    <div className="w-full rounded-xl border border-border px-5 py-[1.875rem] flex hover:bg-lightgray-1 cursor-pointer">
+    <div className="w-full rounded-xl border-0.5 border-border px-5 py-[1.875rem] flex hover:bg-lightgray-1 cursor-pointer">
       <Image
         src={image}
         className="w-[10rem] rounded-xl object-cover object-center"
