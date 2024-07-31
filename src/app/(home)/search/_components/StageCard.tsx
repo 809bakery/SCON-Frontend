@@ -20,7 +20,7 @@ export default function StageCard({
         src={image}
         width={160}
         height={200}
-        className="min-h-[12.5rem] object-cover"
+        className="min-h-[12.5rem] max-h-[12.5rem] min-w-[10rem] max-w-[10rem] object-cover"
         alt="profile"
       />
       <div className="w-full flex flex-col ml-7 gap-5">
