@@ -94,7 +94,7 @@ export default function BasicInfoStep() {
       } else if (passwordRegExp.test(value) && value.length > 0) {
         setPasswordErrorMessages('')
         setIsPasswordValid(true)
-        if (passwordConfirm.length > 0 && password === passwordConfirm) {
+        if (passwordConfirm.length > 0 && value === passwordConfirm) {
           setPasswordConfirmErrorMessages('')
           setIsPasswordConfirmValid(true)
         }

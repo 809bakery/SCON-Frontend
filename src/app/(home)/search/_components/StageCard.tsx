@@ -37,7 +37,7 @@ export default function StageCard({
           <div className="w-full h-[4.375rem] flex items-center">
             <h2 className="text-2xl font-bold line-clamp-2">{title}</h2>
           </div>
-          <div className="text-disabled">
+          <div className="text-disabled flex flex-col gap-1">
             <h3 className="text-base font-bold">{location}</h3>
             <p className="text-xs font-medium mt-1">{time}</p>
           </div>

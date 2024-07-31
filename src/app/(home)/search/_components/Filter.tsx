@@ -51,14 +51,14 @@ export default function Filter({
         <ArrowRight className="w-4 h-4 rotate-90 mb-[.125rem]" />
       </div>
       <div
-        className={`flex flex-col absolute top-16 z-50 bg-white  ${!openFilter && 'hidden'}`}
+        className={`flex flex-col absolute top-16 z-50 divide-solid divide-y border-x border-b bg-white  ${!openFilter && 'hidden'}`}
       >
         {openFilter &&
           filterList.map((filter) => (
             <button
               type="button"
               key={filter.id}
-              className={`w-[7.5rem] h-[2.5rem] font-bold sm:font-medium flex leading-6 items-center justify-center cursor-pointer px-[.375rem] ${filter.id === 1 ? 'border-r-0.5 border-l-0.5 border-b-0.5' : 'border-0.5'} border-border hover:bg-lightgray-1`}
+              className="w-[7.5rem] h-[2.5rem] font-bold sm:font-medium flex leading-6 items-center justify-center cursor-pointer px-[.375rem]  hover:bg-lightgray-1"
               onClick={() => handleChangeFilter(filter.label)}
             >
               {filter.label}

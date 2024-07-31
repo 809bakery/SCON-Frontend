@@ -24,7 +24,9 @@ export default function SearchPage() {
   return (
     <div className="flex flex-col">
       {/* 검색바 */}
-      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <div className="pt-8 pb-6 px-7">
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      </div>
       {/* 탭 분류 */}
       <div className="w-full flex">
         {SearchTabList.map((tab) => (
