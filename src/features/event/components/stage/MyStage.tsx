@@ -40,7 +40,7 @@ export default function MyStage() {
           <button
             type="button"
             className="text-disabled text-base font-medium px-4 py-1 rounded-xl leading-6"
-            onClick={() => router.push('/')}
+            onClick={() => router.push('/stage/list/my')}
           >
             더보기 &gt;
           </button>

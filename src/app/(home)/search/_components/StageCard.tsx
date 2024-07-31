@@ -15,10 +15,12 @@ export default function StageCard({
   image,
 }: StageCardProps) {
   return (
-    <div className="w-full h-[16.25rem] rounded-xl border-0.5 border-border px-5 py-[1.875rem] flex hover:bg-lightgray-1 cursor-pointer">
+    <div className="w-full rounded-xl border-0.5 border-border px-5 py-[1.875rem] flex hover:bg-lightgray-1 cursor-pointer">
       <Image
         src={image}
-        className="w-[10rem] rounded-xl object-cover object-center"
+        width={160}
+        height={200}
+        className="min-h-[12.5rem] max-h-[12.5rem] min-w-[10rem] max-w-[10rem] object-cover"
         alt="profile"
       />
       <div className="w-full flex flex-col ml-7 gap-5">
@@ -37,7 +39,7 @@ export default function StageCard({
           <div className="w-full h-[4.375rem] flex items-center">
             <h2 className="text-2xl font-bold line-clamp-2">{title}</h2>
           </div>
-          <div className="text-disabled">
+          <div className="text-disabled flex flex-col gap-1">
             <h3 className="text-base font-bold">{location}</h3>
             <p className="text-xs font-medium mt-1">{time}</p>
           </div>
