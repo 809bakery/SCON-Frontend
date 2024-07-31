@@ -35,7 +35,7 @@ export type StageType = {
   location: string
   time: string
   image: string | StaticImageData
-  category: string
+  category?: string
 }
 
 export const SearchFilterList: FilterType[] = [
