@@ -3,7 +3,7 @@ import { StageList } from '@/constants/search/index.ts'
 
 export default function MyStageList() {
   return (
-    <div className="px-7 py-10">
+    <div className="py-10 px-7">
       <div className="w-full h-full flex flex-col gap-8">
         {StageList.map((stage) => (
           <StageCard
