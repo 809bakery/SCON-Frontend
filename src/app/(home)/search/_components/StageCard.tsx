@@ -15,11 +15,11 @@ export default function StageCard({
   image,
 }: StageCardProps) {
   return (
-    <div className="w-full rounded-xl border-0.5 border-border px-5 py-[1.875rem] flex hover:bg-lightgray-1 cursor-pointer">
+    <div className="w-full rounded-xl border-0.5 border-l-0.5 border-border px-5 py-[1.875rem] flex hover:bg-lightgray-1 cursor-pointer">
       <div className="min-h-[12.5rem] max-h-[12.5rem] min-w-[10rem] max-w-[10rem] relative">
         <Image src={image} fill className=" object-cover" alt="profile" />
       </div>
-      <div className="w-full flex flex-col ml-7 gap-5">
+      <div className="w-full flex flex-col pl-7 gap-5">
         <div className="flex space-x-3 h-[1.875rem] text-xs font-bold">
           <div className="bg-primary px-2 py-1 flex justify-center items-center rounded">
             <span>예매중</span>
