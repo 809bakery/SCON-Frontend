@@ -24,8 +24,11 @@ const config: Config = {
         'lightgray-2': '#F2F3F7',
       },
       borderWidth: {
-        '0.5': '.0313rem',
+        '0.5': '1px',
         '2': '.125rem',
+      },
+      boxShadow: {
+        border: '0 0 0 0.8px #D6D5D5',
       },
       width: {
         '30': '7.5rem',
