@@ -9,9 +9,15 @@ import StageScheduleCard from '@/features/ticket/card/stage/index.tsx'
 type ValuePiece = Date | null
 type Value = ValuePiece | [ValuePiece, ValuePiece]
 
-function TicketCalendar() {
+interface TicketCalendarProps {
+  setIsCalendar: (isCalendar: number) => void
+}
+
+function TicketCalendar(props: TicketCalendarProps) {
   const [clickedDate, setClickedDate] = useState<Value>()
   const [stageList, setStageList] = useState<Date[]>()
+
+  const { setIsCalendar } = props
 
   useEffect(() => {
     setStageList(
@@ -59,7 +65,12 @@ function TicketCalendar() {
           minDetail="month"
         />
       </div>
-      {clickedDate && <StageScheduleCard date={clickedDate as Date} />}
+      {clickedDate && (
+        <StageScheduleCard
+          setIsCalendar={setIsCalendar}
+          date={clickedDate as Date}
+        />
+      )}
     </>
   )
 }

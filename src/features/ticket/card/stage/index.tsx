@@ -2,6 +2,7 @@ import { DUMMY_STAGE_DETAIL } from '@/constants/stage/index.ts'
 
 interface StageScheduleCardProps {
   date: Date
+  setIsCalendar: (isCalendar: number) => void
 }
 
 interface ContentType {
@@ -12,7 +13,7 @@ interface ContentType {
 }
 
 function StageScheduleCard(props: StageScheduleCardProps) {
-  const { date } = props
+  const { date, setIsCalendar } = props
 
   const parseDate = (time: string) => {
     const hour =
@@ -37,7 +38,7 @@ function StageScheduleCard(props: StageScheduleCardProps) {
           return (
             <div
               key={stage.id}
-              className="w-full p-5 flex items-center justify-between  border border-border rounded-xl"
+              className="w-full p-5 flex items-center justify-between border border-border rounded-xl"
             >
               <div className="text-xl font-bold px-2 py-3">
                 {parseDate(stage.time)}
@@ -48,6 +49,7 @@ function StageScheduleCard(props: StageScheduleCardProps) {
               </div>
               <button
                 type="button"
+                onClick={() => setIsCalendar(stage.id)}
                 className="text-white bg-primary py-1 px-7 rounded-xl"
               >
                 선택

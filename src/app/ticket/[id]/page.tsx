@@ -1,11 +1,27 @@
 'use client'
 
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 import { DUMMY_STAGE_DETAIL } from '@/constants/stage/index.ts'
 import TicketCalendar from '@/features/ticket/calendar/index.tsx'
+import TicketPurchase from '@/features/ticket/purchase/index.tsx'
+
+interface ContentType {
+  id: number
+  episodeNumber: number
+  time: string
+  status: string
+}
 
 function TicketBookPage() {
+  const [isCalendar, setIsCalendar] = useState<number | undefined>(undefined)
+  const [stage, setStage] = useState<ContentType>()
+
+  useEffect(() => {
+    setStage(DUMMY_STAGE_DETAIL.content.find((item) => item.id === isCalendar))
+  }, [isCalendar])
+
   return (
     <div className="w-full pb-[12.5rem]">
       <div className="min-h-[15rem] relative">
@@ -34,8 +50,15 @@ function TicketBookPage() {
           </div>
         </div>
       </div>
+
       <div className="w-full px-7 pt-3">
-        <TicketCalendar />
+        {isCalendar ? (
+          stage && (
+            <TicketPurchase stage={stage} setIsCalendar={setIsCalendar} />
+          )
+        ) : (
+          <TicketCalendar setIsCalendar={setIsCalendar} />
+        )}
       </div>
     </div>
   )
