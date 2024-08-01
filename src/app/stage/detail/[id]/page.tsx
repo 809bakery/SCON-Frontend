@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { DUMMY_STAGE_DETAIL, DUMMY_TAGS } from '@/constants/stage/index.ts'
@@ -14,6 +15,11 @@ import LikeOnSVG from '@/static/svg/stage/stage-like-on-icon.svg'
 function StageDetailPage() {
   const [tab, setTab] = useState<number>(0)
   const [isLiked, setIsLiked] = useState<boolean>(false)
+  const router = useRouter()
+
+  const handleReserve = () => {
+    router.push('/ticket/1/')
+  }
 
   return (
     <div className="w-full relative pb-40">
@@ -107,6 +113,7 @@ function StageDetailPage() {
 
         <button
           type="button"
+          onClick={handleReserve}
           className="flex-1 bg-primary rounded-xl text-2xl py-5 flex items-center justify-center"
         >
           예매하기
