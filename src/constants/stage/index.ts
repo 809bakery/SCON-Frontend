@@ -54,7 +54,8 @@ export const DUMMY_STAGE_DETAIL: StageDetailType = {
   location: '서울 경희대학교 평화의 전당',
   title: 'LILPACON : Going Out',
   category: 'PERFORMANCE',
-  detail: '',
+  detail:
+    'SOOPER CONCERT최고의콘서트입니다 릴파최고 릴존사 나이관련된건 보류하고진행합시다요',
   image: DummyStageDetailPoster,
   headCount: 100,
   episodeAmount: 3,
