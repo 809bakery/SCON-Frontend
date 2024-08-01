@@ -12,6 +12,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        _white: '#FAFAFA',
         primary: '#FFC90D',
         warning: '#F85252',
         vivired: '#FF0000',
