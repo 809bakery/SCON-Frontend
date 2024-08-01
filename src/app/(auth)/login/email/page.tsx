@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import AlertButton from '@/components/AlertButton.tsx/index.tsx'
+import AlertButton from '@/components/AlertButton/index.tsx'
 import XMarkSVG from '@/static/svg/close-circle-icon.svg'
 import EyesOffSVG from '@/static/svg/eye-close.svg'
 import EyesOnSVG from '@/static/svg/eye-open.svg'
