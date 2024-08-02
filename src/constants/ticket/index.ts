@@ -15,6 +15,7 @@ type StageType = {
   runningTime: number
   status: string
   cost: number
+  isEnd: boolean
 }
 
 export const DUMMY_RESERVED_STAGE: StageType[] = [
@@ -26,11 +27,12 @@ export const DUMMY_RESERVED_STAGE: StageType[] = [
     location: '경희대학교 평화의 전당',
     episodeNumber: 1,
     reservedDate: '2024-07-11T00:58:18.991033',
-    stageDate: '2024-07-13T18:00:00.991033',
+    stageDate: '2024-08-03T18:00:00.991033',
     runningTime: 180,
     status: 'Ready',
     rNum: 'S1257091257',
     cost: 10000,
+    isEnd: false,
   },
   {
     title: 'LILPACON : Going Out',
@@ -45,6 +47,7 @@ export const DUMMY_RESERVED_STAGE: StageType[] = [
     status: 'Ready',
     rNum: 'S22222456',
     cost: 10000,
+    isEnd: false,
   },
   {
     title: 'LILPACON : Going Out',
@@ -59,5 +62,6 @@ export const DUMMY_RESERVED_STAGE: StageType[] = [
     status: 'End',
     rNum: 'S123456789',
     cost: 10000,
+    isEnd: true,
   },
 ]

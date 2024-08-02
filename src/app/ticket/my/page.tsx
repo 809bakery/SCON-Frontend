@@ -2,6 +2,8 @@
 
 import Image, { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import toast, { Toaster } from 'react-hot-toast'
 
 import { DUMMY_RESERVED_STAGE } from '@/constants/ticket/index.ts'
 import TicketWrapperCard from '@/features/ticket/card/index.tsx'
@@ -15,17 +17,22 @@ interface StageType {
   stageDate: string
   status: string
   cost: number
+  isEnd: boolean
 }
 
 function UserTicketListPage() {
   const router = useRouter()
-  const clickedCancel = () => {}
 
   const clickedMobile = (stage: StageType) => {
+    const now = new Date()
+    let diff = new Date(stage.stageDate).getTime() - now.getTime()
+    diff = Math.ceil(diff / (1000 * 60 * 60 * 24))
+    if (diff < 0) {
+      toast.error('이미 공연이 종료되었습니다.')
+      return
+    }
     router.push(`/ticket/my/${stage.rNum}`)
   }
-
-  const clickedTalk = () => {}
 
   const parseDate = (time: string) => {
     const hour =
@@ -43,7 +50,7 @@ function UserTicketListPage() {
       {DUMMY_RESERVED_STAGE.map((stage) => (
         <TicketWrapperCard
           key={stage.rNum}
-          classnames="p-5 flex flex-col gap-y-4"
+          classnames={`p-5 flex flex-col gap-y-4 ${stage.isEnd && 'bg-lightgray-1'}`}
         >
           <h3 className="px-3 font-bold text-xl">{stage.title}</h3>
           <div className="px-6 flex gap-x-3">
@@ -92,21 +99,19 @@ function UserTicketListPage() {
           <div className="px-6 flex justify-between items-center text-sm gap-x-5">
             <button
               type="button"
-              onClick={clickedCancel}
-              className="flex-1 py-2 flex items-center justify-center border border-warning text-warning rounded-xl"
+              className={`flex-1 py-2 flex items-center justify-center border border-warning text-warning rounded-xl ${stage.isEnd && '!border-border !text-disabled'}`}
             >
               예매취소
             </button>
             <button
               type="button"
               onClick={() => clickedMobile(stage)}
-              className="flex-1 py-2 flex items-center justify-center border  border-primary rounded-xl"
+              className={`flex-1 py-2 flex items-center justify-center border  border-primary rounded-xl ${stage.isEnd && '!border-border !text-disabled'}`}
             >
               모바일 티켓
             </button>
             <button
               type="button"
-              onClick={clickedTalk}
               className="flex-1 py-2 flex items-center justify-center border  border-primary rounded-xl"
             >
               스콘톡
@@ -114,6 +119,10 @@ function UserTicketListPage() {
           </div>
         </TicketWrapperCard>
       ))}
+      <p className="text-sm text-disabled flex items-center justify-center">
+        종료된 스테이지의 스콘톡은 ‘스콘톡’ 카테고리에서 확인할 수 있습니다.
+      </p>
+      <Toaster />
     </div>
   )
 }

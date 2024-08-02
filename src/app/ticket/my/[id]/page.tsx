@@ -5,6 +5,7 @@ import { useState } from 'react'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import QRCode from 'react-qr-code'
 
+import Timer from '@/components/timer.tsx'
 import { DAY_MAP } from '@/constants/stage/info/index.ts'
 import { DUMMY_RESERVED_STAGE } from '@/constants/ticket/index.ts'
 import FilpSVG from '@/static/svg/ticket/ticket-flip-icon.svg'
@@ -18,6 +19,7 @@ interface StageType {
   stageDate: string
   status: string
   cost: number
+  isEnd: boolean
 }
 const parseDate = (time: string) => {
   const hour =
@@ -66,7 +68,9 @@ function TicketEnterPage() {
           }}
         >
           <div className="flex flex-col items-center justify-center">
-            <p className="text-warning font-bold text-2xl">3 : 00</p>
+            <div className="text-warning font-bold text-2xl">
+              {isFlipped && <Timer />}
+            </div>
             <span>후에 새로고침됩니다.</span>
           </div>
 
