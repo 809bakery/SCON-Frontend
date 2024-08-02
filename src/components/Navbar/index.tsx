@@ -14,6 +14,12 @@ export const DOMAIN_NAME_MAPPING: {
   signup: '회원가입',
   search: '검색',
   detail: '오븐 둘러보기',
+  mypage: '마이페이지',
+  profile: '프로필 변경',
+  password_reset: '비밀번호 변경',
+  leave: '회원 탈퇴',
+  info: '회원 정보',
+  push_settings: '알림 설정',
 }
 
 export default function Navbar() {
