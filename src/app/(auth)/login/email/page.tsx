@@ -101,12 +101,12 @@ export default function EmailLoginPage() {
             {isChecked ? (
               <RememberOnSVG
                 onClick={() => setIsChecked(!isChecked)}
-                className="cursor-pointer"
+                className="w-6 h-6 cursor-pointer"
               />
             ) : (
               <RememberOffSVG
                 onClick={() => setIsChecked(!isChecked)}
-                className="cursor-pointer"
+                className="w-6 h-6 cursor-pointer"
               />
             )}
             <button

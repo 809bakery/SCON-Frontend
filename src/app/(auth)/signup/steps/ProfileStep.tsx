@@ -95,7 +95,7 @@ export default function ProfileStep() {
                       layout="fixed"
                     />
                   </div>
-                  <UploadSVG className="absolute bottom-0 right-0" />
+                  <UploadSVG className="w-11 h-11 absolute bottom-0 right-0" />
                 </label>
               </div>
             </div>
@@ -111,7 +111,7 @@ export default function ProfileStep() {
                     layout="fixed"
                     className="rounded-full"
                   />
-                  <UploadSVG className="absolute bottom-0 right-0" />
+                  <UploadSVG className="w-11 h-11 absolute bottom-0 right-0" />
                 </label>
               </div>
             </div>

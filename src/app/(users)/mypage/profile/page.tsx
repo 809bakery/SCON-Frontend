@@ -109,7 +109,7 @@ export default function Profile() {
                   className="object-cover object-center"
                 />
               </div>
-              <UploadSVG className="absolute bottom-0 right-0" />
+              <UploadSVG className="w-11 h-11 absolute bottom-0 right-0" />
             </div>
           </div>
         ) : (
@@ -127,7 +127,7 @@ export default function Profile() {
                 layout="fixed"
                 className="rounded-full"
               />
-              <UploadSVG className="absolute bottom-0 right-0" />
+              <UploadSVG className="w-11 h-11 absolute bottom-0 right-0" />
             </div>
           </div>
         )}
