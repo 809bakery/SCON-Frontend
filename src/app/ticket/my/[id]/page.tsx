@@ -2,9 +2,12 @@
 
 import Image, { StaticImageData } from 'next/image'
 import { useState } from 'react'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import QRCode from 'react-qr-code'
 
 import { DAY_MAP } from '@/constants/stage/info/index.ts'
 import { DUMMY_RESERVED_STAGE } from '@/constants/ticket/index.ts'
+import FilpSVG from '@/static/svg/ticket/ticket-flip-icon.svg'
 
 interface StageType {
   rNum: string
@@ -42,13 +45,47 @@ function TicketEnterPage() {
         {stage.title}
       </h3>
 
-      <Image
-        width={440}
-        height={600}
-        src={stage.image}
-        alt={stage.title}
-        className="rounded-xl"
-      />
+      <div className="w-full relative">
+        <Image
+          src={stage.image}
+          alt={stage.title}
+          objectFit="cover"
+          fill
+          className={`!relative rounded-xl transition-all duration-300 cursor-pointer ${isFlipped && 'opacity-0'}`}
+          style={{
+            transformStyle: 'preserve-3d',
+            transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+          }}
+        />
+
+        <div
+          className={`w-full h-full absolute top-0 p-9 flex flex-col items-center justify-center gap-y-10 border border-border  rounded-xl transition-all duration-300 ${!isFlipped && 'opacity-0'} bg-lightgray-1`}
+          style={{
+            transformStyle: 'preserve-3d',
+            transform: isFlipped ? 'rotateY(0deg)' : 'rotateY(180deg)',
+          }}
+        >
+          <div className="flex flex-col items-center justify-center">
+            <p className="text-warning font-bold text-2xl">3 : 00</p>
+            <span>후에 새로고침됩니다.</span>
+          </div>
+
+          <QRCode value={stage.rNum} className="w-64 h-64" />
+          <div className="text-xl flex flex-col items-center justify-center">
+            <span>{stage.rNum}</span>
+            <span>박상우</span>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIsFlipped(!isFlipped)}
+          className="p-2 z-10 rounded-tl-xl rounded-br-xl bg-[rgba(0,0,0,0.5)] flex items-center justify-center absolute top-0"
+        >
+          {' '}
+          <FilpSVG className="w-6 h-6" />
+        </button>
+      </div>
 
       <div className="flex justify-between items-center gap-x-10">
         <button
