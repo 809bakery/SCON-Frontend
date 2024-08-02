@@ -14,3 +14,7 @@
     @apply bg-[#E5E5ED] text-[#6B6E78];
   }
 }
+
+input {
+  background-color: transparent;
+}
