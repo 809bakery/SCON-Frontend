@@ -73,9 +73,11 @@ export default function Info() {
                   </button>
                 )}
               </span>
-              <span className="text-base font-medium lead-6 text-disabled">
-                티켓 예매 서비스 이용을 위해 본인인증 절차가 필요합니다.
-              </span>
+              {!verified && (
+                <span className="text-base font-medium lead-6 text-disabled">
+                  티켓 예매 서비스 이용을 위해 본인인증 절차가 필요합니다.
+                </span>
+              )}
             </div>
           </div>
         </div>
