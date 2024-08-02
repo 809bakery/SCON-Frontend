@@ -47,7 +47,11 @@ function TicketEnterPage() {
         {stage.title}
       </h3>
 
-      <div className="w-full relative">
+      <button
+        className="w-full relative"
+        type="button"
+        onClick={() => setIsFlipped(!isFlipped)}
+      >
         <Image
           src={stage.image}
           alt={stage.title}
@@ -69,7 +73,7 @@ function TicketEnterPage() {
         >
           <div className="flex flex-col items-center justify-center">
             <div className="text-warning font-bold text-2xl">
-              {isFlipped && <Timer />}
+              {isFlipped ? <Timer /> : <span>00 : 00</span>}
             </div>
             <span>후에 새로고침됩니다.</span>
           </div>
@@ -81,15 +85,10 @@ function TicketEnterPage() {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsFlipped(!isFlipped)}
-          className="p-2 z-10 rounded-tl-xl rounded-br-xl bg-[rgba(0,0,0,0.5)] flex items-center justify-center absolute top-0"
-        >
-          {' '}
+        <div className="p-2 z-10 rounded-tl-xl rounded-br-xl bg-[rgba(0,0,0,0.5)] flex items-center justify-center absolute top-0">
           <FilpSVG className="w-6 h-6" />
-        </button>
-      </div>
+        </div>
+      </button>
 
       <div className="flex justify-between items-center gap-x-10">
         <button
