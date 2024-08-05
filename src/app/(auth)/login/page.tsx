@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 
-import AlertButton from '@/components/AlertButton.tsx/index.tsx'
+import AlertButton from '@/components/AlertButton/index.tsx'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import GoogleSVG from '@/static/svg/social/google-login.svg'
 import KakaoSVG from '@/static/svg/social/kakao-login.svg'

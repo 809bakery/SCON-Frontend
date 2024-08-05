@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import AlertButton from '@/components/AlertButton.tsx/index.tsx'
+import AlertButton from '@/components/AlertButton/index.tsx'
+import { DUMMY_USER } from '@/constants/user/index.ts'
 import XMarkSVG from '@/static/svg/close-circle-icon.svg'
 import EyesOffSVG from '@/static/svg/eye-close.svg'
 import EyesOnSVG from '@/static/svg/eye-open.svg'
@@ -34,6 +35,7 @@ export default function EmailLoginPage() {
     if (email === 'admin' && password === '1234') {
       // eslint-disable-next-line no-alert
       alert(`어서오세요 관리자님🥳 ${isChecked ? '| 로그인 유지' : ''}`)
+      sessionStorage.setItem('user', JSON.stringify(DUMMY_USER))
       router.push('/main')
     }
 
@@ -101,12 +103,12 @@ export default function EmailLoginPage() {
             {isChecked ? (
               <RememberOnSVG
                 onClick={() => setIsChecked(!isChecked)}
-                className="cursor-pointer"
+                className="w-6 h-6 cursor-pointer"
               />
             ) : (
               <RememberOffSVG
                 onClick={() => setIsChecked(!isChecked)}
-                className="cursor-pointer"
+                className="w-6 h-6 cursor-pointer"
               />
             )}
             <button

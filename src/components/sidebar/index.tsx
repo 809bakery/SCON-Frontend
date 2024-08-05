@@ -1,22 +1,38 @@
 'use client'
 
+import { StaticImageData } from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import SideBarMenu from '@/components/sidebar/item/index.tsx'
 import SideBarProfile from '@/components/sidebar/profile/index.tsx'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import SideBarCloseSVG from '@/static/svg/sidebar/sidebar-close.svg'
 
-function SideBar() {
-  const [user, setUser] = useState<'oven' | 'scon' | undefined>(undefined)
+interface UserType {
+  nickname: string
+  email: string
+  image: string | StaticImageData
+  isOvener: boolean
+}
 
+function SideBar() {
+  const [loginUser, setLoginUser] = useState<UserType>()
   const router = useRouter()
+
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem('user')!))
+  }, [])
+
+  const logout = () => {
+    sessionStorage.removeItem('user')
+    router.push('/')
+  }
 
   return (
     <div>
-      <div className="px-7 flex flex-col gap-y-8 mb-8">
+      <div className={`px-7 flex flex-col gap-y-8 ${loginUser && 'mb-8'}`}>
         <div className="py-8  flex items-center justify-between">
           <Link href="/main">
             <LogoSVG className="w-[6.5625rem] h-8" />
@@ -27,43 +43,39 @@ function SideBar() {
             onClick={() => router.back()}
           />
         </div>
-        <SideBarProfile nickname="쿨핀" isOven={user === 'oven'} />
+        {loginUser && (
+          <SideBarProfile
+            nickname={loginUser?.nickname}
+            isOvener={loginUser?.isOvener}
+            image={loginUser?.image}
+          />
+        )}
       </div>
 
       <div className="h-3 bg-[#F7F7F7]" />
-      <div
-        className={`flex flex-col justify-center ${user === 'oven' && 'mb-[24.0625rem]'} ${user === 'scon' && 'mb-[29.375rem]'}`}
-      >
+      <div className="flex flex-col justify-center mb-[18.75rem]">
         <SideBarMenu text="홈" url="/main" />
-        <SideBarMenu text="스테이지" />
+        <SideBarMenu text="스테이지 둘러보기" url="/stage/list/all" />
         <SideBarMenu text="오븐 둘러보기" url="/oven/detail" />
         <SideBarMenu text="양도 게시판" />
-        <SideBarMenu text="예매 내역 확인하기" />
-        <SideBarMenu text="마이페이지" />
-        {user === 'oven' && <SideBarMenu text="오븐 관리하기" />}
-        {user !== 'oven' && (
-          <button
-            type="button"
-            onClick={() => setUser('oven')}
-            className="text-primary px-14 py-7 font-extrabold text-xl border-b border-border text-start cursor-pointer"
-          >
-            오브너로 전환하기
-          </button>
-        )}
+        <SideBarMenu text="예매 내역 확인하기" url="/ticket/my" />
+        <SideBarMenu text="스콘톡" />
+        <SideBarMenu text="마이페이지" url="/mypage" />
 
-        {user === 'oven' && (
+        {loginUser?.isOvener && <SideBarMenu text="오븐 관리하기" />}
+        {loginUser && (
           <button
             type="button"
-            onClick={() => setUser(undefined)}
-            className="text-primary px-14 py-7 font-extrabold text-xl border-b border-border text-start cursor-pointer"
+            onClick={logout}
+            className="text-[#6B6E78] px-14 py-7 underline font-extrabold text-xl border-b border-border text-start cursor-pointer"
           >
-            오브너에서 로그아웃
+            로그아웃
           </button>
         )}
       </div>
 
       <div className="w-full px-14 my-[9.375rem]">
-        {user !== 'oven' && (
+        {!loginUser && (
           <button
             type="button"
             onClick={() => router.push('/login')}

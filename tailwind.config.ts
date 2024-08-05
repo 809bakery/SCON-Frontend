@@ -12,20 +12,24 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        _white: '#FAFAFA',
         primary: '#FFC90D',
         warning: '#F85252',
         vivired: '#FF0000',
         success: '#489D59',
         disabled: '#6B6E78',
-        'disabled-btn': 'E5E5ED',
+        'disabled-btn': '#E5E5ED',
         border: '#D6D5D5',
         yellow: '#FFF0BB',
         'lightgray-1': '#F7F7F7',
         'lightgray-2': '#F2F3F7',
       },
       borderWidth: {
-        '0.5': '.0313rem',
+        '0.5': '1px',
         '2': '.125rem',
+      },
+      boxShadow: {
+        border: '0 0 0 0.8px #D6D5D5',
       },
       width: {
         '30': '7.5rem',

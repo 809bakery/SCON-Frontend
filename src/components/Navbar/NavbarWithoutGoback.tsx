@@ -11,7 +11,6 @@ import SearchSVG from '@/static/svg/navbar/nav-search-icon.svg'
 
 export default function NavbarWithoutGoback() {
   const router = useRouter()
-
   const handleAlarmClick = () => {}
 
   const handleLogoClick = () => {

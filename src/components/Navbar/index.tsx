@@ -14,16 +14,32 @@ export const DOMAIN_NAME_MAPPING: {
   signup: '회원가입',
   search: '검색',
   detail: '오븐 둘러보기',
+  mypage: '마이페이지',
+  profile: '프로필 변경',
+  password_reset: '비밀번호 변경',
+  leave: '회원 탈퇴',
+  info: '회원 정보',
+  push_settings: '알림 설정',
 }
 
 export default function Navbar() {
   const pathname = usePathname()
   const domainList = pathname.split('/').filter(Boolean)
   const lastDomain = decodeURIComponent(domainList[domainList.length - 1])
-
   // domainList에 detail이 있을 때
   if (domainList.includes('detail') && lastDomain !== 'detail') {
     return <NavbarWithGoback name={lastDomain} />
+  }
+  if (domainList.includes('list') && lastDomain !== 'list') {
+    let name
+    if (lastDomain === 'all') {
+      name = '전체 스테이지'
+    } else if (lastDomain === 'my') {
+      name = '민정’s 스테이지'
+    } else if (lastDomain === 'pick') {
+      name = 'SCON’S PICK'
+    }
+    return <NavbarWithGoback name={name} />
   }
   if (domainList[0] === 'menu') {
     return null
