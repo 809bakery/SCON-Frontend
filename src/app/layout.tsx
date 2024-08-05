@@ -4,7 +4,6 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 
 import Provider from '@/app/providers.tsx'
-import A2HSModal from '@/components/a2hs/index.tsx'
 import Navbar from '@/components/Navbar/index.tsx'
 
 const pretendard = localFont({
@@ -61,8 +60,6 @@ export default function RootLayout({
             <Navbar />
             {children}
           </Provider>
-
-          <A2HSModal />
         </div>
       </body>
     </html>
