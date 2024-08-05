@@ -1,5 +1,5 @@
 import Image, { StaticImageData } from 'next/image'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 
 interface UserType {
@@ -7,19 +7,15 @@ interface UserType {
   email: string
   image: string | StaticImageData | undefined
   isOvener: boolean
+  isAuthorized: boolean
 }
 
-function StageCommentInputCard() {
+function StageCommentInputCard({ user }: { user?: UserType }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [comment, setComment] = useState<string>('')
-  const [loginUser, setLoginUser] = useState<UserType>()
-
-  useEffect(() => {
-    setLoginUser(JSON.parse(sessionStorage.getItem('user')!))
-  }, [])
 
   const handleComment = () => {
-    if (!loginUser) {
+    if (!user) {
       toast.error('로그인 후 이용해주세요.')
       return
     }
@@ -36,15 +32,15 @@ function StageCommentInputCard() {
       <p className="font-bold">의견쓰기</p>
       <div className="flex items-center justify-between">
         <div className="flex flex-1 items-center gap-x-2">
-          {loginUser?.image && (
+          {user?.image && (
             <Image
-              src={loginUser.image}
+              src={user.image}
               alt="profile"
               className="w-8 h-8 rounded-full"
             />
           )}
 
-          <h3 className="font-bold">{loginUser?.nickname}</h3>
+          <h3 className="font-bold">{user?.nickname}</h3>
         </div>
       </div>
 
@@ -52,11 +48,11 @@ function StageCommentInputCard() {
         {/* 작성란 */}
         <textarea
           placeholder={
-            loginUser
+            user
               ? '의견을 입력해주세요.'
               : '예매자만 공연 종료 후 작성할 수 있습니다.'
           }
-          disabled={!loginUser}
+          disabled={!user}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           className="w-full min-h-[5.5rem] text-xs text-disabled rounded-xl border border-border p-4 resize-none outline-none"

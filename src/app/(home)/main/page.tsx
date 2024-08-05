@@ -1,5 +1,3 @@
-import { Toaster } from 'react-hot-toast'
-
 import Carousel from '@/components/Carousel.tsx'
 import Footer from '@/components/footer/index.tsx'
 import StageContainer from '@/features/event/components/stage/index.tsx'
@@ -12,8 +10,6 @@ export default function Mainpage() {
         <StageContainer />
       </div>
       <Footer />
-
-      <Toaster />
     </div>
   )
 }

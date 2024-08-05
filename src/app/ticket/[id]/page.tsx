@@ -57,7 +57,7 @@ function TicketBookPage() {
         {isCalendar ? (
           stage && (
             <TicketPurchase
-              id={paramas.id}
+              id={Number(paramas.id)}
               stage={stage}
               setIsCalendar={setIsCalendar}
             />

@@ -4,7 +4,6 @@ import { StaticImageData } from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
 
 import SideBarMenu from '@/components/sidebar/item/index.tsx'
 import SideBarProfile from '@/components/sidebar/profile/index.tsx'
@@ -27,7 +26,6 @@ function SideBar() {
   }, [])
 
   const logout = () => {
-    toast.success('로그아웃 되었습니다.')
     sessionStorage.removeItem('user')
     router.push('/')
   }
@@ -87,8 +85,6 @@ function SideBar() {
           </button>
         )}
       </div>
-
-      <Toaster />
     </div>
   )
 }

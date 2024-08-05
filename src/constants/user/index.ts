@@ -7,6 +7,7 @@ type UserType = {
   nickname: string
   image: string | StaticImageData
   isOvener: boolean
+  isAuthorized: boolean
 }
 
 export const DUMMY_USER: UserType = {
@@ -14,4 +15,5 @@ export const DUMMY_USER: UserType = {
   nickname: '스코니',
   image: DummyOvenProfile4,
   isOvener: true,
+  isAuthorized: false,
 }

@@ -2,7 +2,8 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
 
 import { DUMMY_STAGE_DETAIL, DUMMY_TAGS } from '@/constants/stage/index.ts'
 import StageTabComment from '@/features/stage/detail/components/tab/comment/index.tsx'
@@ -12,12 +13,34 @@ import StageDetailTag from '@/features/stage/detail/components/tag/index.tsx'
 import LikeOffSVG from '@/static/svg/stage/stage-like-off-icon.svg'
 import LikeOnSVG from '@/static/svg/stage/stage-like-on-icon.svg'
 
+interface UserType {
+  nickname: string
+  email: string
+  image: string
+  isOvener: boolean
+  isAuthorized: boolean
+}
+
 function StageDetailPage() {
   const [tab, setTab] = useState<number>(0)
   const [isLiked, setIsLiked] = useState<boolean>(false)
+  const [loginUser, setLoginUser] = useState<UserType>()
   const router = useRouter()
 
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem('user')!))
+  }, [])
+
   const handleReserve = () => {
+    if (!loginUser) {
+      toast.error('로그인 후 이용해주세요.')
+      return
+    }
+    if (!loginUser?.isAuthorized) {
+      setLoginUser({ ...loginUser, isAuthorized: true })
+      toast.success('인증이 완료되었습니다.')
+      return
+    }
     router.push('/ticket/1/')
   }
 
@@ -94,8 +117,10 @@ function StageDetailPage() {
       </div>
       {tab === 0 && <StageTabInfo />}
       {tab === 1 && <StageTabSale />}
-      {tab === 2 && <StageTabComment />}
-      {tab === 3 && <StageTabComment />}
+      {tab === 2 && <StageTabComment user={loginUser} />}
+      {tab === 3 && <StageTabComment user={loginUser} />}
+
+      <Toaster />
 
       {/* footer */}
       <div className="w-full max-w-[598px] py-6 px-3 fixed bottom-0 flex gap-x-7 justify-between items-center bg-white">
@@ -116,7 +141,7 @@ function StageDetailPage() {
           onClick={handleReserve}
           className="flex-1 bg-primary rounded-xl text-2xl py-5 flex items-center justify-center"
         >
-          예매하기
+          {loginUser?.isAuthorized ? '예매하기' : '인증 후 예매하기'}
         </button>
       </div>
     </div>

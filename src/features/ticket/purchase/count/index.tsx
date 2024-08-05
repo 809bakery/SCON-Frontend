@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
 
 import TicketArrowDownSVG from '@/static/svg/ticket/ticket-arrow-down-icon.svg'
 import TicketArrowUpSVG from '@/static/svg/ticket/ticket-arrow-up-icon.svg'
@@ -7,7 +8,7 @@ function TicketCounter() {
   const [count, setCount] = useState<number>(1)
   const handleCountUp = () => {
     if (count >= 4) {
-      alert('1인 당 최대 4매까지만 예매 가능합니다.')
+      toast.error('1인 당 최대 4매까지만 예매 가능합니다.')
       return
     }
 
@@ -44,6 +45,8 @@ function TicketCounter() {
           <TicketArrowDownSVG className="w-3 h-5 cursor-pointer" />
         </button>
       </div>
+
+      <Toaster />
     </div>
   )
 }
