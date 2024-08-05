@@ -6,23 +6,24 @@ import { useEffect, useState } from 'react'
 import StageList from '@/features/event/components/stage/StageList.tsx'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
 
-const USER = {
-  nickname: '민정',
+interface UserType {
+  nickname: string
+  email: string
+  image: string
+  isOvener: boolean
 }
 
 export default function MyStage() {
   const router = useRouter()
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [category, setCategory] = useState<StageCategory>('all')
+  const [loginUser, setLoginUser] = useState<UserType>()
 
   useEffect(() => {
-    const authStatus = localStorage.getItem('isAuthenticated') === 'true'
-    setIsAuthenticated(authStatus)
+    setLoginUser(JSON.parse(sessionStorage.getItem('user')!))
   }, [])
 
   const handleNavigateLogin = () => {
-    if (!isAuthenticated) {
-      localStorage.setItem('isAuthenticated', 'true')
+    if (!loginUser) {
       router.push('/login')
     }
   }
@@ -31,7 +32,7 @@ export default function MyStage() {
     <div className="flex flex-col gap-x-3">
       <div className="flex flex-col gap-1">
         <h1 className="font-bold text-2.5xl">
-          {isAuthenticated ? `${USER?.nickname}'s` : 'MY'} STAGE
+          {loginUser ? `${loginUser?.nickname}'s` : 'MY'} STAGE
         </h1>
         <h2 className="font-medium text-base flex items-center justify-between">
           <span>
@@ -46,7 +47,7 @@ export default function MyStage() {
           </button>
         </h2>
       </div>
-      {isAuthenticated ? (
+      {loginUser ? (
         <StageList category={category} setCategory={setCategory} />
       ) : (
         <div className="w-full flex bg-yellow bg-opacity-40 justify-center items-center rounded-xl">
