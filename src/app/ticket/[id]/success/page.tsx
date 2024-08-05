@@ -1,9 +1,17 @@
+'use client'
+
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import { DUMMY_STAGE_DETAIL } from '@/constants/stage/index.ts'
 import TicketWrapperCard from '@/features/ticket/card/index.tsx'
 
 function TicketBookSuccessPage() {
+  const router = useRouter()
+
+  const handleCheckTicket = () => {
+    router.push('/ticket/my')
+  }
   return (
     <div className="w-full pb-[12.5rem]">
       <div className="min-h-[15rem] relative">
@@ -49,6 +57,7 @@ function TicketBookSuccessPage() {
 
         <button
           type="button"
+          onClick={handleCheckTicket}
           className="py-5 bg-primary text-2xl rounded-xl px-3"
         >
           예매 내역 확인

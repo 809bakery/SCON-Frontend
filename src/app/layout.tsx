@@ -55,6 +55,7 @@ export default function RootLayout({
       <body
         className={`${pretendard.className} w-full h-full min-h-dvh flex justify-center`}
       >
+        <script src="https://cdn.iamport.kr/v1/iamport.js" async />
         <div className="w-full h-full min-h-screen max-w-[600px] sm:border-l-0.5 sm:border-r-0.5 border-border">
           <Provider>
             <Navbar />
