@@ -15,6 +15,10 @@
   }
 }
 
+input {
+  background-color: transparent;
+}
+
 /* calendar custom */
 .react-calendar__navigation {
   display: flex;
