@@ -30,7 +30,8 @@ function PushStep() {
           toast.promise(getToken(), {
             loading: '푸시 알림을 허용 중...',
             success: '푸시 알림이 허용되었습니다.',
-            error: '허용 과정 중 오류가 발생했습니다.',
+            error: (err) =>
+              `푸시 알림을 허용하는 중 오류가 발생했습니다. ${err}`,
           })
           router.push('/signup/join')
         }
