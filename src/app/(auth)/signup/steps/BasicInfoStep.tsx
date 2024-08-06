@@ -163,7 +163,7 @@ export default function BasicInfoStep() {
       <div>
         <div className="flex flex-col gap-7">
           <LogoSVG height={60} width={196} />
-          <Step1SVG />
+          <Step1SVG className="w-80" />
         </div>
         <div className="mt-16 flex flex-col gap-5">
           <h2 className="font-medium text-[2rem]">기본 정보를 입력해주세요.</h2>

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 
 import CheckGIF from '@/static/gif/checked.gif'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
-import Step4SVG from '@/static/svg/progress/progress-step4.svg'
+import Step5SVG from '@/static/svg/progress/progress-step5.svg'
 
 export default function JoinStep() {
   const router = useRouter()
@@ -19,7 +19,7 @@ export default function JoinStep() {
       {/* 로고 */}
       <div className="flex flex-col gap-7">
         <LogoSVG height={60} width={196} />
-        <Step4SVG />
+        <Step5SVG className="w-80" />
       </div>
       <div className="w-full h-full flex flex-col gap-[12.5rem]">
         <div className="flex flex-col items-center gap-15">
