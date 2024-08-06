@@ -39,7 +39,7 @@ function SideBar() {
         <SideBarMenu text="오븐 둘러보기" url="/oven/detail" />
         <SideBarMenu text="양도 게시판" />
         <SideBarMenu text="예매 내역 확인하기" url="/ticket/my" />
-        <SideBarMenu text="스콘톡" />
+        <SideBarMenu text="스콘톡" url="/scontalk" />
         <SideBarMenu text="마이페이지" url="/mypage" />
 
         {user === 'oven' && <SideBarMenu text="오븐 관리하기" />}
