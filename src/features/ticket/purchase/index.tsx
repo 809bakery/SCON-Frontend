@@ -1,6 +1,6 @@
+import { useRouter } from 'next/navigation'
 /* eslint-disable import/no-extraneous-dependencies */
-import PortOne from '@portone/browser-sdk/v2'
-import { useParams, useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 import { DUMMY_STAGE_DETAIL } from '@/constants/stage/index.ts'
 import TicketWrapperCard from '@/features/ticket/card/index.tsx'
@@ -10,6 +10,7 @@ import TicketChargeSVG from '@/static/svg/ticket/ticket-charge-icon.svg'
 interface TicketPurchaseProps {
   stage: ContentType
   setIsCalendar: (value: number | undefined) => void
+  id: number
 }
 
 interface ContentType {
@@ -19,10 +20,14 @@ interface ContentType {
   status: string
 }
 
+declare const window: typeof globalThis & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  IMP: any
+}
+
 function TicketPurchase(props: TicketPurchaseProps) {
   const router = useRouter()
-  const params = useParams()
-  const { stage, setIsCalendar } = props
+  const { stage, setIsCalendar, id } = props
   const parseDate = (time: string) => {
     const hour =
       new Date(time).getHours() < 12
@@ -37,23 +42,40 @@ function TicketPurchase(props: TicketPurchaseProps) {
 
   // eslint-disable-next-line consistent-return
   const handlePurchase = async () => {
-    const res = await PortOne.requestPayment({
-      // Store ID 설정
-      storeId: 'store-6d7f6515-9cf2-482f-bfe6-fb3684a48014',
-      // 채널 키 설정
-      channelKey: 'channel-key-8e1647ad-6dda-4c67-881f-09c3be369c18',
-      paymentId: `payment-${crypto.randomUUID()}`,
-      orderName: 'SCON: 스테이지 티켓 예매하기',
-      totalAmount: DUMMY_STAGE_DETAIL.headCount,
-      currency: 'CURRENCY_KRW',
-      payMethod: 'CARD',
-      redirectUrl: `localhost:3000/ticket/${params.id}/success`,
-    })
-    if (res && res.code != null) {
-      return alert('결제가 실패했습니다.')
-    }
+    const { IMP } = window
+    IMP.init(process.env.NEXT_PUBLIC_MERCHANT_ID)
 
-    router.push(`/ticket/${params}/success`)
+    IMP.request_pay(
+      {
+        pg: 'tosspayments',
+        pay_method: 'card',
+        merchant_uid: `mid_${new Date().getTime()}`,
+        name: '테스트 토스페이먼츠 결제',
+        amount: DUMMY_STAGE_DETAIL.cost + 500,
+        buyer_email: 'sorlti6952@gmail.com',
+        buyer_name: '박상우',
+        buyer_tel: '010-1234-5678',
+        buyer_addr: '서울특별시 강남구 신사동 661-16',
+        buyer_postcode: '06018',
+        m_redirect_url: `http://www.809bakery.com/ticket/${id}/success`,
+        confirm_url: `http://www.809bakery.com/ticket/${id}/success`,
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      async (res: any) => {
+        try {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          const { error_msg } = res
+          if (error_msg) {
+            toast.error('결제 취소')
+          } else {
+            toast.success('결제 성공')
+            router.push(`/ticket/${id}/success`)
+          }
+        } catch (error) {
+          toast.error('결제 실패')
+        }
+      },
+    )
   }
 
   return (

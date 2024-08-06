@@ -2,9 +2,9 @@ import '@/app/globals.css'
 import type { Metadata } from 'next'
 
 import localFont from 'next/font/local'
+import { Toaster } from 'react-hot-toast'
 
 import Provider from '@/app/providers.tsx'
-import A2HSModal from '@/components/a2hs/index.tsx'
 import Navbar from '@/components/Navbar/index.tsx'
 
 const pretendard = localFont({
@@ -55,13 +55,13 @@ export default function RootLayout({
       <body
         className={`${pretendard.className} w-full h-full min-h-dvh flex justify-center`}
       >
+        <script src="https://cdn.iamport.kr/v1/iamport.js" async />
         <div className="w-full h-full min-h-screen max-w-[600px] sm:border-l-0.5 sm:border-r-0.5 border-border">
           <Provider>
             <Navbar />
             {children}
+            <Toaster />
           </Provider>
-
-          <A2HSModal />
         </div>
       </body>
     </html>

@@ -27,7 +27,6 @@ export default function Navbar() {
   const pathname = usePathname()
   const domainList = pathname.split('/').filter(Boolean)
   const lastDomain = decodeURIComponent(domainList[domainList.length - 1])
-
   // domainList에 detail이 있을 때
   if (domainList.includes('detail') && lastDomain !== 'detail') {
     return <NavbarWithGoback name={lastDomain} />

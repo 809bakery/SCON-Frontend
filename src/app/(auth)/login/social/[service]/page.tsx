@@ -3,13 +3,15 @@
 import axios from 'axios'
 import { useRouter, useSearchParams } from 'next/navigation'
 
+import { DUMMY_USER } from '@/constants/user/index.ts'
+
 function SocialRedirectPage({ params }: { params: { service: string } }) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
   const login = async () => {
     axios
-      .post(`${process.env.ROOT_API_URL}/api/auth/log-in/social/`, {
+      .post(`${process.env.NEXT_PUBLIC_ROOT_API_URL}/api/auth/log-in/social/`, {
         social: params.service,
         code: searchParams.get('code'),
       })
@@ -18,6 +20,7 @@ function SocialRedirectPage({ params }: { params: { service: string } }) {
         console.log(res)
         // eslint-disable-next-line no-alert
         alert('로그인 성공🍪🍪')
+        sessionStorage.setItem('user', JSON.stringify(DUMMY_USER))
         router.push('/signup/basic')
       })
       .catch((err) => {
