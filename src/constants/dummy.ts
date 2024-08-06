@@ -1,5 +1,7 @@
 import { StaticImageData } from 'next/image'
 
+import DummyStage2 from '@/static/img/dummy/search/dummy-jururu-stage1.jpg'
+import DummyStage3 from '@/static/img/dummy/search/dummy-jururu-stage2.jpg'
 import DummyOvenProfile1 from '@/static/img/dummy/search/dummy-oven-profile1.jpg'
 import DummyOvenProfile10 from '@/static/img/dummy/search/dummy-oven-profile10.jpg'
 import DummyOvenProfile2 from '@/static/img/dummy/search/dummy-oven-profile2.jpg'
@@ -10,11 +12,26 @@ import DummyOvenProfile6 from '@/static/img/dummy/search/dummy-oven-profile6.jpg
 import DummyOvenProfile7 from '@/static/img/dummy/search/dummy-oven-profile7.jpg'
 import DummyOvenProfile8 from '@/static/img/dummy/search/dummy-oven-profile8.jpg'
 import DummyOvenProfile9 from '@/static/img/dummy/search/dummy-oven-profile9.jpg'
+import DummyStage1 from '@/static/img/dummy/ticket/dummy-ticket-poster.jpg'
 
 type OvenDetail = {
   ovenId: number
   ovenName: string
   image: string | StaticImageData
+}
+
+export interface ChatMessage {
+  nickname?: string
+  content?: string
+  profile: string | StaticImageData
+  isOvener?: boolean
+  createdAt?: string
+}
+
+export interface SconTalkDetail {
+  content: ChatMessage[]
+  time: string
+  title: string
 }
 
 export const DUMMY_POSTER_DATA = [
@@ -108,3 +125,64 @@ export const DUMMY_OVEN_DETAIL_DATA: OvenDetail[] = [
   { ovenId: 17, ovenName: '비챤', image: DummyOvenProfile8 },
   { ovenId: 18, ovenName: '시라유키 히나', image: DummyOvenProfile9 },
 ]
+
+const now = new Date()
+
+const twoDaysLater = new Date(
+  now.getTime() + 2 * 24 * 60 * 60 * 1000,
+).toISOString()
+
+const twoDaysAgo = new Date(
+  now.getTime() - 2 * 24 * 60 * 60 * 1000,
+).toISOString()
+
+export const DUMMY_SCONTALK_LIST = [
+  {
+    chatRoomId: '1',
+    title: '릴파 솔로 콘서트 ‘Going Out’',
+    time: now.toISOString(), // 공연 시간
+    image: DummyStage1,
+  },
+  {
+    chatRoomId: '2',
+    title: '주르르 솔로 콘서트 ‘Ju. Taime’',
+    time: twoDaysLater,
+    image: DummyStage2,
+  },
+  {
+    chatRoomId: '3',
+    title: '이세계 페스티벌',
+    time: twoDaysAgo,
+    image: DummyStage3,
+  },
+]
+
+export const DUMMY_SCON_TALK_DETAIL: SconTalkDetail = {
+  content: [
+    {
+      nickname: '릴파',
+      content: '울랄랄라',
+      profile: DummyOvenProfile4,
+      createdAt: '2024-07-12T15:00',
+      isOvener: true,
+    },
+    {
+      nickname: '릴파',
+      content:
+        '리라리라~~~ 리라리라~~~ 리라리라~~~~ 릴파에용 ㅎㅎㅎㅎㅎ우리 조금 있으면 만난다 어떡해 !!!!!!!!!! 너무 떨려!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 다들 호응 잘 해주실거죵????ㅠㅠㅠㅠ 후아후아후아 심호흡 심호흡 저의 첫 오프 콘서트인만큼 저도 엄청 긴장도 되구 막 >ㅁ< 다들 빨리 보구싶당 ㅎ헤헤 다들 조심히 와요',
+      createdAt: '2024-07-12T15:00',
+      profile: DummyOvenProfile4,
+      isOvener: true,
+    },
+    {
+      nickname: '릴파',
+      content: `대부분의 경우 Access는 텍스트 상자 컨트롤을 사용하여 짧은 텍스트 또는 긴 텍스트 필드를 표시합니다. 그러나 Access 웹앱의 보기에 긴 텍스트 필드를 추가하면 Access에서 여러 줄 텍스트 상자를 만듭니다. 브라우저에서 여러 줄 텍스트 상자를 사용하는 경우 Enter 키를 눌러 텍스트 상자의 새 줄로 이동할 수 있습니다. 데이터시트에 있는 경우 스크롤 막대를 사용하여 첫 번째 줄 아래에 있는 항목을 확인해야 합니다.
+데스크톱 데이터베이스에서 서식 있는 텍스트를 표시하도록 긴 텍스트 필드가 구성되어 있고 해당 필드를 폼이나 보고서에 추가하면 Access에서 서식 있는 텍스트 설정을 텍스트 상자에 자동으로 적용합니다.`,
+      createdAt: '2024-07-12T15:01',
+      profile: DummyOvenProfile4,
+      isOvener: true,
+    },
+  ],
+  time: '2023-11-05T16:00',
+  title: '릴파 솔로 콘서트 ‘Going Out’',
+}

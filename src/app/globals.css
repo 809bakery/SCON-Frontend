@@ -19,12 +19,24 @@ input {
   background-color: transparent;
 }
 
+@layer components {
+  .chat_bg {
+    @apply bg-gradient-to-b from-[#FFFFFF] to-[#E9F7FF];
+  }
+}
+
+@layer components {
+  .ovener_bg {
+    @apply bg-gradient-to-b from-[#FFFFFF] to-[#FFE89A];
+  }
+}
+
 /* calendar custom */
 .react-calendar__navigation {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: .5rem .75rem;
+  padding: 0.5rem 0.75rem;
   color: #363232;
 
   font-size: 1.75rem;
@@ -40,7 +52,7 @@ input {
   font-size: 1rem;
   font-weight: bold;
   line-height: 1.5rem;
-  color: #6B6E78;
+  color: #6b6e78;
 }
 
 .react-calendar__month-view__weekdays__weekday {
@@ -53,7 +65,7 @@ input {
 }
 
 .react-calendar__month-view__weekdays__weekday:nth-child(1) {
-  color:#F85252;
+  color: #f85252;
 }
 
 abbr {
@@ -61,42 +73,44 @@ abbr {
 }
 
 .react-calendar__tile {
-  color:black;
-  padding: 1.5625rem .75rem;
+  color: black;
+  padding: 1.5625rem 0.75rem;
 }
 
 /* 일자 */
 .react-calendar__month-view__days__day:disabled {
   aspect-ratio: 1/1;
-  color:rgba(107, 110, 120,0.5);
+  color: rgba(107, 110, 120, 0.5);
 }
 
 .react-calendar__month-view__days__day {
   aspect-ratio: 1/1;
   color: rgba(107, 110, 120, 1);
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.react-calendar__month-view__days__day:disabled:nth-child(7n+1) {
-  color:rgba(248, 82, 82, 0.5);
+.react-calendar__month-view__days__day:disabled:nth-child(7n + 1) {
+  color: rgba(248, 82, 82, 0.5);
 }
 
-.react-calendar__month-view__days__day:nth-child(7n+1) {
-  color:#F85252;
+.react-calendar__month-view__days__day:nth-child(7n + 1) {
+  color: #f85252;
 }
 
-.react-calendar__month-view__days__day:enabled:hover:not(.react-calendar__tile--active) {
-  background-color: #F5F5F5;
-  border-radius: .75rem;
+.react-calendar__month-view__days__day:enabled:hover:not(
+    .react-calendar__tile--active
+  ) {
+  background-color: #f5f5f5;
+  border-radius: 0.75rem;
 }
 
 .react-calendar__tile--active {
-  background-color: #FFC90D;
-  border-radius: .75rem;
-  color:  white !important;
+  background-color: #ffc90d;
+  border-radius: 0.75rem;
+  color: white !important;
 }
 *,
 *:after,

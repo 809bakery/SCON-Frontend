@@ -20,6 +20,7 @@ export const DOMAIN_NAME_MAPPING: {
   leave: '회원 탈퇴',
   info: '회원 정보',
   push_settings: '알림 설정',
+  scontalk: '스콘톡',
 }
 
 export default function Navbar() {

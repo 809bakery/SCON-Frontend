@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable global-require */
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
@@ -50,5 +52,6 @@ const config: Config = {
       },
     },
   },
+  plugins: [require('tailwind-scrollbar-hide')],
 }
 export default config
