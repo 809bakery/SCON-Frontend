@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import toast  from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 import { DUMMY_STAGE_DETAIL, DUMMY_TAGS } from '@/constants/stage/index.ts'
 import StageTabComment from '@/features/stage/detail/components/tab/comment/index.tsx'
