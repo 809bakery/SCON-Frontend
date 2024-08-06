@@ -1,5 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { useRouter } from 'next/navigation'
+/* eslint-disable import/no-extraneous-dependencies */
 import toast, { Toaster } from 'react-hot-toast'
 
 import { DUMMY_STAGE_DETAIL } from '@/constants/stage/index.ts'
@@ -57,8 +57,8 @@ function TicketPurchase(props: TicketPurchaseProps) {
         buyer_tel: '010-1234-5678',
         buyer_addr: '서울특별시 강남구 신사동 661-16',
         buyer_postcode: '06018',
-        m_redirect_url: `http://localhost:3000/ticket/${id}/success`,
-        confirm_url: `http://localhost:3000/ticket/${id}/success`,
+        m_redirect_url: `http://www.809bakery.com/ticket/${id}/success`,
+        confirm_url: `http://www.809bakery.com/ticket/${id}/success`,
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async (res: any) => {
@@ -69,7 +69,6 @@ function TicketPurchase(props: TicketPurchaseProps) {
             toast.error('결제 취소')
           } else {
             toast.success('결제 성공')
-            // 백으로 데이터 보내기
             router.push(`/ticket/${id}/success`)
           }
         } catch (error) {
