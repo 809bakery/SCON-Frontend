@@ -1,7 +1,8 @@
 'use client'
 
 import Image, { StaticImageData } from 'next/image'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import QRCode from 'react-qr-code'
 
@@ -33,6 +34,7 @@ const parseDate = (time: string) => {
   return `${meridiem} ${hour < 10 ? `0${hour}` : hour}:${min < 10 ? `0${min}` : min}`
 }
 function TicketEnterPage() {
+  const router = useRouter()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [stage, setStage] = useState<StageType>(DUMMY_RESERVED_STAGE[0])
   const [isFlipped, setIsFlipped] = useState<boolean>(false)
@@ -41,6 +43,15 @@ function TicketEnterPage() {
   //     setStage(DUMMY_RESERVED_STAGE[0])
   //   }, [])
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsFlipped(false)
+    }, 180000)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [isFlipped])
   return (
     <div className="p-20 flex flex-col gap-y-10">
       <h3 className="flex items-center justify-center font-bold text-2xl">
@@ -100,6 +111,7 @@ function TicketEnterPage() {
         </button>
         <button
           type="button"
+          onClick={() => router.push(`/stage/detail/${stage.rNum}`)}
           className="flex-1 rounded-xl flex items-center justify-center py-3 text-primary font-bold border border-border"
         >
           공연 정보

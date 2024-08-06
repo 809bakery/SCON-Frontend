@@ -1,6 +1,6 @@
 import Image, { StaticImageData } from 'next/image'
 import { useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 interface UserType {
   nickname: string
@@ -35,8 +35,10 @@ function StageCommentInputCard({ user }: { user?: UserType }) {
           {user?.image && (
             <Image
               src={user.image}
+              className="rounded-full"
               alt="profile"
-              className="w-8 h-8 rounded-full"
+              width={34}
+              height={34}
             />
           )}
 
@@ -72,7 +74,6 @@ function StageCommentInputCard({ user }: { user?: UserType }) {
           </button>
         </div>
       </div>
-      <Toaster />
     </div>
   )
 }

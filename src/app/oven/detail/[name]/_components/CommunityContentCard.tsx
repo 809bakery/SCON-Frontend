@@ -105,6 +105,7 @@ export default function CommunityContentCard({
         setCheerCountState(!cheerCountState)
         break
       default:
+        // eslint-disable-next-line no-console
         console.log('Unknown response')
     }
   }

@@ -3,7 +3,7 @@
 import Image, { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
 // eslint-disable-next-line import/no-extraneous-dependencies
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 import { DUMMY_RESERVED_STAGE } from '@/constants/ticket/index.ts'
 import TicketWrapperCard from '@/features/ticket/card/index.tsx'
@@ -122,7 +122,6 @@ function UserTicketListPage() {
       <p className="text-sm text-disabled flex items-center justify-center">
         종료된 스테이지의 스콘톡은 ‘스콘톡’ 카테고리에서 확인할 수 있습니다.
       </p>
-      <Toaster />
     </div>
   )
 }

@@ -40,7 +40,7 @@ client_id=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&response_type=${process.env
 
         <Link
           href={`https://accounts.google.com/o/oauth2/v2/auth?
-client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_RIDIRECT_URI}
+client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}
 &response_type=${process.env.NEXT_PUBLIC_GOOGLE_RESPONSE_TYPE}&scope=${process.env.NEXT_PUBLIC_GOOGLE_SCOPE}`}
         >
           <GoogleSVG className="w-full h-[4.8125rem] cursor-pointer" />

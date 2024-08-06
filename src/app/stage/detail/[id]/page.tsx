@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 import { DUMMY_STAGE_DETAIL, DUMMY_TAGS } from '@/constants/stage/index.ts'
 import StageTabComment from '@/features/stage/detail/components/tab/comment/index.tsx'
@@ -119,8 +119,6 @@ function StageDetailPage() {
       {tab === 1 && <StageTabSale />}
       {tab === 2 && <StageTabComment user={loginUser} />}
       {tab === 3 && <StageTabComment user={loginUser} />}
-
-      <Toaster />
 
       {/* footer */}
       <div className="w-full max-w-[598px] py-6 px-3 fixed bottom-0 flex gap-x-7 justify-between items-center bg-white">

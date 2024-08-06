@@ -2,8 +2,6 @@
 
 'use client'
 
-import { Toaster } from 'react-hot-toast'
-
 import BasicInfoStep from '@/app/(auth)/signup/steps/BasicInfoStep.tsx'
 import JoinStep from '@/app/(auth)/signup/steps/JoinStep.tsx'
 import MoreInfoStep from '@/app/(auth)/signup/steps/MoreInfoStep.tsx'
@@ -30,8 +28,6 @@ export default function SignupPage() {
       <Step name="join">
         <JoinStep />
       </Step>
-
-      <Toaster />
     </div>
   )
 }
