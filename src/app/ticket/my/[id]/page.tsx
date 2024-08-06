@@ -2,7 +2,7 @@
 
 import Image, { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import QRCode from 'react-qr-code'
 
@@ -43,6 +43,15 @@ function TicketEnterPage() {
   //     setStage(DUMMY_RESERVED_STAGE[0])
   //   }, [])
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsFlipped(false)
+    }, 180000)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [isFlipped])
   return (
     <div className="p-20 flex flex-col gap-y-10">
       <h3 className="flex items-center justify-center font-bold text-2xl">
