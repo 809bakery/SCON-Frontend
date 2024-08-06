@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation'
 /* eslint-disable import/no-extraneous-dependencies */
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 import { DUMMY_STAGE_DETAIL } from '@/constants/stage/index.ts'
 import TicketWrapperCard from '@/features/ticket/card/index.tsx'
@@ -81,7 +81,6 @@ function TicketPurchase(props: TicketPurchaseProps) {
   return (
     <div className="flex flex-col gap-y-3">
       {/* title */}
-      <Toaster />
       <div className="p-3 flex items-center justify-between">
         <span className="font-bold">
           🍪{parseDate(stage?.time)} 티켓 예매진행중

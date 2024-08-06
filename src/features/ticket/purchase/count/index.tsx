@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 import TicketArrowDownSVG from '@/static/svg/ticket/ticket-arrow-down-icon.svg'
 import TicketArrowUpSVG from '@/static/svg/ticket/ticket-arrow-up-icon.svg'
@@ -45,8 +45,6 @@ function TicketCounter() {
           <TicketArrowDownSVG className="w-3 h-5 cursor-pointer" />
         </button>
       </div>
-
-      <Toaster />
     </div>
   )
 }
