@@ -1,6 +1,7 @@
 'use client'
 
 import Image, { StaticImageData } from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import QRCode from 'react-qr-code'
@@ -33,6 +34,7 @@ const parseDate = (time: string) => {
   return `${meridiem} ${hour < 10 ? `0${hour}` : hour}:${min < 10 ? `0${min}` : min}`
 }
 function TicketEnterPage() {
+  const router = useRouter()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [stage, setStage] = useState<StageType>(DUMMY_RESERVED_STAGE[0])
   const [isFlipped, setIsFlipped] = useState<boolean>(false)
@@ -100,6 +102,7 @@ function TicketEnterPage() {
         </button>
         <button
           type="button"
+          onClick={() => router.push(`/stage/detail/${stage.rNum}`)}
           className="flex-1 rounded-xl flex items-center justify-center py-3 text-primary font-bold border border-border"
         >
           공연 정보
