@@ -11,7 +11,7 @@ function SocialRedirectPage({ params }: { params: { service: string } }) {
 
   const login = async () => {
     axios
-      .post(`${process.env.ROOT_API_URL}/api/auth/log-in/social/`, {
+      .post(`${process.env.NEXT_PUBLIC_ROOT_API_URL}/api/auth/log-in/social/`, {
         social: params.service,
         code: searchParams.get('code'),
       })
