@@ -8,7 +8,7 @@ function OvenAddCard() {
   const router = useRouter()
 
   const handleRegister = () => {
-    router.push('/oven/register')
+    router.push('/oven/register/profile')
   }
 
   return (

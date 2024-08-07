@@ -24,7 +24,7 @@ function OvenSignUpSuccessPage() {
         </button>
         <button
           type="button"
-          onClick={() => router.push('/oven/register')}
+          onClick={() => router.push('/oven/register/profile')}
           className="py-7 flex items-center justify-center bg-primary rounded-xl"
         >
           오븐 등록하러 가기
