@@ -21,11 +21,11 @@ type OvenDetail = {
 }
 
 export interface ChatMessage {
-  nickname?: string
-  content?: string
+  nickname: string
+  content: string
   profile: string | StaticImageData
-  isOvener?: boolean
-  createdAt?: string
+  isOvener: boolean
+  createdAt: string
 }
 
 export interface SconTalkDetail {
