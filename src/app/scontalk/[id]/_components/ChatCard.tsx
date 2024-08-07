@@ -2,13 +2,20 @@
 
 import { useLayoutEffect, useRef, useState } from 'react'
 
-import { ExtendedChatMessage } from '@/app/scontalk/[id]/page.tsx'
+interface ExtendedChatMessage {
+  content: string
+  isFirst?: boolean
+  createdAt: string
+  isEnd?: boolean
+  isOvener: boolean
+}
 
 export default function ChatCard({
   content,
   isFirst,
   createdAt,
   isEnd,
+  isOvener,
 }: ExtendedChatMessage) {
   const contentRef = useRef<HTMLParagraphElement>(null)
   const [isExpanded, setIsExpanded] = useState(false)
@@ -32,13 +39,16 @@ export default function ChatCard({
     setIsExpanded(!isExpanded)
   }
   return (
-    <div className="w-[20rem] flex flex-col gap-3 text-base font-medium leading-6">
+    <div
+      className={`max-w-[20rem] flex flex-col gap-3 text-base font-medium leading-6  ${isOvener ? '' : 'items-end'}`}
+    >
       <div
-        className={`relative border border-border rounded-[1.25rem] ${isFirst ? 'rounded-tl-none' : ''} px-[.625rem] py-3 max-w-max break-words`}
+        // eslint-disable-next-line no-nested-ternary
+        className={`relative border border-border rounded-[1.25rem] bg-white ${isFirst ? (isOvener ? 'rounded-tl-none' : 'rounded-tr-none') : ''} px-[.625rem] py-3 max-w-max break-words`}
       >
         <p
           ref={contentRef}
-          className={`leading-6 ${!isExpanded ? 'overflow-hidden max-h-[15rem]' : ''}`}
+          className={`leading-6 whitespace-pre-wrap break-all ${!isExpanded ? 'overflow-hidden max-h-[15rem]' : ''}`}
         >
           {content}
         </p>
@@ -55,7 +65,9 @@ export default function ChatCard({
           </div>
         )}
         {isEnd && (
-          <div className="absolute bottom-0 -right-[3.125rem] font-medium leading-6 text-sm text-disabled">
+          <div
+            className={`absolute bottom-0 ${isOvener ? '-right-[3.125rem]' : '-left-[3.125rem]'} font-medium leading-6 text-sm text-disabled`}
+          >
             {createdAt?.toString().slice(-5)}
           </div>
         )}
