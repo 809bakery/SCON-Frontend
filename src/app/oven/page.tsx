@@ -1,7 +1,5 @@
 function OvenPage() {
-  return (
-    <div>OvenPage</div>
-  )
+  return <div>OvenPage</div>
 }
 
 export default OvenPage
