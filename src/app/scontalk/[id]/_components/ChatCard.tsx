@@ -2,7 +2,13 @@
 
 import { useLayoutEffect, useRef, useState } from 'react'
 
-import { ExtendedChatMessage } from '@/app/scontalk/[id]/page.tsx'
+interface ExtendedChatMessage {
+  content: string
+  isFirst?: boolean
+  createdAt: string
+  isEnd?: boolean
+  isOvener: boolean
+}
 
 export default function ChatCard({
   content,
@@ -42,7 +48,7 @@ export default function ChatCard({
       >
         <p
           ref={contentRef}
-          className={`leading-6 whitespace-pre-wrap ${!isExpanded ? 'overflow-hidden max-h-[15rem]' : ''}`}
+          className={`leading-6 whitespace-pre-wrap break-all ${!isExpanded ? 'overflow-hidden max-h-[15rem]' : ''}`}
         >
           {content}
         </p>

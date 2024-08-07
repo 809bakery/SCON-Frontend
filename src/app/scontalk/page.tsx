@@ -4,40 +4,34 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import { DUMMY_SCONTALK_LIST } from '@/constants/dummy.ts'
+import calculateTimeDifferenceInHours from '@/utils/date/calculateTimeDifferenceInHours.ts'
+import formatDate from '@/utils/date/formatDate.ts'
 
 const SconTalkList = [...DUMMY_SCONTALK_LIST]
 
-function formatDate(dateString: string): string {
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    weekday: 'short',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  }
-  const date = new Date(dateString)
-  return new Intl.DateTimeFormat('ko-KR', options)
-    .format(date)
-    .replace('.', '. ')
-    .replace('일', '')
-    .replace(',', '')
-    .trim()
+/**
+ * 주어진 스콘톡의 시간과 현재 시간을 비교하여 스콘톡의 상태를 결정합니다.
+ *
+ * @param {Date} talkTime - 스콘톡의 예정된 시간입니다.
+ * @param {Date} now - 현재 시간입니다.
+ * @returns {string} 스콘톡의 상태를 나타내는 문자열을 반환합니다.
+ * - 'process': 스콘톡이 진행 중임을 나타냅니다.
+ * - 'scheduled': 스콘톡이 오픈 예정임을 나타냅니다.
+ * - 'done': 스콘톡이 종료됨을 나타냅니다.
+ */
+function determineTalkState(talkTime: Date, now: Date): string {
+  const timeDiff = (talkTime.getTime() - now.getTime()) / 1000 / 60 / 60
+
+  if (timeDiff >= -1 && timeDiff <= 1) return 'process'
+  if (timeDiff > 1) return 'scheduled'
+  return 'done'
 }
+
 const updatedTalkList = SconTalkList.map((talk) => {
   const now = new Date()
   const talkTime: Date = new Date(talk.time)
-  const timeDiff = (talkTime.getTime() - now.getTime()) / 1000 / 60 / 60
-
-  let state = ''
-  if (timeDiff >= -1 && timeDiff <= 1) {
-    state = 'process'
-  } else if (timeDiff > 1) {
-    state = 'scheduled'
-  } else if (timeDiff < -1) {
-    state = 'done'
-  }
+  const timeDiff = calculateTimeDifferenceInHours(talkTime, now)
+  const state = determineTalkState(talkTime, now)
 
   return { ...talk, state, timeDiff, talkTime }
 })
@@ -55,13 +49,13 @@ export default function SconTalkPage() {
           onClick={() => router.push(`/scontalk/${talk.chatRoomId}`)}
         >
           <div className="flex items-center space-x-8">
-            <div className="w-20 h-20 bg-[#F7F7F7] rounded-full">
+            <div className="w-20 h-20 bg-[#F7F7F7] rounded-full overflow-hidden">
               <Image
                 src={talk.image}
                 width={80}
                 height={80}
                 alt="profile"
-                className="w-20 h-20 object-cover object-center rounded-full"
+                className="w-20 h-20 object-cover object-center"
               />
             </div>
             <div className="flex flex-col gap-2 p-2">
