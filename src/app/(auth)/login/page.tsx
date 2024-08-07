@@ -24,7 +24,7 @@ export default function LoginPage() {
       <div className="w-full px-7 flex flex-col gap-4">
         <Link
           href={`https://kauth.kakao.com/oauth/authorize?
-response_type=${process.env.NEXT_PUBLIC_KAKAO_RESPONSE_TYPE}&client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}
+response_type=code&client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}
 &redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}`}
         >
           <KakaoSVG className="w-full h-[4.8125rem] cursor-pointer" />
@@ -32,16 +32,16 @@ response_type=${process.env.NEXT_PUBLIC_KAKAO_RESPONSE_TYPE}&client_id=${process
 
         <Link
           href={`https://nid.naver.com/oauth2.0/authorize?
-client_id=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&response_type=${process.env.NEXT_PUBLIC_NAVER_RESPONSE_TYPE}
-&redirect_uri=${process.env.NEXT_PUBLIC_NAVER_REDIRECT_URI}&state=${process.env.NEXT_PUBLIC_NAVER_STATE}`}
+client_id=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&response_type=code
+&redirect_uri=${process.env.NEXT_PUBLIC_NAVER_REDIRECT_URI}&state=1`}
         >
           <NaverSVG className="w-full h-[4.8125rem] cursor-pointer" />
         </Link>
 
         <Link
           href={`https://accounts.google.com/o/oauth2/v2/auth?
-client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}
-&response_type=${process.env.NEXT_PUBLIC_GOOGLE_RESPONSE_TYPE}&scope=${process.env.NEXT_PUBLIC_GOOGLE_SCOPE}`}
+client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=http://localhost:3000/login/social/google
+&response_type=code&scope=email+profile`}
         >
           <GoogleSVG className="w-full h-[4.8125rem] cursor-pointer" />
         </Link>
