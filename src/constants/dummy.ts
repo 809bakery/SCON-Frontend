@@ -160,19 +160,19 @@ export const DUMMY_SCONTALK_LIST = [
 export const DUMMY_SCON_TALK_DETAIL: SconTalkDetail = {
   content: [
     {
-      nickname: '릴파',
+      nickname: '주르르',
       content: '울랄랄라',
-      profile: DummyOvenProfile4,
+      profile: DummyOvenProfile10,
       createdAt: '2024-07-12T15:00',
-      isOvener: true,
+      isOvener: false,
     },
     {
-      nickname: '릴파',
+      nickname: '주르르',
       content:
         '리라리라~~~ 리라리라~~~ 리라리라~~~~ 릴파에용 ㅎㅎㅎㅎㅎ우리 조금 있으면 만난다 어떡해 !!!!!!!!!! 너무 떨려!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 다들 호응 잘 해주실거죵????ㅠㅠㅠㅠ 후아후아후아 심호흡 심호흡 저의 첫 오프 콘서트인만큼 저도 엄청 긴장도 되구 막 >ㅁ< 다들 빨리 보구싶당 ㅎ헤헤 다들 조심히 와요',
       createdAt: '2024-07-12T15:00',
-      profile: DummyOvenProfile4,
-      isOvener: true,
+      profile: DummyOvenProfile10,
+      isOvener: false,
     },
     {
       nickname: '릴파',
