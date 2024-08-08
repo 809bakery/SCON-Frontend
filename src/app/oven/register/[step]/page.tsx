@@ -4,7 +4,9 @@ import { StaticImageData } from 'next/image'
 import { useState } from 'react'
 
 import Step from '@/components/Step.tsx'
+import OvenBankRegister from '@/features/oven/components/register/bank/index.tsx'
 import OvenCateRegister from '@/features/oven/components/register/category/index.tsx'
+import OvenJoinRegister from '@/features/oven/components/register/join/index.tsx'
 import OvenProfileRegister from '@/features/oven/components/register/profile/index.tsx'
 
 interface OvenRegisterType {
@@ -42,10 +44,13 @@ function OvenRegisterPage() {
         />
       </Step>
       <Step name="bank">
-        <div>bank</div>
+        <OvenBankRegister
+          ovenRegister={ovenRegister}
+          setOvenRegister={setOvenRegister}
+        />
       </Step>
       <Step name="join">
-        <div>join</div>
+        <OvenJoinRegister />
       </Step>
     </div>
   )
