@@ -1,6 +1,7 @@
 import { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 import OvenCheckbox from '@/features/oven/components/checkbox/index.tsx'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
@@ -40,6 +41,10 @@ function OvenCateRegister(props: OvenCateRegisterProps) {
   }
 
   const submitCategory = () => {
+    if (!category.includes(true)) {
+      toast.error('하나 이상의 카테고리를 선택해주세요.')
+      return
+    }
     const categoryArr: string[] = []
     const wishMap = ['PERFORMANCE', 'LECTURE', 'CLUB', 'ETC']
     category.forEach((val, index) => {
@@ -81,7 +86,7 @@ function OvenCateRegister(props: OvenCateRegisterProps) {
       <button
         type="button"
         onClick={submitCategory}
-        className={`py-7 flex items-center justify-center bg-[#E5E5ED] rounded-xl button text-disabled text-2xl ${category && 'bg-primary !text-black'} `}
+        className={`py-7 flex items-center justify-center bg-[#E5E5ED] rounded-xl button text-disabled text-2xl ${category.includes(true) && 'bg-primary !text-black'} `}
       >
         다음 단계
       </button>
