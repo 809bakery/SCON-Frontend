@@ -31,6 +31,8 @@ function OvenBankRegister(props: OvenCateRegisterProps) {
   const [profileAccount, setProfileAccount] = useState<string>('')
   const [profileBankName, setProfileBankName] = useState<string>('')
   const [isModal, setIsModal] = useState<boolean>(false)
+
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(false)
   const router = useRouter()
 
   const handleAccount = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,6 +68,11 @@ function OvenBankRegister(props: OvenCateRegisterProps) {
       bankName: profileBankName,
     })
     router.push('/oven/register/people')
+  }
+
+  const authAccount = () => {
+    setIsAuthorized(true)
+    toast.success('계좌 인증이 완료되었습니다.')
   }
   return (
     <div className="pt-14 pb-[6.25rem] px-7 flex flex-col gap-y-14">
@@ -143,13 +150,24 @@ function OvenBankRegister(props: OvenCateRegisterProps) {
             ))}
         </div>
       </div>
-      <button
-        type="button"
-        onClick={submitAccount}
-        className={`py-7 flex items-center justify-center bg-[#E5E5ED] rounded-xl button text-disabled text-2xl ${profileAccountName && profileAccount && profileBankName && 'bg-primary !text-black'} `}
-      >
-        다음 단계
-      </button>
+
+      {isAuthorized ? (
+        <button
+          type="button"
+          onClick={submitAccount}
+          className="py-7 flex items-center justify-center bg-primary !text-black rounded-xl text-2xl"
+        >
+          다음 단계
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={authAccount}
+          className={`py-7 flex items-center justify-center bg-[#E5E5ED] rounded-xl button text-disabled text-2xl ${profileAccountName && profileAccount && profileBankName && 'bg-primary !text-black'} `}
+        >
+          계좌 인증하기
+        </button>
+      )}
 
       <BankModal
         setProfileBankName={setProfileBankName}
