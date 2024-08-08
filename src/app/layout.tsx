@@ -47,7 +47,7 @@ export default function RootLayout({
           href="/images/icon512.png"
         />
         <meta
-          content="width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5"
+          content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1, maximum-scale=5"
           name="viewport"
         />
         <meta name="apple-mobile-web-app-capable" content="yes" />
