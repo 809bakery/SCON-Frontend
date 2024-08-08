@@ -10,8 +10,8 @@ import RequiredSVG from '@/static/svg/required-star.svg'
 import UploadSVG from '@/static/svg/upload-icon.svg'
 
 interface OvenProfileRegisterProps {
-  ovenReister: OvenRegisterType
-  setOvenRegister: (value: OvenRegisterType) => void
+  ovenRegister: OvenRegisterType
+  setOvenRegister: React.Dispatch<React.SetStateAction<OvenRegisterType>>
 }
 
 interface OvenRegisterType {
@@ -19,12 +19,13 @@ interface OvenRegisterType {
   ovenDetail: string
   bankName: string
   account: string
+  wishCategory: string[]
   accountName: string
   image: string | StaticImageData
 }
 
 function OvenProfileRegister(props: OvenProfileRegisterProps) {
-  const { ovenReister, setOvenRegister } = props
+  const { ovenRegister, setOvenRegister } = props
   const [profileOvenName, setProfileOvenName] = useState<string>('')
   const [profileOvenDetail, setProfileOvenDetail] = useState<string>('')
   const [profileImage, setProfileImage] = useState<string | StaticImageData>('')
@@ -61,7 +62,7 @@ function OvenProfileRegister(props: OvenProfileRegisterProps) {
       setProfileImage(DefaultProfile)
     }
     setOvenRegister({
-      ...ovenReister,
+      ...ovenRegister,
       ovenName: profileOvenName,
       ovenDetail: profileOvenDetail,
       image: profileImage,

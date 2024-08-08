@@ -4,12 +4,14 @@ import { StaticImageData } from 'next/image'
 import { useState } from 'react'
 
 import Step from '@/components/Step.tsx'
+import OvenCateRegister from '@/features/oven/components/register/category/index.tsx'
 import OvenProfileRegister from '@/features/oven/components/register/profile/index.tsx'
 
 interface OvenRegisterType {
   ovenName: string
   ovenDetail: string
   bankName: string
+  wishCategory: string[]
   account: string
   accountName: string
   image: string | StaticImageData
@@ -19,6 +21,7 @@ function OvenRegisterPage() {
   const [ovenRegister, setOvenRegister] = useState<OvenRegisterType>({
     ovenName: '',
     ovenDetail: '',
+    wishCategory: [],
     bankName: '',
     account: '',
     accountName: '',
@@ -28,12 +31,15 @@ function OvenRegisterPage() {
     <div>
       <Step name="profile">
         <OvenProfileRegister
-          ovenReister={ovenRegister}
+          ovenRegister={ovenRegister}
           setOvenRegister={setOvenRegister}
         />
       </Step>
       <Step name="cate">
-        <div>sdf</div>
+        <OvenCateRegister
+          ovenRegister={ovenRegister}
+          setOvenRegister={setOvenRegister}
+        />
       </Step>
       <Step name="bank">
         <div>bank</div>
