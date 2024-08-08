@@ -3,6 +3,9 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
+import { BANK_LIST } from '@/constants/oven/bank/index.ts'
+import OvenBankCard from '@/features/oven/components/card/bank/index.tsx'
+import BankModal from '@/features/oven/components/register/bank/modal/index.tsx'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import Step3SVG from '@/static/svg/oven/oven-register-step3.svg'
 import RequiredSVG from '@/static/svg/required-star.svg'
@@ -27,6 +30,7 @@ function OvenBankRegister(props: OvenCateRegisterProps) {
   const [profileAccountName, setProfileAccountName] = useState<string>('')
   const [profileAccount, setProfileAccount] = useState<string>('')
   const [profileBankName, setProfileBankName] = useState<string>('')
+  const [isModal, setIsModal] = useState<boolean>(false)
   const router = useRouter()
 
   const handleAccount = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +56,7 @@ function OvenBankRegister(props: OvenCateRegisterProps) {
 
     if (!profileBankName) {
       toast.error('은행 또는 증권사를 선택해주세요.')
+      return
     }
 
     setOvenRegister({
@@ -112,14 +117,31 @@ function OvenBankRegister(props: OvenCateRegisterProps) {
           <span>은행 또는 증권사 선택</span>
           <RequiredSVG className="w-3 h-3" />
         </label>
-        <input
-          type="text"
+        <button
+          type="button"
           id="ovenbankname"
-          value={profileBankName}
-          onChange={(e) => setProfileBankName(e.target.value)}
-          className="w-full py-6 px-8 outline-none border-2 border-border rounded-xl text-2xl"
-          placeholder="예금주명 입력"
-        />
+          onClick={() => setIsModal(true)}
+          className="w-full py-6 px-8 flex items-center justify-start text-[#abb4bd] outline-none border-2 border-border rounded-xl text-2xl"
+        >
+          {profileBankName ? (
+            <span className="!text-black">{profileBankName}</span>
+          ) : (
+            <span>은행 또는 증권사 선택</span>
+          )}
+        </button>
+        <div className="flex justify-between items-center flex-wrap gap-y-2">
+          {profileAccount &&
+            !profileBankName &&
+            BANK_LIST.map((bank) => (
+              <OvenBankCard
+                key={bank.bankName}
+                image={bank.bankImage}
+                bankName={bank.bankName}
+                profileBankName={profileBankName}
+                setProfileBankName={setProfileBankName}
+              />
+            ))}
+        </div>
       </div>
       <button
         type="button"
@@ -128,6 +150,12 @@ function OvenBankRegister(props: OvenCateRegisterProps) {
       >
         다음 단계
       </button>
+
+      <BankModal
+        setProfileBankName={setProfileBankName}
+        setIsModal={setIsModal}
+        isModal={isModal}
+      />
     </div>
   )
 }
