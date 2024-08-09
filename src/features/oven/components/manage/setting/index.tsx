@@ -1,4 +1,26 @@
+'use client'
+
+import { StaticImageData } from 'next/image'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+
+import { DUMMY_OVEN_INFO } from '@/constants/oven/manage/index.ts'
+
+interface UserType {
+  nickname: string
+  email: string
+  image: string | StaticImageData
+  isOvener: boolean
+}
+
 function OvenSetting() {
+  const router = useRouter()
+  const [loginUser, setLoginUser] = useState<UserType>()
+
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem('user')!))
+  }, [])
+
   return (
     <div className="py-8 bg-[#FAFAFA] text-xl flex flex-col gap-y-8">
       <div>
@@ -8,12 +30,14 @@ function OvenSetting() {
 
         <button
           type="button"
+          onClick={() => router.push('/oven/[name]/profile')}
           className="w-full px-16 py-5 bg-white text-disabled border-border border-b text-start"
         >
           오븐 프로필 수정하기
         </button>
         <button
           type="button"
+          onClick={() => router.push('/oven/[name]/members')}
           className="w-full px-16 py-5 bg-white text-disabled border-border border-b text-start"
         >
           오븐 멤버
@@ -27,12 +51,14 @@ function OvenSetting() {
 
         <button
           type="button"
+          onClick={() => router.push('/oven/[name]/stage')}
           className="w-full px-16 py-5 bg-white text-disabled border-border border-b text-start"
         >
           스테이지 등록하기
         </button>
         <button
           type="button"
+          onClick={() => router.push('/oven/[name]/stage/manage')}
           className="w-full px-16 py-5 bg-white text-disabled border-border border-b text-start"
         >
           등록된 스테이지 관리 (QR리더기 / 예매자 명단 확인)
@@ -42,16 +68,20 @@ function OvenSetting() {
       <div className="mt-20">
         <button
           type="button"
+          onClick={() => router.push('/oven/[name]/quit')}
           className="w-full px-16 py-5 bg-white text-warning font-bold border-border border-y text-start"
         >
           오븐 탈퇴
         </button>
-        <button
-          type="button"
-          className="w-full px-16 py-5 bg-white text-warning font-bold border-border border-b text-start"
-        >
-          오븐 삭제
-        </button>
+        {DUMMY_OVEN_INFO.leader === loginUser?.nickname && (
+          <button
+            type="button"
+            onClick={() => router.push('/oven/[name]/delete')}
+            className="w-full px-16 py-5 bg-white text-warning font-bold border-border border-b text-start"
+          >
+            오븐 삭제
+          </button>
+        )}
       </div>
     </div>
   )
