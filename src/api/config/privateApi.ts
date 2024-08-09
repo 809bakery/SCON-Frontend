@@ -1,7 +1,8 @@
 import axios from 'axios'
-import { cookies } from 'next/headers'
+// import { cookies } from 'next/headers'
 
 import { ROOT_API_URL } from '@/api/config/requestUrl.ts'
+import { getAccessToken } from '@/utils/cookie/index.ts'
 
 export const privateApi = axios.create({
   baseURL: ROOT_API_URL,
@@ -16,8 +17,7 @@ privateApi.interceptors.request.use(
     const authHeader = config.headers['x-auth-not-required']
     if (authHeader) return config
 
-    const cookieStore = cookies()
-    const accessToken = cookieStore.get('access_token')
+    const accessToken = getAccessToken()
     if (!accessToken) return config
     config.headers.Authorization = `Bearer ${accessToken}`
 
