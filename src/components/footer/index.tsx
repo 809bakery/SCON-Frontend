@@ -13,9 +13,23 @@ function Footer() {
         </p>
       </div>
       <div className="text-sm font-bold flex gap-x-2">
-        <span className="underline cursor-pointer">이용약관</span>
+        <a
+          target="_blank"
+          href="https://hazzz.notion.site/339bc8aeb14a40f9a4a2e44c95764474?pvs=4"
+          className="underline cursor-pointer"
+          rel="noreferrer"
+        >
+          이용약관
+        </a>
         <span>·</span>
-        <span className="underline cursor-pointer">개인정보처리방침</span>
+        <a
+          target="_blank"
+          href="https://hazzz.notion.site/437262d8acef49e9b87641f5d1f64fe6?pvs=4"
+          className="underline cursor-pointer"
+          rel="noreferrer"
+        >
+          개인정보처리방침
+        </a>
       </div>
     </div>
   )

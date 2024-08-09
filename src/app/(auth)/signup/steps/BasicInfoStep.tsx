@@ -389,7 +389,15 @@ export default function BasicInfoStep() {
                       )}
                     </div>
                     <p>
-                      서비스 이용약관에 동의합니다.{' '}
+                      <a
+                        target="_blank"
+                        href="https://hazzz.notion.site/339bc8aeb14a40f9a4a2e44c95764474?pvs=4"
+                        className="underline cursor-pointer"
+                        rel="noreferrer"
+                      >
+                        서비스 이용약관
+                      </a>{' '}
+                      에 동의합니다.{' '}
                       <span className="text-warning">(필수)</span>
                     </p>
                   </div>
@@ -406,7 +414,15 @@ export default function BasicInfoStep() {
                       )}
                     </div>
                     <p>
-                      개인정보의 수집 · 이용에 동의합니다.{' '}
+                      <a
+                        target="_blank"
+                        href="https://hazzz.notion.site/68dd9b13dffc4fdb86639950709ab67a"
+                        className="underline cursor-pointer"
+                        rel="noreferrer"
+                      >
+                        개인정보의 수집 · 이용
+                      </a>{' '}
+                      에 동의합니다.{' '}
                       <span className="text-warning">(필수)</span>
                     </p>
                   </div>
@@ -423,7 +439,14 @@ export default function BasicInfoStep() {
                       )}
                     </div>
                     <p>
-                      마케팅 수집 · 홍보 목적의 개인정보 수집 및 이용에 동의
+                      <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href="https://hazzz.notion.site/ce743b5781f6432a9f4417128f5e73e2?pvs=4"
+                        className="underline cursor-pointer"
+                      >
+                        마케팅 수집 · 홍보 목적의 개인정보 수집 및 이용
+                      </a>
                       합니다. (선택)
                     </p>
                   </div>
