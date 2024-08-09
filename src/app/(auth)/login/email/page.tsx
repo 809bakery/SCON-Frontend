@@ -1,17 +1,20 @@
+/* eslint-disable @typescript-eslint/dot-notation */
+
 'use client'
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { publicApi } from '@/api/config/publicApi.ts'
 import AlertButton from '@/components/AlertButton/index.tsx'
-import { DUMMY_USER } from '@/constants/user/index.ts'
 import XMarkSVG from '@/static/svg/close-circle-icon.svg'
 import EyesOffSVG from '@/static/svg/eye-close.svg'
 import EyesOnSVG from '@/static/svg/eye-open.svg'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import RememberOnSVG from '@/static/svg/square-fill-icon.svg'
 import RememberOffSVG from '@/static/svg/square-unfill-icon.svg'
+import { setToken } from '@/utils/cookie/index.ts'
 
 export default function EmailLoginPage() {
   const router = useRouter()
@@ -31,16 +34,31 @@ export default function EmailLoginPage() {
     }
   }
 
-  const handleSubmit = () => {
-    if (email === 'admin' && password === '1234') {
-      // eslint-disable-next-line no-alert
-      alert(`어서오세요 관리자님🥳 ${isChecked ? '| 로그인 유지' : ''}`)
-      sessionStorage.setItem('user', JSON.stringify(DUMMY_USER))
-      router.push('/main')
-    }
+  const handleSubmit = async () => {
+    try {
+      const response = await publicApi.post('/api/auth/log-in', {
+        email,
+        password,
+      })
 
-    // eslint-disable-next-line no-alert
-    else alert('아이디 또는 비밀번호가 일치하지 않습니다.')
+      if (response.status === 200) {
+        // 헤더에서 토큰 추출
+        const accessToken = response.data['Authorization']
+        const refreshToken = response.headers['Authorization-refresh']
+
+        // 쿠키에 토큰 저장
+        setToken('ACCESS_TOKEN', accessToken)
+        if (isChecked) {
+          setToken('REFRESH_TOKEN', refreshToken)
+        }
+
+        router.push('/main')
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error)
+      alert('아이디 또는 비밀번호가 일치하지 않습니다.')
+    }
   }
 
   return (
