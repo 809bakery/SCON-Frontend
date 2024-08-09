@@ -6,13 +6,13 @@ import OvenProfileCard from '@/features/oven/components/manage/profile/card/inde
 
 function OvenProfile() {
   return (
-    <div className="px-8 py-11 flex flex-col gap-y-8">
-      <div className="mx-8 p-5 border rounded-xl border-border">
+    <div className="px-8 py-11 flex flex-col gap-y-8 bg-[#FAFAFA]">
+      <div className="bg-white mx-8 p-5 border rounded-xl border-border">
         {DUMMY_OVEN_INFO.ovenDetail}
       </div>
 
       <h3 className="text-2xl font-bold">기본정보</h3>
-      <div className="py-2 border border-border rounded-xl flex flex-col px-6">
+      <div className="bg-white py-2 border border-border rounded-xl flex flex-col px-6">
         <p className="p-2 flex items-center">
           <span className="w-[6.25rem]">팔로우</span>
           <span className="flex-1">{DUMMY_OVEN_INFO.followCount}</span>

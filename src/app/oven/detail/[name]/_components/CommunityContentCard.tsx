@@ -115,7 +115,7 @@ export default function CommunityContentCard({
   }
 
   return (
-    <div className="w-full border border-border rounded-xl px-5">
+    <div className="w-full border bg-white border-border rounded-xl px-5">
       {/* 기본정보 */}
       <div className="flex flex-col gap-4">
         <div className="pt-5 flex items-center">
