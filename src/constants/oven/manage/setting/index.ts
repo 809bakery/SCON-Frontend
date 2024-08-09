@@ -6,48 +6,48 @@ import DummyOvenProfile4 from '@/static/img/dummy/search/dummy-oven-profile4.jpg
 import DummyOvenProfile7 from '@/static/img/dummy/search/dummy-oven-profile7.jpg'
 import DummyOvenProfile8 from '@/static/img/dummy/search/dummy-oven-profile8.jpg'
 
-type UserType = {
+interface UserType {
   userId: number
   email: string
   nickname: string
   image: string | StaticImageData
-  role: string
+  isOven: boolean
 }
 
-export const DUMMY_INVITED_USERS: UserType[] = [
+export const DUMMY_MANAGE_MEMBERS: UserType[] = [
   {
     userId: 2,
     email: 'jingbuga@wakenter.wakgood',
     nickname: '징버거',
     image: DummyOvenProfile2,
-    role: 'LEADER',
+    isOven: true,
   },
   {
     userId: 3,
     email: 'viichan@wakenter.wakgood',
     nickname: '비챤',
     image: DummyOvenProfile8,
-    role: 'MEMBER',
+    isOven: true,
   },
   {
     userId: 11,
     email: 'aine@wakenter.wakgood',
     nickname: '아이네',
     image: DummyOvenProfile1,
-    role: 'MEMBER',
+    isOven: true,
   },
   {
     userId: 31,
     email: 'lilpa@wakenter.wakgood',
     nickname: '릴파',
     image: DummyOvenProfile4,
-    role: 'MEMBER',
+    isOven: true,
   },
   {
     userId: 21,
     email: 'gosegu@wakenter.wakgood',
     nickname: '고세구',
     image: DummyOvenProfile7,
-    role: 'MEMBER',
+    isOven: false,
   },
 ]
