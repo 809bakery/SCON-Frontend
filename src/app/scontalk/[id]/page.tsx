@@ -106,8 +106,9 @@ export default function SconTalkPage() {
           </p>
         </div>
         <div className="flex flex-col gap-4">
-          {chunkedContent.map((chats) => (
-            <ChatChunk chats={chats} />
+          {chunkedContent.map((chats, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <ChatChunk key={index} chats={chats} />
           ))}
         </div>
       </div>

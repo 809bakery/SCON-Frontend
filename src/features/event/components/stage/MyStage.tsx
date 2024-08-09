@@ -1,38 +1,40 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
+import { privateApi } from '@/api/config/privateApi.ts'
 import StageList from '@/features/event/components/stage/StageList.tsx'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
 
-interface UserType {
-  nickname: string
-  email: string
-  image: string
-  isOvener: boolean
-}
+// interface UserType {
+//   nickname: string
+//   email: string
+//   image: string
+//   isOvener: boolean
+// }
 
 export default function MyStage() {
   const router = useRouter()
   const [category, setCategory] = useState<StageCategory>('all')
-  const [loginUser, setLoginUser] = useState<UserType>()
+  const { data: user, isLoading: userIsLoading } = useQuery({
+    queryKey: ['user-info'],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/user/info')
+      return response.data
+    },
+  })
 
-  useEffect(() => {
-    setLoginUser(JSON.parse(sessionStorage.getItem('user')!))
-  }, [])
-
-  const handleNavigateLogin = () => {
-    if (!loginUser) {
-      router.push('/login')
-    }
+  if (userIsLoading) {
+    return <div>loading...</div>
   }
 
   return (
-    <div className="flex flex-col gap-x-3">
+    <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1">
         <h1 className="font-bold text-2.5xl">
-          {loginUser ? `${loginUser?.nickname}'s` : 'MY'} STAGE
+          {user ? `${user?.nickname}'s` : 'MY'} STAGE
         </h1>
         <h2 className="font-medium text-base flex items-center justify-between">
           <span>
@@ -47,7 +49,7 @@ export default function MyStage() {
           </button>
         </h2>
       </div>
-      {loginUser ? (
+      {user ? (
         <StageList category={category} setCategory={setCategory} />
       ) : (
         <div className="w-full flex bg-yellow bg-opacity-40 justify-center items-center rounded-xl">
@@ -58,7 +60,6 @@ export default function MyStage() {
             <button
               type="button"
               className="bg-primary rounded-xl px-4 py-2 font-normal text-2xl"
-              onClick={handleNavigateLogin}
             >
               로그인
             </button>

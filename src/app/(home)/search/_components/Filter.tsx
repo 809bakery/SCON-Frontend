@@ -1,5 +1,6 @@
 'use client'
 
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 import { FilterType } from '@/constants/search/index.ts'
@@ -18,6 +19,9 @@ export default function Filter({
 }: FilterProps) {
   const filterRef = useRef<HTMLDivElement>(null)
   const [openFilter, setOpenFilter] = useState<boolean>(false)
+  const { replace } = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -34,6 +38,22 @@ export default function Filter({
       document.removeEventListener('click', handleClickOutside)
     }
   }, [filterRef])
+
+  useEffect(() => {
+    function handleFilter(filter: string | undefined) {
+      const params = new URLSearchParams(searchParams)
+      const selectedFilter = filterList.find((f) => f.label === filter)
+      if (selectedFilter) {
+        params.set('sort', selectedFilter?.name as string)
+      } else {
+        params.delete('sort')
+      }
+
+      replace(`${pathname}?${params.toString()}`)
+    }
+
+    handleFilter(filterQuery)
+  }, [filterQuery, filterList, pathname, replace, searchParams])
 
   const handleChangeFilter = (filterName: string) => {
     setFilterQuery(filterName)

@@ -1,3 +1,6 @@
+import { useQuery } from '@tanstack/react-query'
+
+import { privateApi } from '@/api/config/privateApi.ts'
 import { DUMMY_POSTER_DATA } from '@/constants/dummy.ts'
 import Card from '@/features/event/components/stage/Card/index.tsx'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
@@ -8,9 +11,22 @@ interface StageListProps {
 }
 
 export default function StageList({ category, setCategory }: StageListProps) {
+  const { isLoading: stageIsLoading } = useQuery({
+    queryKey: ['list_my'],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/event/main/liked-events')
+      return response.data
+    },
+  })
+
   const handleClick = (cat: StageCategory) => {
     setCategory(cat)
   }
+
+  if (stageIsLoading) {
+    return <div>loading...</div>
+  }
+
   return (
     <>
       <div className="w-full flex space-x-4 justify-start text-xl mt-5">

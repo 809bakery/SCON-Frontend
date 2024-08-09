@@ -1,14 +1,28 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { publicApi } from '@/api/config/publicApi.ts'
 import StageList from '@/features/event/components/stage/StageList.tsx'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
 
 export default function RecommendStage() {
   const router = useRouter()
+  const { isLoading } = useQuery({
+    queryKey: ['list_recommend'],
+    queryFn: async () => {
+      const response = await publicApi.get('/api/event/main/recommended-events')
+      return response.data
+    },
+  })
+
   const [category, setCategory] = useState<StageCategory>('all')
+
+  if (isLoading) {
+    return <div>loading...</div>
+  }
 
   return (
     <div className="flex flex-col">

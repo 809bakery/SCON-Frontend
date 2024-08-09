@@ -1,14 +1,27 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { publicApi } from '@/api/config/publicApi.ts'
 import StageList from '@/features/event/components/stage/StageList.tsx'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
 
 export default function AllStage() {
   const router = useRouter()
   const [category, setCategory] = useState<StageCategory>('all')
+  const { isLoading } = useQuery({
+    queryKey: ['list_all'],
+    queryFn: async () => {
+      const response = await publicApi.get('/api/event/list?category=all')
+      return response.data
+    },
+  })
+
+  if (isLoading) {
+    return <div>loading...</div>
+  }
 
   return (
     <div className="flex flex-col">
