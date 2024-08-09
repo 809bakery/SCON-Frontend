@@ -62,7 +62,11 @@ function SideBar() {
         <SideBarMenu text="스콘톡" url="/scontalk" />
         <SideBarMenu text="마이페이지" url="/mypage" />
 
-        {loginUser?.isOvener && <SideBarMenu text="오븐 관리하기" />}
+        {loginUser?.isOvener ? (
+          <SideBarMenu text="오븐 관리하기" url="/oven" />
+        ) : (
+          <SideBarMenu text="오브너 등록하기" url="/signup/oven" />
+        )}
         {loginUser && (
           <button
             type="button"

@@ -14,6 +14,8 @@ interface CommunityContentCardProps {
   tearCount?: number
   cheerCount?: number
   createdAt?: string
+  nickname: string
+  profile: string | StaticImageData
 }
 
 export default function CommunityContentCard({
@@ -25,6 +27,8 @@ export default function CommunityContentCard({
   tearCount,
   cheerCount,
   createdAt,
+  nickname,
+  profile,
 }: CommunityContentCardProps) {
   const contentRef = useRef<HTMLSpanElement>(null)
   const [isExpanded, setIsExpanded] = useState(false)
@@ -111,19 +115,21 @@ export default function CommunityContentCard({
   }
 
   return (
-    <div className="w-full border border-border rounded-xl px-5">
+    <div className="w-full border bg-white border-border rounded-xl px-5">
       {/* 기본정보 */}
       <div className="flex flex-col gap-4">
         <div className="pt-5 flex items-center">
           <Image
-            src="/dummy/dummy-oven-profile.jpg"
+            src={profile}
             width={60}
             height={60}
             className="w-[5rem] h-[5rem] md:w-[4.5rem] md:h-[4.5rem] rounded-full"
             alt="profile"
           />
           <div className="ml-3 flex flex-col">
-            <span className="font-bold text-xl leading-7">주르르</span>
+            <span className="font-bold text-xl leading-7">
+              {nickname || '주르르'}
+            </span>
             <span className="font-medium text-base leading-6 text-disabled">
               {createdAt}
             </span>
