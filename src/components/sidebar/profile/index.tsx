@@ -18,7 +18,9 @@ function SideBarProfile(props: SideBarProfileProps) {
       {image && (
         <Image
           src={image!}
-          className="w-14 h-14 rounded-full"
+          width={60}
+          height={60}
+          className="w-15 h-15 rounded-full object-cover object-center"
           alt="프로필 이미지"
         />
       )}

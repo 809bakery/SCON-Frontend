@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { publicApi } from '@/api/config/publicApi.ts'
+import Loader from '@/components/loader/index.tsx'
 import StageList from '@/features/event/components/stage/StageList.tsx'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
 
@@ -18,10 +19,6 @@ export default function AllStage() {
       return response.data
     },
   })
-
-  if (isLoading) {
-    return <div>loading...</div>
-  }
 
   return (
     <div className="flex flex-col">
@@ -38,7 +35,11 @@ export default function AllStage() {
           </button>
         </h2>
       </div>
-      <StageList category={category} setCategory={setCategory} />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <StageList category={category} setCategory={setCategory} />
+      )}
     </div>
   )
 }

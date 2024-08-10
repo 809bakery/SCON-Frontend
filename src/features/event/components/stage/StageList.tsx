@@ -11,7 +11,7 @@ interface StageListProps {
 }
 
 export default function StageList({ category, setCategory }: StageListProps) {
-  const { isLoading: stageIsLoading } = useQuery({
+  useQuery({
     queryKey: ['list_my'],
     queryFn: async () => {
       const response = await privateApi.get('/api/event/main/liked-events')
@@ -21,10 +21,6 @@ export default function StageList({ category, setCategory }: StageListProps) {
 
   const handleClick = (cat: StageCategory) => {
     setCategory(cat)
-  }
-
-  if (stageIsLoading) {
-    return <div>loading...</div>
   }
 
   return (

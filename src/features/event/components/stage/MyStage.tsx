@@ -18,17 +18,13 @@ import { StageCategory } from '@/features/event/types/StageCategory.ts'
 export default function MyStage() {
   const router = useRouter()
   const [category, setCategory] = useState<StageCategory>('all')
-  const { data: user, isLoading: userIsLoading } = useQuery({
+  const { data: user } = useQuery({
     queryKey: ['user-info'],
     queryFn: async () => {
       const response = await privateApi.get('/api/user/info')
       return response.data
     },
   })
-
-  if (userIsLoading) {
-    return <div>loading...</div>
-  }
 
   return (
     <div className="flex flex-col gap-5">
@@ -60,6 +56,7 @@ export default function MyStage() {
             <button
               type="button"
               className="bg-primary rounded-xl px-4 py-2 font-normal text-2xl"
+              onClick={() => router.push('/login')}
             >
               로그인
             </button>

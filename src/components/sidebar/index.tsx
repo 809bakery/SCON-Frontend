@@ -1,29 +1,24 @@
 'use client'
 
-import { StaticImageData } from 'next/image'
+import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
 
+import { privateApi } from '@/api/config/privateApi.ts'
 import SideBarMenu from '@/components/sidebar/item/index.tsx'
 import SideBarProfile from '@/components/sidebar/profile/index.tsx'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import SideBarCloseSVG from '@/static/svg/sidebar/sidebar-close.svg'
 
-interface UserType {
-  nickname: string
-  email: string
-  image: string | StaticImageData
-  isOvener: boolean
-}
-
 function SideBar() {
-  const [loginUser, setLoginUser] = useState<UserType>()
   const router = useRouter()
-
-  useEffect(() => {
-    setLoginUser(JSON.parse(sessionStorage.getItem('user')!))
-  }, [])
+  const { data: user } = useQuery({
+    queryKey: ['user-info'],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/user/info')
+      return response.data
+    },
+  })
 
   const logout = () => {
     sessionStorage.removeItem('user')
@@ -32,7 +27,7 @@ function SideBar() {
 
   return (
     <div>
-      <div className={`px-7 flex flex-col gap-y-8 ${loginUser && 'mb-8'}`}>
+      <div className={`px-7 flex flex-col gap-y-8 ${user && 'mb-8'}`}>
         <div className="py-8  flex items-center justify-between">
           <Link href="/main">
             <LogoSVG className="w-[6.5625rem] h-8" />
@@ -43,11 +38,11 @@ function SideBar() {
             onClick={() => router.back()}
           />
         </div>
-        {loginUser && (
+        {user && (
           <SideBarProfile
-            nickname={loginUser?.nickname}
-            isOvener={loginUser?.isOvener}
-            image={loginUser?.image}
+            nickname={user?.nickname}
+            isOvener={user?.isOvener}
+            image={user?.image}
           />
         )}
       </div>
@@ -62,12 +57,12 @@ function SideBar() {
         <SideBarMenu text="스콘톡" url="/scontalk" />
         <SideBarMenu text="마이페이지" url="/mypage" />
 
-        {loginUser?.isOvener ? (
+        {user?.isOvener ? (
           <SideBarMenu text="오븐 관리하기" url="/oven" />
         ) : (
           <SideBarMenu text="오브너 등록하기" url="/signup/oven" />
         )}
-        {loginUser && (
+        {user && (
           <button
             type="button"
             onClick={logout}
@@ -79,7 +74,7 @@ function SideBar() {
       </div>
 
       <div className="w-full px-14 my-[9.375rem]">
-        {!loginUser && (
+        {!user && (
           <button
             type="button"
             onClick={() => router.push('/login')}
