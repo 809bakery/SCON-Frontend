@@ -1,3 +1,5 @@
+'use client'
+
 import A2HSModal from '@/components/a2hs/index.tsx'
 import Carousel from '@/components/Carousel.tsx'
 import Footer from '@/components/footer/index.tsx'

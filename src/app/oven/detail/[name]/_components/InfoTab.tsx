@@ -54,6 +54,7 @@ export default function InfoTab() {
           {DummyStageList &&
             DummyStageList.map((stage) => (
               <StageCard
+                key={stage.id}
                 title={stage.title}
                 location={stage.location}
                 time={stage.time}

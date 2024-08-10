@@ -62,7 +62,10 @@ export default function PickStageList() {
       </div>
       <div className="py-10 px-7 flex flex-col gap-5">
         {DummyStagePickList.map((stage) => (
-          <div className="w-full rounded-xl border border-border">
+          <div
+            className="w-full rounded-xl border border-border"
+            key={stage.time}
+          >
             <Image
               src={stage.image}
               width={600}

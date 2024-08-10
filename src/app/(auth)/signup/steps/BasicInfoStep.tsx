@@ -5,6 +5,7 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { publicApi } from '@/api/config/publicApi.ts'
 import Timer from '@/components/timer.tsx'
 import { emailRegExp, passwordRegExp } from '@/constants/regex/index.ts'
 import Checked from '@/static/svg/checked-icon.svg'
@@ -15,7 +16,13 @@ import Step1SVG from '@/static/svg/progress/progress-step1.svg'
 import Required from '@/static/svg/required-star.svg'
 import UnChecked from '@/static/svg/unchecked-icon.svg'
 
+import useSignupStore from '@/store/SignupStore.ts'
+
 export default function BasicInfoStep() {
+  const setType = useSignupStore((state) => state.setType)
+  const setEmailState = useSignupStore((state) => state.setEmail)
+  const setPasswordState = useSignupStore((state) => state.setPassword)
+
   const router = useRouter()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -49,12 +56,31 @@ export default function BasicInfoStep() {
     false,
   ])
 
-  const handleButtonClick = () => {
-    setIsEmailButtonClicked(true)
-    setEmailConfirmErrorMessages(
-      `메일 전송이 완료되었습니다.\n메일 발송이 되지 않을시 재전송 버튼을 눌러주세요.`,
+  const checkEmailConfirm = async (code: string) => {
+    const response = await publicApi.get(
+      `/api/auth/mail/verify/${email}/${code}`,
     )
-    setTimerKey((prevKey) => prevKey + 1)
+
+    if (response.status === 200) {
+      setIsEmailConfirmSuccess(true)
+      setEmailConfirmSuccessMessage(true)
+    } else {
+      setEmailConfirmErrorMessages('인증 코드를 다시 확인해주세요.')
+      setIsEmailConfirmSuccess(false)
+    }
+  }
+
+  const handleButtonClick = async () => {
+    setIsEmailButtonClicked(true)
+    const response = await publicApi.get(`/api/auth/mail/send/${email}`)
+    if (response.status === 200) {
+      setEmailConfirmErrorMessages(
+        `메일 전송이 완료되었습니다.\n메일 발송이 되지 않을시 재전송 버튼을 눌러주세요.`,
+      )
+      setTimerKey((prevKey) => prevKey + 1)
+      return
+    }
+    setEmailConfirmErrorMessages('인증 코드 전송에 실패했습니다.')
   }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,12 +102,9 @@ export default function BasicInfoStep() {
       setEmailConfirm(value)
       if (value.length === 0) {
         setEmailConfirmErrorMessages('')
-      } else if (value !== 'ABCDE') {
-        setEmailConfirmErrorMessages('인증 코드를 다시 확인해주세요.')
       } else {
         setEmailConfirmErrorMessages('')
-        setEmailConfirmSuccessMessage(true)
-        setIsEmailConfirmSuccess(true)
+        checkEmailConfirm(value)
       }
     } else if (name === 'password') {
       setPassword(value)
@@ -147,6 +170,13 @@ export default function BasicInfoStep() {
     } else if (type === 'term4') {
       setTermsOfService((prev) => [...prev.slice(0, 4), !prev[4]])
     }
+  }
+
+  const handleNextStep = () => {
+    setEmailState(email)
+    setPasswordState(password)
+    setType('credentials')
+    router.push('/signup/profile')
   }
 
   const isDisabled =
@@ -461,7 +491,7 @@ export default function BasicInfoStep() {
         type="button"
         className={`w-full text-center font-normal text-2xl py-7 rounded-xl mt-8 ${isDisabled ? 'btn-disabled' : 'bg-primary'}`}
         disabled={isDisabled}
-        onClick={() => router.push('/signup/profile')}
+        onClick={handleNextStep}
       >
         <span>다음 단계</span>
       </button>

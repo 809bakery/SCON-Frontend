@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { publicApi } from '@/api/config/publicApi.ts'
 import { nicknameRegExp } from '@/constants/regex/index.ts'
 import DefaultProfile from '@/static/img/dummy/profile/default-profile.jpg'
 import Checked from '@/static/svg/checked-icon.svg'
@@ -15,7 +16,11 @@ import Step2SVG from '@/static/svg/progress/progress-step2.svg'
 import Required from '@/static/svg/required-star.svg'
 import UploadSVG from '@/static/svg/upload-icon.svg'
 
+import useSignupStore from '@/store/SignupStore.ts'
+
 export default function ProfileStep() {
+  const setNicknameState = useSignupStore((state) => state.setNickname)
+
   const router = useRouter()
   const [nickname, setNickname] = useState<string>('')
   const [nicknameErrorMessage, setNicknameErrorMessage] = useState<
@@ -47,6 +52,20 @@ export default function ProfileStep() {
     }
   }
 
+  const checkNicknameDuplicated = async (nickName: string) => {
+    try {
+      const response = await publicApi.get(`/api/user/nickname/${nickName}`)
+      if (response.status === 200) {
+        setIsNicknameValid(true)
+        setIsNicknameCheckSuccess(true)
+      }
+    } catch (error) {
+      setNicknameErrorMessage('이미 사용중인 닉네임입니다.')
+      setIsNicknameValid(false)
+      setIsNicknameCheckSuccess(false)
+    }
+  }
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
@@ -54,8 +73,7 @@ export default function ProfileStep() {
     setNickname(value)
     if (nicknameRegExp.test(value)) {
       setNicknameErrorMessage(null)
-      setIsNicknameValid(true)
-      setIsNicknameCheckSuccess(true)
+      checkNicknameDuplicated(value)
     } else if (value.length === 0) {
       setNicknameErrorMessage(null)
       setIsNicknameValid(false)
@@ -65,6 +83,11 @@ export default function ProfileStep() {
       setIsNicknameValid(false)
       setIsNicknameCheckSuccess(false)
     }
+  }
+
+  const handleNextStep = () => {
+    setNicknameState(nickname)
+    router.push('/signup/more')
   }
 
   const isDisabled = !isNicknameCheckSuccess
@@ -172,7 +195,7 @@ export default function ProfileStep() {
         type="button"
         className={`w-full text-center font-normal text-2xl py-7 rounded-xl mt-8 ${isDisabled ? 'btn-disabled' : 'bg-primary'}`}
         disabled={isDisabled}
-        onClick={() => router.push('/signup/more')}
+        onClick={handleNextStep}
       >
         <span>다음 단계</span>
       </button>

@@ -1,3 +1,6 @@
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
+
 interface TabProps {
   name: string
   label: string
@@ -13,9 +16,24 @@ export default function Tab({
   tabCount,
   setActiveTab,
 }: TabProps) {
+  const { replace } = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
   const handleChangeTab = (tab: string) => {
     setActiveTab(tab)
   }
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams)
+    if (params.get('tab') !== activeTab) {
+      params.set('tab', activeTab)
+      params.delete('keyword')
+      params.delete('sort')
+    }
+
+    replace(`${pathname}?${params.toString()}`)
+  }, [activeTab, pathname, replace, searchParams])
 
   return (
     <div

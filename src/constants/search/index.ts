@@ -41,17 +41,17 @@ export type StageType = {
 export const SearchFilterList: FilterType[] = [
   {
     id: 1,
-    name: '',
+    name: 'sales',
     label: '판매많은순',
   },
   {
     id: 2,
-    name: '',
+    name: 'imminent',
     label: '공연임박순',
   },
   {
     id: 3,
-    name: '',
+    name: 'end',
     label: '마감된공연',
   },
 ]
