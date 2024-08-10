@@ -22,6 +22,9 @@ const nextConfig = {
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
+  images: {
+    domains: ['s3.ap-northeast-2.amazonaws.com'],
+  },
 }
 
 export default withPWA(nextConfig)
