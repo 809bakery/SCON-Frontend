@@ -21,7 +21,7 @@ function OvenSettingStage() {
       {DUMMY_OVEN_PROFILE.map((stage) => (
         <OvenManageCard
           key={stage.createdAt}
-          className="flex flex-col gap-y-4 items-center"
+          className="px-8 py-5 flex flex-col gap-y-4 items-center"
         >
           <h3 className="text-xl font-bold">{stage.title}</h3>
 

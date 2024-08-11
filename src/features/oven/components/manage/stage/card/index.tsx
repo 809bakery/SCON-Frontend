@@ -6,9 +6,7 @@ interface OvenManageCardProps {
 function OvenManageCard(props: OvenManageCardProps) {
   const { children, className } = props
   return (
-    <div
-      className={`${className} px-8 py-5 border border-border rounded-xl flex flex-col gap-y-4`}
-    >
+    <div className={`${className} border border-border rounded-xl`}>
       {children}
     </div>
   )
