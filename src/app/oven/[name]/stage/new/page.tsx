@@ -1,5 +1,8 @@
 'use client'
 
+import dynamic from 'next/dynamic'
+import Image, { StaticImageData } from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -7,6 +10,10 @@ import OvenManageCalendar from '@/features/oven/components/manage/stage/calendar
 import OvenManageCard from '@/features/oven/components/manage/stage/card/index.tsx'
 import SquareFillSVG from '@/static/svg/square-fill-icon.svg'
 import SquareUnfillSVG from '@/static/svg/square-unfill-icon.svg'
+import 'react-quill/dist/quill.snow.css'
+import CameraSVG from '@/static/svg/stage/stage-camera-icon.svg'
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 interface EpsiodeType {
   episodeNumber: number
@@ -15,14 +22,16 @@ interface EpsiodeType {
 }
 
 function OvenNewStagePage() {
+  const router = useRouter()
   const [stageName, setStageName] = useState<string>('')
   const [stageSubName, setStageSubName] = useState<string>('')
-  // const [category, setCategory] = useState<boolean[]>([
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  // ])
+  const [profile, setProfile] = useState<string | StaticImageData>('')
+  const [category, setCategory] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+  ])
   const [cost, setCost] = useState<number>(0)
   const [location, setLocation] = useState<string>('')
   const [headCount, setHeadCount] = useState<number>(0)
@@ -34,7 +43,65 @@ function OvenNewStagePage() {
 
   const [episodes, setEpisodes] = useState<EpsiodeType[]>([])
 
-  // const addEpisode = () => {}
+  const [detail, setDetail] = useState('')
+
+  const submitForm = () => {
+    if (
+      !stageName ||
+      !stageSubName ||
+      !profile ||
+      !location ||
+      !cost ||
+      !headCount ||
+      !runningTime ||
+      !detail ||
+      checkEpsiodes
+    ) {
+      toast.error('미작성 항목이 있습니다.')
+      return
+    }
+
+    const confirm = window.confirm(
+      '한 번 등록 후에는 수정이 어렵습니다.\n정말 이 내용으로 등록하시겠습니까?',
+    )
+
+    if (confirm) {
+      router.back()
+    }
+  }
+
+  const checkEpsiodes = episodes.some(
+    (episode) => episode.time === '' || episode.reserveTime === '',
+  )
+
+  const handleCategory = (index: number) => {
+    setCategory((prev) => {
+      const newCategory = [...prev]
+      newCategory[index] = !newCategory[index]
+      return newCategory
+    })
+  }
+
+  const handleProfileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { files },
+    } = e
+
+    if (files?.length === 0) {
+      return
+    }
+
+    const file = files?.[0]
+    const fileReader = new FileReader()
+    fileReader.readAsDataURL(file as Blob)
+    fileReader.onloadend = (finishedEvent) => {
+      const {
+        currentTarget: { result },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      }: any = finishedEvent
+      setProfile(result)
+    }
+  }
 
   const handleRunningTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -86,7 +153,33 @@ function OvenNewStagePage() {
           <span>일반 포스터 규격(A2,A4)사이즈 등록을 권장드립니다.</span>
         </div>
         <div className="py-5 border border-border rounded-xl flex items-center justify-center">
-          포스터
+          <label
+            htmlFor="oven-profile-file"
+            className="cursor-pointer max-h-[21.25rem] w-60 flex items-center justify-center"
+          >
+            {profile === '' ? (
+              <div className="w-full flex flex-col gap-y-2 items-center py-32 bg-[#E5E5ED]  rounded-xl">
+                <CameraSVG className="w-6 h-6" />
+                <span className="text-xs underline">파일 선택</span>
+              </div>
+            ) : (
+              <Image
+                src={profile}
+                alt="stage-profile"
+                width={240}
+                height={340}
+                className="w-52 h-52 rounded-xl"
+              />
+            )}
+          </label>
+          <input
+            type="file"
+            name="oven-profile-file"
+            id="oven-profile-file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleProfileImage}
+          />
         </div>
       </OvenManageCard>
 
@@ -123,7 +216,30 @@ function OvenNewStagePage() {
       <OvenManageCard className="p-5 flex flex-col gap-y-3">
         <h3 className="text-xl font-bold">스테이지 카테고리 선택</h3>
 
-        <div />
+        <div className="flex flex-wrap justify-between items-center gap-y-2">
+          {category.map((item, index) => (
+            <button
+              type="button"
+              // eslint-disable-next-line react/no-array-index-key
+              key={`stage-category-${index}`}
+              id={`stage-category-${index}`}
+              onClick={() => handleCategory(index)}
+              className="w-[45%] py-1 px-2 flex-shrink-0 flex items-center gap-x-4"
+            >
+              {item ? (
+                <SquareFillSVG className="w-6 h-6" />
+              ) : (
+                <SquareUnfillSVG className="w-6 h-6" />
+              )}
+              <label htmlFor={`stage-category-${index}`}>
+                {index === 0 && '공연'}
+                {index === 1 && '강연'}
+                {index === 2 && '소모임'}
+                {index === 3 && '기타'}
+              </label>
+            </button>
+          ))}
+        </div>
       </OvenManageCard>
 
       <OvenManageCard className="p-5 flex flex-col gap-y-3">
@@ -234,6 +350,17 @@ function OvenNewStagePage() {
         />
       </OvenManageCard>
       {/* 예매오픈 */}
+      <OvenManageCard className="p-5 flex flex-col gap-y-3">
+        <h3 className="text-xl font-bold">예매 오픈 예정일</h3>
+        <span className="text-disabled">
+          예매를 시작할 날짜와 시간을 입력해주세요.
+        </span>
+        <OvenManageCalendar
+          epsiodes={episodes}
+          setEpisodes={setEpisodes}
+          isReserve
+        />
+      </OvenManageCard>
       {/* 러닝타임 */}
       <OvenManageCard className="p-5 flex flex-col gap-y-3">
         <h3 className="text-xl font-bold">러닝타임 (분)</h3>
@@ -260,6 +387,33 @@ function OvenNewStagePage() {
         </div>
       </OvenManageCard>
       {/* 상세설명 */}
+      <OvenManageCard className="h-[30rem] p-5 flex flex-col gap-y-3">
+        <h3 className="text-xl font-bold">상세 설명</h3>
+        <ReactQuill
+          theme="snow"
+          style={{ height: '18.75rem' }}
+          modules={{
+            toolbar: [
+              [{ header: [1, 2, false] }],
+              ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+              [{ list: 'ordered' }, { list: 'bullet' }],
+              ['link', 'image'],
+              ['clean'],
+            ],
+          }}
+          value={detail}
+          onChange={setDetail}
+        />
+      </OvenManageCard>
+
+      <button
+        className="p-5 flex items-center justify-center text-2xl bg-primary rounded-xl"
+        type="button"
+        onClick={submitForm}
+      >
+        등록하기
+      </button>
+      {detail}
     </div>
   )
 }
