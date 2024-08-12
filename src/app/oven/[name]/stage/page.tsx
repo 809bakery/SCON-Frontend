@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import toast from 'react-hot-toast'
 
 import { DUMMY_OVEN_PROFILE } from '@/constants/oven/manage/profile/index.ts'
 import { DAY_MAP } from '@/constants/stage/info/index.ts'
@@ -40,13 +39,12 @@ function OvenSettingStage() {
             >
               상세 정보 조회
             </button>
-            <button
-              type="button"
-              onClick={() => toast.error('준비 중')}
+            <a
+              href="/oven/1/members/manage/qr"
               className="py-2 px-6 border border-primary rounded-xl"
             >
               QR 리더기
-            </button>
+            </a>
             <button
               type="button"
               onClick={() => router.push('/oven/1/members/manage')}
