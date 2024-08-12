@@ -59,7 +59,7 @@ function SideBar() {
         <SideBarMenu text="마이페이지" url="/mypage" />
 
         {user?.isOvener ? (
-          <SideBarMenu text="오븐 관리하기" url="/oven" />
+          <SideBarMenu text="오븐 관리하기" url="/oven/1" />
         ) : (
           <SideBarMenu text="오브너 등록하기" url="/signup/oven" />
         )}

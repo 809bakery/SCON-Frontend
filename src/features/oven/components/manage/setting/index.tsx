@@ -59,14 +59,14 @@ function OvenSetting() {
 
         <button
           type="button"
-          onClick={() => router.push('/oven/[name]/stage')}
+          onClick={() => router.push('/oven/[name]/stage/new')}
           className="w-full px-16 py-5 bg-white text-disabled border-border border-b text-start"
         >
           스테이지 등록하기
         </button>
         <button
           type="button"
-          onClick={() => router.push('/oven/[name]/stage/manage')}
+          onClick={() => router.push('/oven/[name]/stage')}
           className="w-full px-16 py-5 bg-white text-disabled border-border border-b text-start"
         >
           등록된 스테이지 관리 (QR리더기 / 예매자 명단 확인)
