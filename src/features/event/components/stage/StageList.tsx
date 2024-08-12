@@ -2,6 +2,7 @@
 import Card from '@/features/event/components/stage/Card/index.tsx'
 import { EventType } from '@/features/event/types/Event.ts'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
+import { isArrayEmpty } from '@/utils/array/isArrayEmpty.ts'
 
 interface StageListProps {
   category?: StageCategory
@@ -24,10 +25,6 @@ export default function StageList({
   }
 
   stageList = Array.isArray(stageList) ? stageList.slice(0, 6) : []
-
-  function isArrayEmpty<T>(arr: T[]): boolean {
-    return !arr || arr.length === 0
-  }
 
   return (
     <>
