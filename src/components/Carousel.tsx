@@ -8,30 +8,8 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
+import { DUMMY_CAROUSEL_DATA } from '@/constants/carousel/index.ts'
 import DotIndicatorSVG from '@/static/svg/indicator-icon.svg'
-
-const CarouselImages = [
-  {
-    id: 1,
-    url: '/images/carouselImage.jpg',
-  },
-  {
-    id: 2,
-    url: '/images/carouselImage.jpg',
-  },
-  {
-    id: 3,
-    url: '/images/carouselImage.jpg',
-  },
-  {
-    id: 4,
-    url: '/images/carouselImage.jpg',
-  },
-  {
-    id: 5,
-    url: '/images/carouselImage.jpg',
-  },
-]
 
 export default function Carousel() {
   const [transitionEnabled, setTransitionEnabled] = useState(true)
@@ -48,31 +26,27 @@ export default function Carousel() {
     }
 
     window.addEventListener('resize', updateHeight)
-
-    // 초기 높이 설정
     updateHeight()
 
-    // 이벤트 리스너 정리
     return () => window.removeEventListener('resize', updateHeight)
   }, [])
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setCurrentImg((prevImg) => (prevImg + 1) % (CarouselImages.length + 1))
+      setCurrentImg(
+        (prevImg) => (prevImg + 1) % (DUMMY_CAROUSEL_DATA.length + 1),
+      )
     }, 2500)
 
-    // 마지막 이미지에서 첫 번째 이미지로 넘어갈 때의 처리
-    if (currentImg === CarouselImages.length) {
+    if (currentImg === DUMMY_CAROUSEL_DATA.length) {
       setTimeout(() => {
-        // 애니메이션 없이 즉시 첫 번째 이미지로 이동
         setTransitionEnabled(false)
         setCurrentImg(0)
-      }, 500) // 애니메이션 지속 시간 이후 실행
+      }, 500)
 
-      // 애니메이션을 다시 활성화
       setTimeout(() => {
         setTransitionEnabled(true)
-      }, 550) // 애니메이션 지속 시간 이후 실행
+      }, 550)
     }
 
     return () => clearTimeout(timer)
@@ -80,12 +54,10 @@ export default function Carousel() {
 
   return (
     <div className="flex flex-col items-center w-full">
-      {/* Carousel container */}
       <div
         style={{ height: `calc(${imageHeight}px + 48px)` }}
         className="relative overflow-hidden w-full"
       >
-        {/* Image container */}
         <div
           ref={carouselRef}
           style={{
@@ -95,108 +67,64 @@ export default function Carousel() {
           className="relative flex h-full w-full transition-all duration-500"
         >
           <div
-            key={CarouselImages[CarouselImages.length - 1].id}
+            key={DUMMY_CAROUSEL_DATA[DUMMY_CAROUSEL_DATA.length - 1].CarouselId}
             className="relative h-full w-full shrink-0"
           >
             <Image
               ref={imageRef}
               className="pointer-events-none"
-              alt={`carousel-image-${CarouselImages[CarouselImages.length - 1].id}`}
+              alt={`carousel-image-${DUMMY_CAROUSEL_DATA[DUMMY_CAROUSEL_DATA.length - 1].CarouselId}`}
               layout="responsive"
-              width={544}
-              height={409}
-              src={
-                CarouselImages[CarouselImages.length - 1].url ||
-                'https://random.imagecdn.app/500/500'
-              }
+              width={540}
+              height={360}
+              src={DUMMY_CAROUSEL_DATA[DUMMY_CAROUSEL_DATA.length - 1].image}
             />
           </div>
-          {CarouselImages.map((item) => (
-            <div key={item.id} className="relative h-full w-full shrink-0">
+          {DUMMY_CAROUSEL_DATA.map((item) => (
+            <div
+              key={item.CarouselId}
+              className="relative h-full w-full shrink-0"
+            >
               <Image
                 className="pointer-events-none"
-                alt={`carousel-image-${item.id}`}
+                alt={`carousel-image-${item.CarouselId}`}
                 layout="responsive"
-                width={544}
-                height={384}
-                src={item.url || 'https://random.imagecdn.app/500/500'}
+                width={540}
+                height={360}
+                src={item.image}
               />
             </div>
           ))}
           <div
-            key={CarouselImages[0].id}
+            key={DUMMY_CAROUSEL_DATA[0].CarouselId}
             className="relative h-full w-full shrink-0"
           >
             <Image
               className="pointer-events-none"
-              alt={`carousel-image-${CarouselImages[0].id}`}
+              alt={`carousel-image-${DUMMY_CAROUSEL_DATA[0].CarouselId}`}
               layout="responsive"
-              width={544}
-              height={384}
-              src={
-                CarouselImages[0].url || 'https://random.imagecdn.app/500/500'
-              }
+              width={540}
+              height={360}
+              src={DUMMY_CAROUSEL_DATA[0].image}
             />
           </div>
         </div>
-        {/* Navigation buttons */}
         <div className="w-full absolute  bottom-0 mt-3 flex justify-center">
           <div className="flex h-8 w-32 space-x-3">
-            <div
-              role="presentation"
-              onClick={() => setCurrentImg(0)}
-              className="w-4 h-4 flex justify-center items-center cursor-pointer transition-all duration-500"
-            >
-              <DotIndicatorSVG
-                width={currentImg % 5 === 0 ? 16 : 12}
-                height={currentImg % 5 === 0 ? 16 : 12}
-                fill={currentImg % 5 === 0 ? '#FFC90D' : '#A6A6B1'}
-              />
-            </div>
-            <div
-              role="presentation"
-              onClick={() => setCurrentImg(1)}
-              className="w-4 h-4 flex justify-center items-center cursor-pointer"
-            >
-              <DotIndicatorSVG
-                width={currentImg === 1 ? 16 : 12}
-                height={currentImg === 1 ? 16 : 12}
-                fill={currentImg === 1 ? '#FFC90D' : '#A6A6B1'}
-              />
-            </div>
-            <div
-              role="presentation"
-              onClick={() => setCurrentImg(2)}
-              className="w-4 h-4 flex justify-center items-center cursor-pointer"
-            >
-              <DotIndicatorSVG
-                width={currentImg === 2 ? 16 : 12}
-                height={currentImg === 2 ? 16 : 12}
-                fill={currentImg === 2 ? '#FFC90D' : '#A6A6B1'}
-              />
-            </div>
-            <div
-              role="presentation"
-              onClick={() => setCurrentImg(3)}
-              className="w-4 h-4 flex justify-center items-center cursor-pointer"
-            >
-              <DotIndicatorSVG
-                width={currentImg === 3 ? 16 : 12}
-                height={currentImg === 3 ? 16 : 12}
-                fill={currentImg === 3 ? '#FFC90D' : '#A6A6B1'}
-              />
-            </div>
-            <div
-              role="presentation"
-              onClick={() => setCurrentImg(4)}
-              className="w-4 h-4 flex justify-center items-center cursor-pointer"
-            >
-              <DotIndicatorSVG
-                width={currentImg === 4 ? 16 : 12}
-                height={currentImg === 4 ? 16 : 12}
-                fill={currentImg === 4 ? '#FFC90D' : '#A6A6B1'}
-              />
-            </div>
+            {DUMMY_CAROUSEL_DATA.map((_, index) => (
+              <div
+                key={index}
+                role="presentation"
+                onClick={() => setCurrentImg(index)}
+                className="w-4 h-4 flex justify-center items-center cursor-pointer"
+              >
+                <DotIndicatorSVG
+                  width={currentImg === index ? 16 : 12}
+                  height={currentImg === index ? 16 : 12}
+                  fill={currentImg === index ? '#FFC90D' : '#A6A6B1'}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
