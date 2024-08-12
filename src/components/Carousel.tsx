@@ -6,6 +6,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 import { DUMMY_CAROUSEL_DATA } from '@/constants/carousel/index.ts'
@@ -17,6 +18,8 @@ export default function Carousel() {
   const carouselRef = useRef(null)
   const [imageHeight, setImageHeight] = useState(0)
   const imageRef = useRef<HTMLImageElement>(null)
+
+  const router = useRouter()
 
   useEffect(() => {
     const updateHeight = () => {
@@ -66,20 +69,25 @@ export default function Carousel() {
           }}
           className="relative flex h-full w-full transition-all duration-500"
         >
-          <div
-            key={DUMMY_CAROUSEL_DATA[DUMMY_CAROUSEL_DATA.length - 1].CarouselId}
-            className="relative h-full w-full shrink-0"
-          >
-            <Image
-              ref={imageRef}
-              className="pointer-events-none"
-              alt={`carousel-image-${DUMMY_CAROUSEL_DATA[DUMMY_CAROUSEL_DATA.length - 1].CarouselId}`}
-              layout="responsive"
-              width={540}
-              height={360}
-              src={DUMMY_CAROUSEL_DATA[DUMMY_CAROUSEL_DATA.length - 1].image}
-            />
-          </div>
+          {DUMMY_CAROUSEL_DATA.map((item) => (
+            <div
+              role="presentation" // aria-label
+              key={item.CarouselId}
+              className="relative h-full w-full shrink-0 cursor-pointer"
+              onClick={() => router.push(item.link)}
+            >
+              <Image
+                ref={imageRef}
+                className="pointer-events-none"
+                alt={`carousel-image-${item.CarouselId}`}
+                layout="responsive"
+                width={540}
+                height={409}
+                src={item.image}
+              />
+            </div>
+          ))}
+
           {DUMMY_CAROUSEL_DATA.map((item) => (
             <div
               key={item.CarouselId}
@@ -90,7 +98,7 @@ export default function Carousel() {
                 alt={`carousel-image-${item.CarouselId}`}
                 layout="responsive"
                 width={540}
-                height={360}
+                height={384}
                 src={item.image}
               />
             </div>
@@ -104,7 +112,7 @@ export default function Carousel() {
               alt={`carousel-image-${DUMMY_CAROUSEL_DATA[0].CarouselId}`}
               layout="responsive"
               width={540}
-              height={360}
+              height={384}
               src={DUMMY_CAROUSEL_DATA[0].image}
             />
           </div>
