@@ -1,7 +1,9 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import { usePathname } from 'next/navigation'
 
+import { privateApi } from '@/api/config/privateApi.ts'
 import NavbarWithGoback from '@/components/Navbar/NavbarWithGoback.tsx'
 import NavbarWithoutGoback from '@/components/Navbar/NavbarWithoutGoback.tsx'
 
@@ -25,6 +27,13 @@ export const DOMAIN_NAME_MAPPING: {
 
 export default function Navbar() {
   const pathname = usePathname()
+  const { data: user } = useQuery({
+    queryKey: ['user', pathname],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/user/info')
+      return response.data
+    },
+  })
   const domainList = pathname.split('/').filter(Boolean)
   const lastDomain = decodeURIComponent(domainList[domainList.length - 1])
   if (domainList.includes('scontalk') && lastDomain !== 'scontalk') {
@@ -39,7 +48,7 @@ export default function Navbar() {
     if (lastDomain === 'all') {
       name = '전체 스테이지'
     } else if (lastDomain === 'my') {
-      name = '민정’s 스테이지'
+      name = `${user?.nickname}’s 스테이지`
     } else if (lastDomain === 'pick') {
       name = 'SCON’S PICK'
     }

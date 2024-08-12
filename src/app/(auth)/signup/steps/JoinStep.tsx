@@ -4,7 +4,9 @@ import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
+import { privateApi } from '@/api/config/privateApi.ts'
 import { publicApi } from '@/api/config/publicApi.ts'
+import Loader from '@/components/loader/index.tsx'
 import CheckGIF from '@/static/gif/checked.gif'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import Step5SVG from '@/static/svg/progress/progress-step5.svg'
@@ -24,8 +26,10 @@ export default function JoinStep() {
     queryFn: async () => {
       let response
       const formData = new FormData()
-      formData.append('email', email)
-      formData.append('password', password)
+      if (type === 'credentials') {
+        formData.append('email', email)
+        formData.append('password', password)
+      }
       formData.append('nickname', nickname)
       if (image) formData.append('image', image)
 
@@ -36,14 +40,23 @@ export default function JoinStep() {
       }
 
       if (type === 'credentials') {
-        response = await publicApi.post('/api/user/sign-up', formData, config)
+        response = await privateApi.patch('/api/user/sign-up', formData, config)
       } else if (type === 'social') {
-        response = await publicApi.post('/api/user/edit/info', formData, config)
+        response = await privateApi.patch(
+          '/api/user/edit/info',
+          formData,
+          config,
+        )
       } else {
         throw new Error('Invalid type')
       }
 
-      return response.status
+      if (response.status === 200) {
+        localStorage.removeItem('signupState')
+        return response.status
+      }
+      localStorage.removeItem('signupState')
+      throw new Error(`Request failed with status ${response.status}`)
     },
   })
 
@@ -59,7 +72,7 @@ export default function JoinStep() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <Loader />
   }
 
   if (isError) {
