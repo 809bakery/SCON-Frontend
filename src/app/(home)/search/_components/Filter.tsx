@@ -7,21 +7,18 @@ import { FilterType } from '@/constants/search/index.ts'
 import ArrowRight from '@/static/svg/arrow-right-icon.svg'
 
 interface FilterProps {
-  filterQuery: string | undefined
-  setFilterQuery: (value: string) => void
   filterList: FilterType[]
 }
 
-export default function Filter({
-  filterQuery,
-  setFilterQuery,
-  filterList,
-}: FilterProps) {
+export default function Filter({ filterList }: FilterProps) {
   const filterRef = useRef<HTMLDivElement>(null)
   const [openFilter, setOpenFilter] = useState<boolean>(false)
   const { replace } = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const params = useSearchParams()
+  const [filterQuery, setFilterQuery] = useState<string | null>(
+    params.get('sort'),
+  )
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -40,20 +37,20 @@ export default function Filter({
   }, [filterRef])
 
   useEffect(() => {
-    function handleFilter(filter: string | undefined) {
-      const params = new URLSearchParams(searchParams)
+    function handleFilter(filter: string | null) {
+      const urlParams = new URLSearchParams(params)
       const selectedFilter = filterList.find((f) => f.label === filter)
       if (selectedFilter) {
-        params.set('sort', selectedFilter?.name as string)
+        urlParams.set('sort', selectedFilter?.name as string)
       } else {
-        params.delete('sort')
+        urlParams.delete('sort')
       }
 
-      replace(`${pathname}?${params.toString()}`)
+      replace(`${pathname}?${urlParams.toString()}`)
     }
 
     handleFilter(filterQuery)
-  }, [filterQuery, filterList, pathname, replace, searchParams])
+  }, [filterQuery, filterList, pathname, replace, params])
 
   const handleChangeFilter = (filterName: string) => {
     setFilterQuery(filterName)
