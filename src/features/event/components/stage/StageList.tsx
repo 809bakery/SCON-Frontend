@@ -2,6 +2,7 @@
 import Card from '@/features/event/components/stage/Card/index.tsx'
 import { EventType } from '@/features/event/types/Event.ts'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
+import { useMinimumLoadingTime } from '@/hooks/useMinimumLoadingTime.ts'
 import { isArrayEmpty } from '@/utils/array/isArrayEmpty.ts'
 
 interface StageListProps {
@@ -18,6 +19,7 @@ export default function StageList({
   data: stageList,
   isLoading,
 }: StageListProps) {
+  const showLoading = useMinimumLoadingTime(isLoading, 500)
   const handleClick = (cat: StageCategory) => {
     if (setCategory) {
       setCategory(cat)
@@ -66,7 +68,7 @@ export default function StageList({
         </button>
       </div>
       <div className="w-full mt-9 flex flex-wrap items-center justify-between gap-y-8 gap-x-3">
-        {isLoading ? (
+        {showLoading ? (
           <>
             {Array.from({ length: 6 }, (_, index) => (
               <div
