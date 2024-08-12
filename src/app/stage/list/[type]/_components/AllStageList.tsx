@@ -103,6 +103,7 @@ export default function AllStageList() {
             {stageList.map((stage: StageType) => (
               <Card
                 key={stage.id}
+                id={stage.id}
                 title={stage.title}
                 location={stage.location}
                 sDate={stage.startDate}

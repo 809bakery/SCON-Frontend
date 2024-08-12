@@ -97,6 +97,7 @@ export default function StageList({
             {stageList.map((stage: EventType) => (
               <Card
                 key={stage.id}
+                id={stage.id}
                 title={stage.title}
                 location={stage.location}
                 sDate={stage.startDate}

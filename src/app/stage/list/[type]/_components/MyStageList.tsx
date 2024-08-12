@@ -44,11 +44,13 @@ export default function MyStageList() {
       {myStageList?.map((stage: ExtendedEventType) => (
         <StageCard
           key={stage.id}
+          id={stage.id}
           title={stage.title}
           location={stage.location}
           time={stage.date}
           category={stage.category}
           image={stage.image}
+          status={stage.status}
         />
       ))}
     </div>

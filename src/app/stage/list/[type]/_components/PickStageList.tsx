@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import { publicApi } from '@/api/config/publicApi.ts'
 import { RecommendEventType } from '@/features/event/types/Event.ts'
@@ -45,6 +46,7 @@ const DummyStagePickList = [
 ]
 
 export default function PickStageList() {
+  const router = useRouter()
   const { data: recommendStageList } = useQuery({
     queryKey: ['list_pick'],
     queryFn: async () => {
@@ -97,8 +99,10 @@ export default function PickStageList() {
       <div className="py-10 px-7 flex flex-col gap-5">
         {recommendStageList?.map((stage: RecommendEventType) => (
           <div
-            className="w-full rounded-xl border border-border"
+            role="presentation"
             key={stage.id}
+            onClick={() => router.push(`/stage/detail/${stage?.id}`)}
+            className="w-full rounded-xl border border-border cursor-pointer"
           >
             <Image
               src={stage?.image}

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 interface CardProps {
+  id: number
   title: string
   location: string
   sDate: string
@@ -15,7 +16,7 @@ interface CardProps {
 }
 
 function Card(props: CardProps) {
-  const { title, location, sDate, eDate, posterUrl, isEnd } = props
+  const { id, title, location, sDate, eDate, posterUrl, isEnd } = props
   const [date, setDate] = useState<string>('')
 
   useEffect(() => {
@@ -44,7 +45,7 @@ function Card(props: CardProps) {
             <p>스테이지</p>
           </div>
         )}
-        <Link href="/stage/detail/1">
+        <Link href={`/stage/detail/${id}`}>
           <Image
             src={posterUrl}
             alt="poster"
