@@ -1,6 +1,10 @@
+'use client'
+
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 
-import DummyStagePickThumbnail from '@/static/img/dummy/stagelist/dummy-stage-pick-thumbnail.jpg'
+import { publicApi } from '@/api/config/publicApi.ts'
+import { RecommendEventType } from '@/features/event/types/Event.ts'
 
 const DummyStagePickList = [
   {
@@ -41,11 +45,41 @@ const DummyStagePickList = [
 ]
 
 export default function PickStageList() {
+  const { data: recommendStageList } = useQuery({
+    queryKey: ['list_pick'],
+    queryFn: async () => {
+      const response = await publicApi.get(
+        `/api/event/main/recommended-events?category=all`,
+      )
+      const stageList = response.data
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const updatedStageList = stageList.map((stage: any, index: number) => {
+        const formatStartDate = stage.startDate
+          .split('T')[0]
+          .replace(/-/g, '. ')
+        const formatEndDate = stage.endDate.split('T')[0].replace(/-/g, '. ')
+
+        const date =
+          formatStartDate === formatEndDate
+            ? formatStartDate
+            : `${formatStartDate} - ${formatEndDate}`
+
+        return {
+          ...stage,
+          image: DummyStagePickList[index % DummyStagePickList.length].image,
+          date,
+        }
+      })
+      return updatedStageList
+    },
+  })
+
   return (
     <div className="flex flex-col">
       <div className="relative">
         <Image
-          src={DummyStagePickThumbnail}
+          src="/images/stage-pick-thumbnail.jpg"
           width={600}
           height={280}
           alt="thumbnail"
@@ -61,13 +95,13 @@ export default function PickStageList() {
         </div>
       </div>
       <div className="py-10 px-7 flex flex-col gap-5">
-        {DummyStagePickList.map((stage) => (
+        {recommendStageList?.map((stage: RecommendEventType) => (
           <div
             className="w-full rounded-xl border border-border"
-            key={stage.time}
+            key={stage.id}
           >
             <Image
-              src={stage.image}
+              src={stage?.image}
               width={600}
               height={220}
               alt="thumbnail"
@@ -83,7 +117,7 @@ export default function PickStageList() {
                 </span>
               </div>
               <span className="text-base font-medium leading-6 text-disabled">
-                {stage.ovenName} | {stage.time}
+                {stage?.ovenName} | {stage?.date}
               </span>
             </div>
           </div>

@@ -8,20 +8,14 @@ interface CardProps {
   title: string
   location: string
   sDate: string
-  content: ContentType[]
+  eDate: string
   posterUrl: string
   // eslint-disable-next-line react/require-default-props
   isEnd?: boolean
 }
 
-interface ContentType {
-  id: number
-  episodeNumber: number
-  time: string
-}
-
 function Card(props: CardProps) {
-  const { title, location, sDate, content, posterUrl, isEnd } = props
+  const { title, location, sDate, eDate, posterUrl, isEnd } = props
   const [date, setDate] = useState<string>('')
 
   useEffect(() => {
@@ -32,7 +26,7 @@ function Card(props: CardProps) {
     const startDate = new Date(sDate)
     const startDateFormat = `${startDate.getFullYear()}.${startDate.getMonth() + 1 < 10 ? `0${startDate.getMonth()}` : startDate.getMonth()}.${startDate.getDate() < 10 ? `0${startDate.getDate()}` : startDate.getDate()}`
 
-    const endDate = new Date(content[content.length - 1].time)
+    const endDate = new Date(eDate)
     const endDateFormat = `${endDate.getFullYear()}.${endDate.getMonth() + 1 < 10 ? `0${endDate.getMonth()}` : endDate.getMonth()}.${endDate.getDate() < 10 ? `0${endDate.getDate()}` : endDate.getDate()}`
 
     if (startDateFormat === endDateFormat) {
@@ -55,8 +49,8 @@ function Card(props: CardProps) {
             src={posterUrl}
             alt="poster"
             width={160}
-            height={219}
-            className="rounded-xl"
+            height={220}
+            className="w-[10rem] h-[13.75rem] rounded-xl object-cover object-center"
           />
         </Link>
       </div>

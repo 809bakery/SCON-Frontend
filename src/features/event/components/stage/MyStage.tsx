@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
@@ -8,26 +10,31 @@ import { privateApi } from '@/api/config/privateApi.ts'
 import StageList from '@/features/event/components/stage/StageList.tsx'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
 
-// interface UserType {
-//   nickname: string
-//   email: string
-//   image: string
-//   isOvener: boolean
-// }
-
 export default function MyStage() {
   const router = useRouter()
-  const [category, setCategory] = useState<StageCategory>('all')
+  const [category, setCategory] = useState<StageCategory>(
+    'all' as StageCategory,
+  )
   const { data: user } = useQuery({
     queryKey: ['user-info'],
     queryFn: async () => {
-      const response = await privateApi.get('/api/user/info')
+      const response = await privateApi.get(`/api/user/info`)
+      return response.data
+    },
+  })
+
+  const { data: myList, isLoading } = useQuery({
+    queryKey: ['list_my', category],
+    queryFn: async () => {
+      const response = await privateApi.get(
+        `/api/event/main/liked-events?category=${category}`,
+      )
       return response.data
     },
   })
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col">
       <div className="flex flex-col gap-1">
         <h1 className="font-bold text-2.5xl">
           {user ? `${user?.nickname}'s` : 'MY'} STAGE
@@ -46,7 +53,12 @@ export default function MyStage() {
         </h2>
       </div>
       {user ? (
-        <StageList category={category} setCategory={setCategory} />
+        <StageList
+          category={category}
+          setCategory={setCategory}
+          isLoading={isLoading}
+          data={myList}
+        />
       ) : (
         <div className="w-full flex bg-yellow bg-opacity-40 justify-center items-center rounded-xl">
           <div className="flex flex-col items-center py-10 gap-5">

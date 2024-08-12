@@ -1,11 +1,17 @@
 /* eslint-disable react/jsx-boolean-value */
 import Image, { StaticImageData } from 'next/image'
 
+import {
+  StageCategory,
+  StageCategoryMap,
+} from '@/features/event/types/StageCategory.ts'
+
 interface StageCardProps {
   title: string
   location: string
   time: string
   image: string | StaticImageData
+  category: StageCategory
 }
 
 export default function StageCard({
@@ -13,6 +19,7 @@ export default function StageCard({
   location,
   time,
   image,
+  category,
 }: StageCardProps) {
   return (
     <div className="w-full hover:bg-lightgray-1 cursor-pointer">
@@ -44,6 +51,9 @@ export default function StageCard({
             <div className="text-disabled flex flex-col gap-1">
               <h3 className="text-base font-bold">{location}</h3>
               <p className="text-xs font-medium mt-1">{time}</p>
+              <p className="text-xs font-medium mt-1">
+                분류 : {StageCategoryMap[category]}
+              </p>
             </div>
           </div>
         </div>
