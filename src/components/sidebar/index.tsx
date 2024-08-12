@@ -9,6 +9,7 @@ import SideBarMenu from '@/components/sidebar/item/index.tsx'
 import SideBarProfile from '@/components/sidebar/profile/index.tsx'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import SideBarCloseSVG from '@/static/svg/sidebar/sidebar-close.svg'
+import { removeTokenAll } from '@/utils/cookie/index.ts'
 
 function SideBar() {
   const router = useRouter()
@@ -21,8 +22,8 @@ function SideBar() {
   })
 
   const logout = () => {
-    sessionStorage.removeItem('user')
-    router.push('/')
+    removeTokenAll()
+    window.location.href = '/main'
   }
 
   return (

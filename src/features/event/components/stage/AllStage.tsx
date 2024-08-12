@@ -5,18 +5,21 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { publicApi } from '@/api/config/publicApi.ts'
-import Loader from '@/components/loader/index.tsx'
 import StageList from '@/features/event/components/stage/StageList.tsx'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
 
 export default function AllStage() {
   const router = useRouter()
-  const [category, setCategory] = useState<StageCategory>('all')
-  const { isLoading } = useQuery({
-    queryKey: ['list_all'],
+  const [category, setCategory] = useState<StageCategory>(
+    'all' as StageCategory,
+  )
+  const { data, isLoading } = useQuery({
+    queryKey: ['list_all', category],
     queryFn: async () => {
-      const response = await publicApi.get('/api/event/list?category=all')
-      return response.data
+      const response = await publicApi.get(
+        `/api/event/list?category=${category}`,
+      )
+      return response.data.content
     },
   })
 
@@ -35,11 +38,13 @@ export default function AllStage() {
           </button>
         </h2>
       </div>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <StageList category={category} setCategory={setCategory} />
-      )}
+
+      <StageList
+        category={category}
+        setCategory={setCategory}
+        data={data}
+        isLoading={isLoading}
+      />
     </div>
   )
 }

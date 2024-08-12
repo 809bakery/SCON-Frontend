@@ -5,21 +5,23 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { publicApi } from '@/api/config/publicApi.ts'
-import Loader from '@/components/loader/index.tsx'
 import StageList from '@/features/event/components/stage/StageList.tsx'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
 
 export default function RecommendStage() {
   const router = useRouter()
-  const { isLoading } = useQuery({
-    queryKey: ['list_recommend'],
+  const [category, setCategory] = useState<StageCategory>(
+    'all' as StageCategory,
+  )
+  const { data, isLoading } = useQuery({
+    queryKey: ['list_recommend', category],
     queryFn: async () => {
-      const response = await publicApi.get('/api/event/main/recommended-events')
+      const response = await publicApi.get(
+        `/api/event/main/recommended-events?category=${category}`,
+      )
       return response.data
     },
   })
-
-  const [category, setCategory] = useState<StageCategory>('all')
 
   return (
     <div className="flex flex-col">
@@ -36,11 +38,13 @@ export default function RecommendStage() {
           </button>
         </h2>
       </div>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <StageList category={category} setCategory={setCategory} />
-      )}
+
+      <StageList
+        category={category}
+        setCategory={setCategory}
+        data={data}
+        isLoading={isLoading}
+      />
     </div>
   )
 }
