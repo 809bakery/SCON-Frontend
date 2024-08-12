@@ -44,7 +44,7 @@ export default function AllStageList() {
       const keywordParam = searchParams ? `&keyword=${searchParams}` : ''
       const cursorParam = pageParam ? `&cursor=${pageParam}` : ''
       const response = await publicApi.get(
-        `/api/event/list/inf?category=${category}${cursorParam}${keywordParam}`,
+        `/api/event/search?category=${category}${cursorParam}${keywordParam}`,
       )
       return response.data
     },
