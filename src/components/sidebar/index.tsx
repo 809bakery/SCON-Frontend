@@ -41,7 +41,7 @@ function SideBar() {
         {user && (
           <SideBarProfile
             nickname={user?.nickname}
-            isOvener={user?.isOvener}
+            isOvener={user?.ovener}
             image={user?.image}
           />
         )}
@@ -57,11 +57,12 @@ function SideBar() {
         <SideBarMenu text="스콘톡" url="/scontalk" />
         <SideBarMenu text="마이페이지" url="/mypage" />
 
-        {user?.isOvener ? (
+        {user?.ovener ? (
           <SideBarMenu text="오븐 관리하기" url="/oven/1" />
         ) : (
           <SideBarMenu text="오브너 등록하기" url="/signup/oven" />
         )}
+
         {user && (
           <button
             type="button"
