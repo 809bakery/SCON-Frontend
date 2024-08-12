@@ -9,10 +9,10 @@ import useDebounce from '@/hooks/useDebounce.ts'
 import SearchSVG from '@/static/svg/search-icon.svg'
 
 export default function SearchBar() {
-  const [searchQuery, setSearchQuery] = useState('')
   const { replace } = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const [searchQuery, setSearchQuery] = useState('')
   const debouncedValue = useDebounce<string>(searchQuery, 200)
 
   useEffect(() => {
@@ -28,6 +28,10 @@ export default function SearchBar() {
     }
     handleSearch(debouncedValue)
   }, [debouncedValue, pathname, replace, searchParams])
+
+  useEffect(() => {
+    if (!searchParams.has('keyword')) setSearchQuery('')
+  }, [searchParams])
 
   return (
     <div className="w-full border-2 border-border  rounded-xl focus-within:border-primary flex justify-between items-center px-3  py-3">
