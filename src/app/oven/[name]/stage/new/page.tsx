@@ -413,7 +413,6 @@ function OvenNewStagePage() {
       >
         등록하기
       </button>
-      {detail}
     </div>
   )
 }
