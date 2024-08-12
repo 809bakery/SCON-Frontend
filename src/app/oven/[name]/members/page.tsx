@@ -103,8 +103,8 @@ function OvenSettingMembers() {
           <span className="w-[40%]">멤버</span>
           <span className="w-[40%]">아이디(이메일)</span>
           <div className="w-[20%] flex justify-between items-center gap-x-5">
-            <span className="flex-1">역할</span>
-            <span className="flex-1 !text-[#6B83FF]">관리</span>
+            <span className="flex-1 text-center">역할</span>
+            <span className="flex-1 !text-[#6B83FF] text-center">관리</span>
           </div>
         </div>
         <div className="flex flex-col gap-y-1 overflow-y-scroll">
@@ -122,14 +122,14 @@ function OvenSettingMembers() {
                 <span>{user.nickname}</span>
               </div>
               <span className="w-[40%] truncate pr-4">{user.email}</span>
-              <div className="w-[20%] flex justify-between items-center gap-x-5">
+              <div className="w-[20%] flex text-center justify-between items-center gap-x-5">
                 <span className="flex-1">
                   {user.role === 'MEMBER' ? '멤버' : '대표'}
                 </span>
                 <button
                   type="button"
                   onClick={manageMember}
-                  className="flex-1 text-[#6B83FF]"
+                  className="flex-1 text-center text-[#6B83FF]"
                 >
                   관리
                 </button>
