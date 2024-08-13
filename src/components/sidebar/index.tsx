@@ -65,7 +65,7 @@ function SideBar() {
           <SideBarMenu text="마이페이지" />
         )}
 
-        {user?.isOvener && <SideBarMenu text="오븐 관리하기" url="/oven/1" />}
+        {user?.isOvener && <SideBarMenu text="오븐 관리하기" url="/oven/my" />}
         {user && <SideBarMenu text="오브너 등록하기" url="/signup/oven" />}
         {user && (
           <button
