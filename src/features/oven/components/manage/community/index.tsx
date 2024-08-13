@@ -207,7 +207,7 @@ function OvenCommunity() {
       <div className="w-full flex flex-col gap-3 py-14">
         {isLoading ? (
           <div className="w-full px-5 py-20 bg-gray-200 rounded-xl shrink-0 animate-pulse">
-            div
+            {' '}
           </div>
         ) : (
           <div className="flex flex-col gap-3">
