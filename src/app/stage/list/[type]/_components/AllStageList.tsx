@@ -128,8 +128,8 @@ export default function AllStageList() {
             </div>
           )
         )}
+        <div ref={loaderRef}>{isFetchingNextPage && <Loader />}</div>
       </div>
-      <div ref={loaderRef}>{isFetchingNextPage && <Loader />}</div>
     </div>
   )
 }

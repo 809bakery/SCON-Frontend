@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface CardProps {
@@ -16,8 +16,9 @@ interface CardProps {
 }
 
 function Card(props: CardProps) {
-  const { id, title, location, sDate, eDate, posterUrl, isEnd } = props
+  const router = useRouter()
   const [date, setDate] = useState<string>('')
+  const { id, title, location, sDate, eDate, posterUrl, isEnd } = props
 
   useEffect(() => {
     handleDate()
@@ -45,15 +46,18 @@ function Card(props: CardProps) {
             <p>스테이지</p>
           </div>
         )}
-        <Link href={`/stage/detail/${id}`}>
+        <div
+          role="presentation"
+          className="h-[13.75rem] max-h-[13.75rem] w-[10rem] max-w-[10rem] relative"
+          onClick={() => router.push(`/stage/detail/${id}`)}
+        >
           <Image
             src={posterUrl}
             alt="poster"
-            width={160}
-            height={220}
-            className="w-[10rem] h-[13.75rem] rounded-xl object-cover object-center"
+            fill
+            className=" object-cover rounded-xl"
           />
-        </Link>
+        </div>
       </div>
 
       <div className="w-full flex flex-col items-start justify-center gap-y-1">
