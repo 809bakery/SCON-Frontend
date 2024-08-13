@@ -76,7 +76,7 @@ export default function SconTalkPage() {
       id: message,
       content: message,
       nickname: '고세구',
-      profile: '/dummy/dummy-default-profile.jpg',
+      profile: '/dummy/dummy-default-profile.png',
       createdAt: getFormattedCurrentDate(),
       isOvener: false,
     }
