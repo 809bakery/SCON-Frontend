@@ -18,7 +18,7 @@ export default function Filter({ filterList }: FilterProps) {
   const params = useSearchParams()
   const [filterQuery, setFilterQuery] = useState<string>(
     filterList.find((f) => f.name === params.get('sort'))?.label ||
-      '판매많은순',
+      filterList[0].label,
   )
 
   useEffect(() => {

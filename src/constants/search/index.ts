@@ -61,17 +61,17 @@ export const SearchFilterList: FilterType[] = [
 export const OvenDetailFilterList: FilterType[] = [
   {
     id: 1,
-    name: '',
+    name: 'follow',
     label: '인기순',
   },
   {
     id: 2,
-    name: '',
+    name: 'alp',
     label: '가나다순',
   },
   {
     id: 3,
-    name: '',
+    name: 'recent',
     label: '최신등록순',
   },
 ]
