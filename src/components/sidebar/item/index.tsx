@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 interface SideBarMenuProps {
   text: string
@@ -15,8 +16,9 @@ function SideBarMenu(props: SideBarMenuProps) {
     if (url) {
       router.push(url)
     } else {
-      // eslint-disable-next-line no-alert
-      alert('준비 중 입니다🍪')
+      toast('로그인이 필요해요', {
+        icon: '🍪',
+      })
     }
   }
 
