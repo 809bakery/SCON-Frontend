@@ -131,7 +131,7 @@ export default function SconTalkPage() {
           </div>
           <button
             type="submit"
-            className="bg-primary rounded-xl px-6 py-4 text-disabled text-xl font-medium leading-7 min-w-max"
+            className="bg-primary rounded-xl px-6 py-4 text-white text-xl font-medium leading-7 min-w-max"
           >
             전송
           </button>
