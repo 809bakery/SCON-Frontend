@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
@@ -7,27 +9,33 @@ import { useState } from 'react'
 import { privateApi } from '@/api/config/privateApi.ts'
 import StageList from '@/features/event/components/stage/StageList.tsx'
 import { StageCategory } from '@/features/event/types/StageCategory.ts'
-
-// interface UserType {
-//   nickname: string
-//   email: string
-//   image: string
-//   isOvener: boolean
-// }
+import { isArrayEmpty } from '@/utils/array/isArrayEmpty.ts'
 
 export default function MyStage() {
   const router = useRouter()
-  const [category, setCategory] = useState<StageCategory>('all')
+  const [category, setCategory] = useState<StageCategory>(
+    'all' as StageCategory,
+  )
   const { data: user } = useQuery({
     queryKey: ['user-info'],
     queryFn: async () => {
-      const response = await privateApi.get('/api/user/info')
+      const response = await privateApi.get(`/api/user/info`)
+      return response.data
+    },
+  })
+
+  const { data: myStageList, isLoading } = useQuery({
+    queryKey: ['list_my', category],
+    queryFn: async () => {
+      const response = await privateApi.get(
+        `/api/event/main/liked-events?category=${category}`,
+      )
       return response.data
     },
   })
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col">
       <div className="flex flex-col gap-1">
         <h1 className="font-bold text-2.5xl">
           {user ? `${user?.nickname}'s` : 'MY'} STAGE
@@ -36,19 +44,26 @@ export default function MyStage() {
           <span>
             스코니님이 좋아요를 누른 스테이지들을 한 눈에 확인할 수 있어요!
           </span>
-          <button
-            type="button"
-            className="text-disabled text-base font-medium px-4 py-1 rounded-xl leading-6"
-            onClick={() => router.push('/stage/list/my')}
-          >
-            더보기 &gt;
-          </button>
+          {user && !isArrayEmpty(myStageList) && (
+            <button
+              type="button"
+              className="text-disabled text-base font-medium px-4 py-1 rounded-xl leading-6"
+              onClick={() => router.push('/stage/list/my')}
+            >
+              더보기 &gt;
+            </button>
+          )}
         </h2>
       </div>
       {user ? (
-        <StageList category={category} setCategory={setCategory} />
+        <StageList
+          category={category}
+          setCategory={setCategory}
+          isLoading={isLoading}
+          data={myStageList}
+        />
       ) : (
-        <div className="w-full flex bg-yellow bg-opacity-40 justify-center items-center rounded-xl">
+        <div className="w-full flex bg-yellow bg-opacity-40 justify-center items-center rounded-xl mt-5">
           <div className="flex flex-col items-center py-10 gap-5">
             <p className="font-medium text-base">
               로그인 후 이용 가능한 서비스입니다

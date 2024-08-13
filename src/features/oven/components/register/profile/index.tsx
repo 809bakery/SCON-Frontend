@@ -91,7 +91,7 @@ function OvenProfileRegister(props: OvenProfileRegisterProps) {
               alt="profile"
               width={140}
               height={140}
-              className="aspect-square object-cover rounded-full border-4 border-border"
+              className="aspect-square object-cover rounded-full border-2 border-border"
             />
             <UploadSVG className="w-11 h-11 absolute right-0 bottom-0" />
           </label>
@@ -102,7 +102,7 @@ function OvenProfileRegister(props: OvenProfileRegisterProps) {
               alt="profile"
               width={140}
               height={140}
-              className="aspect-square object-cover rounded-full border-4 border-border"
+              className="aspect-square object-cover rounded-full border-2 border-border"
             />
             <UploadSVG className="w-11 h-11 absolute right-0 bottom-0" />
           </label>
