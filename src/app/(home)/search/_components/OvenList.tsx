@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef } from 'react'
@@ -5,6 +6,7 @@ import { useEffect, useRef } from 'react'
 import { publicApi } from '@/api/config/publicApi.ts'
 import OvenCard from '@/app/(home)/search/_components/OvenCard.tsx'
 import Loader from '@/components/loader/index.tsx'
+import { useMinimumLoadingTime } from '@/hooks/useMinimumLoadingTime.ts'
 
 export default function OvenList() {
   const loaderRef = useRef<HTMLDivElement>(null)
@@ -13,6 +15,7 @@ export default function OvenList() {
 
   const {
     data: ovenList,
+    isLoading,
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
@@ -33,6 +36,8 @@ export default function OvenList() {
     initialPageParam: null,
     select: (data) => (data?.pages ?? []).flatMap((page) => page.content),
   })
+
+  const showLoading = useMinimumLoadingTime(isLoading, 400)
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -56,7 +61,7 @@ export default function OvenList() {
 
   return (
     <>
-      {(ovenList?.length ?? 0) ? (
+      {(ovenList?.length ?? 0) > 0 ? (
         ovenList?.map((oven) => (
           <OvenCard
             key={oven.id}
@@ -65,10 +70,12 @@ export default function OvenList() {
             recentStage={oven.recentStage}
           />
         ))
-      ) : (
+      ) : !showLoading ? (
         <div className="flex justify-center items-center h-[25rem] text-xl text-disabled font-normal">
           검색 결과가 없습니다
         </div>
+      ) : (
+        <Loader />
       )}
       <div ref={loaderRef}>{isFetchingNextPage && <Loader />}</div>
     </>

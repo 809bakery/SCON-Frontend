@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef } from 'react'
@@ -5,6 +6,7 @@ import { useEffect, useRef } from 'react'
 import { publicApi } from '@/api/config/publicApi.ts'
 import StageCard from '@/app/(home)/search/_components/StageCard.tsx'
 import Loader from '@/components/loader/index.tsx'
+import { useMinimumLoadingTime } from '@/hooks/useMinimumLoadingTime.ts'
 
 export default function StageList() {
   const loaderRef = useRef<HTMLDivElement>(null)
@@ -14,6 +16,7 @@ export default function StageList() {
 
   const {
     data: stageList,
+    isLoading,
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
@@ -35,6 +38,7 @@ export default function StageList() {
     initialPageParam: null,
     select: (data) => (data?.pages ?? []).flatMap((page) => page.content),
   })
+  const showLoading = useMinimumLoadingTime(isLoading, 400)
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -71,10 +75,12 @@ export default function StageList() {
             status={stage.status}
           />
         ))
-      ) : (
+      ) : !showLoading ? (
         <div className="flex justify-center items-center h-[25rem] text-xl text-disabled font-normal">
           검색 결과가 없습니다
         </div>
+      ) : (
+        <Loader />
       )}
       <div ref={loaderRef}>{isFetchingNextPage && <Loader />}</div>
     </>
