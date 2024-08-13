@@ -55,7 +55,7 @@ export default function AllStageList() {
     initialPageParam: null,
     select: (data) => (data?.pages ?? []).flatMap((page) => page.content),
   })
-  const showLoading = useMinimumLoadingTime(isLoading, 500)
+  const showLoading = useMinimumLoadingTime(isLoading, 400)
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {

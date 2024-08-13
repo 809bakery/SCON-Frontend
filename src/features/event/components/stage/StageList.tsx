@@ -19,7 +19,7 @@ export default function StageList({
   data: stageList,
   isLoading,
 }: StageListProps) {
-  const showLoading = useMinimumLoadingTime(isLoading, 500)
+  const showLoading = useMinimumLoadingTime(isLoading, 400)
   const handleClick = (cat: StageCategory) => {
     if (setCategory) {
       setCategory(cat)
