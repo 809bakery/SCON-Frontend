@@ -214,6 +214,7 @@ function OvenCommunity() {
             {communityList?.map((data: CommunityType) => (
               <CommunityContentCard
                 key={data?.ovenCommunityId}
+                communityId={data?.ovenCommunityId}
                 content={data?.content}
                 image={data?.image}
                 bestCount={data?.bestCount}
@@ -224,6 +225,7 @@ function OvenCommunity() {
                 createdAt={data?.createdAt}
                 nickname={data?.nickname}
                 profile={data?.profile}
+                reaction={data?.reaction}
               />
             ))}
           </div>

@@ -2,10 +2,15 @@
 
 'use client'
 
+import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
+
+import { privateApi } from '@/api/config/privateApi.ts'
 
 interface CommunityContentCardProps {
+  communityId: number
   content?: string
   image: string | null
   bestCount?: number
@@ -16,9 +21,11 @@ interface CommunityContentCardProps {
   createdAt?: string
   nickname: string
   profile: string
+  reaction: string
 }
 
 export default function CommunityContentCard({
+  communityId,
   content,
   image,
   bestCount,
@@ -29,6 +36,7 @@ export default function CommunityContentCard({
   createdAt,
   nickname,
   profile,
+  reaction,
 }: CommunityContentCardProps) {
   const contentRef = useRef<HTMLSpanElement>(null)
   const [isExpanded, setIsExpanded] = useState(false)
@@ -40,10 +48,47 @@ export default function CommunityContentCard({
   const [tearCountState, setTearCountState] = useState(false)
   const [cheerCountState, setCheerCountState] = useState(false)
 
+  const { mutate: deleteReaction } = useMutation({
+    mutationFn: async () => {
+      const response = await privateApi.delete(
+        `/api/oven/community/${communityId}/reaction`,
+      )
+      return response.data
+    },
+    onError: () => {
+      toast.error('응답이 반영되지 않았습니다.')
+    },
+    onSuccess: () => {
+      toast.success('응답이 성공적으로 반영되었습니다.')
+    },
+  })
+  const { mutate: postReaction } = useMutation({
+    mutationFn: async (res: string) => {
+      const response = await privateApi.post(
+        `/api/oven/community/${communityId}/reaction/${res}`,
+      )
+
+      return response.data
+    },
+    onError: () => {
+      toast.error('응답이 반영되지 않았습니다.')
+    },
+    onSuccess: () => {
+      toast.success('응답이 성공적으로 반영되었습니다.')
+    },
+  })
+
+  useEffect(() => {
+    setBestCountState(reaction === 'best')
+    setExpectCountState(reaction === 'expect')
+    setCongratulationCountState(reaction === 'congratulation')
+    setTearCountState(reaction === 'tear')
+    setCheerCountState(reaction === 'cheer')
+  }, [reaction])
+
   // 응답 여부와 응답 타입을 state로 관리
   const [isResponsed, setIsResponsed] = useState(false)
   const [respondedType, setRespondedType] = useState<string | null>(null)
-
   // 응답 여부 업데이트 로직 추가
   useEffect(() => {
     setIsResponsed(
@@ -53,6 +98,22 @@ export default function CommunityContentCard({
         tearCountState ||
         cheerCountState,
     )
+
+    if (bestCountState) {
+      setRespondedType('best')
+    }
+    if (expectCountState) {
+      setRespondedType('expect')
+    }
+    if (congratulationCountState) {
+      setRespondedType('congratulation')
+    }
+    if (tearCountState) {
+      setRespondedType('tear')
+    }
+    if (cheerCountState) {
+      setRespondedType('cheer')
+    }
   }, [
     bestCountState,
     expectCountState,
@@ -87,7 +148,24 @@ export default function CommunityContentCard({
 
   const handleSubmitResponse = (response: string) => {
     // 이미 한 번 응답했고, 같은 응답이 아니면 return
-    if (isResponsed && response !== respondedType) return
+    if (isResponsed && response !== respondedType) {
+      // 알아서 삭제하고, 새로운 응답을 추가하는 리퀘스트 mutation
+      postReaction(response)
+      return
+    }
+
+    if (isResponsed && response === respondedType) {
+      deleteReaction()
+      setRespondedType(null)
+      setIsResponsed(false)
+
+      setBestCountState(false)
+      setExpectCountState(false)
+      setCongratulationCountState(false)
+      setTearCountState(false)
+
+      return
+    }
 
     // 응답 타입 업데이트
     setRespondedType(response)
@@ -112,6 +190,9 @@ export default function CommunityContentCard({
         // eslint-disable-next-line no-console
         console.log('Unknown response')
     }
+
+    // 새로운 응답을 추가하는 리퀘스트 mutation
+    postReaction(response)
   }
 
   return (
@@ -127,9 +208,7 @@ export default function CommunityContentCard({
             alt="profile"
           />
           <div className="ml-3 flex flex-col">
-            <span className="font-bold text-xl leading-7">
-              {nickname || '주르르'}
-            </span>
+            <span className="font-bold text-xl leading-7">{nickname}</span>
             <span className="font-medium text-base leading-6 text-disabled">
               {createdAt}
             </span>
@@ -168,9 +247,7 @@ export default function CommunityContentCard({
             className={`flex flex-col cursor-pointer text-disabled ${bestCountState ? 'text-primary' : ''}`}
           >
             <span>😆 최고예요</span>
-            <span className="text-center ">
-              {bestCountState ? (bestCount ? bestCount + 1 : 1) : bestCount}
-            </span>
+            <span className="text-center ">{bestCount}</span>
           </div>
           <div
             role="presentation"
@@ -178,13 +255,7 @@ export default function CommunityContentCard({
             className={`flex flex-col cursor-pointer text-disabled ${expectCountState ? 'text-primary' : ''}`}
           >
             <span>😊 기대돼요</span>
-            <span className="text-center ">
-              {expectCountState
-                ? expectCount
-                  ? expectCount + 1
-                  : 1
-                : expectCount}
-            </span>
+            <span className="text-center "> {expectCount}</span>
           </div>
           <div
             role="presentation"
@@ -192,13 +263,7 @@ export default function CommunityContentCard({
             className={`flex flex-col cursor-pointer text-disabled ${congratulationCountState ? 'text-primary' : ''}`}
           >
             <span>😚 축하해요</span>
-            <span className="text-center ">
-              {congratulationCountState
-                ? congratulationCount
-                  ? congratulationCount + 1
-                  : 1
-                : congratulationCount}
-            </span>
+            <span className="text-center "> {congratulationCount}</span>
           </div>
           <div
             role="presentation"
@@ -206,9 +271,7 @@ export default function CommunityContentCard({
             className={`flex flex-col cursor-pointer text-disabled ${tearCountState ? 'text-primary' : ''}`}
           >
             <span>😭 눈물나요</span>
-            <span className="text-center ">
-              {tearCountState ? (tearCount ? tearCount + 1 : 1) : tearCount}
-            </span>
+            <span className="text-center "> {tearCount}</span>
           </div>
           <div
             role="presentation"
@@ -216,9 +279,7 @@ export default function CommunityContentCard({
             className={`flex flex-col cursor-pointer text-disabled ${cheerCountState ? 'text-primary' : ''}`}
           >
             <span>😍 응원해요</span>
-            <span className="text-center ">
-              {cheerCountState ? (cheerCount ? cheerCount + 1 : 1) : cheerCount}
-            </span>
+            <span className="text-center "> {cheerCount}</span>
           </div>
         </div>
       </div>
