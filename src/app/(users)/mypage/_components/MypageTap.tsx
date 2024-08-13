@@ -1,11 +1,11 @@
 import { useRouter } from 'next/navigation'
 
 import ExitSVG from '@/static/svg/exit-icon.svg'
+import MyOvenSVG from '@/static/svg/my-oven-icon.svg'
 import NotificationSVG from '@/static/svg/notification-setting-icon.svg'
 import PasswordResetSVG from '@/static/svg/password-reset-icon.svg'
 import ProfileSettingSVG from '@/static/svg/profile-setting-icon.svg'
 import TermSVG from '@/static/svg/terms-icon.svg'
-import MyOvenSVG from '@/static/svg/my-oven-icon.svg'
 
 interface MypageTapProps {
   text?: string
