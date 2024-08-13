@@ -8,7 +8,6 @@ interface OvenDetailCardProps {
 
 export default function OvenDetailCard({ src, name }: OvenDetailCardProps) {
   const router = useRouter()
-  // 해당 유저의 디테일 페이지로 이동
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     router.push(`/oven/detail/${encodeURIComponent(name)}`)
@@ -25,6 +24,7 @@ export default function OvenDetailCard({ src, name }: OvenDetailCardProps) {
           src={src}
           alt={name}
           width={140}
+          height={140}
           objectPosition="center"
           className="w-full aspect-square object-cover"
         />
