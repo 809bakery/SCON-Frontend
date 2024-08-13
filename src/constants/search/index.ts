@@ -37,6 +37,7 @@ export type StageType = {
   time: string
   image: string | StaticImageData
   category: StageCategory
+  status: string
 }
 
 export const SearchFilterList: FilterType[] = [
@@ -142,6 +143,7 @@ export const StageList: StageType[] = [
     time: '2024. 7. 22 ~ 7. 25',
     image: DummyStageProfile1,
     category: StageCategory.club,
+    status: 'Ready',
   },
   {
     id: 2,
@@ -150,6 +152,7 @@ export const StageList: StageType[] = [
     time: '2024. 7. 12 ~ 7. 13',
     image: DummyStageProfile2,
     category: StageCategory.performance,
+    status: 'Ready',
   },
   {
     id: 3,
@@ -158,6 +161,7 @@ export const StageList: StageType[] = [
     time: '2024. 7. 22 ~ 7. 25',
     image: DummyStageProfile3,
     category: StageCategory.performance,
+    status: 'Ready',
   },
   {
     id: 4,
@@ -166,5 +170,6 @@ export const StageList: StageType[] = [
     time: '2024. 8.25',
     image: DummyStageProfile4,
     category: StageCategory.etc,
+    status: 'Done',
   },
 ]

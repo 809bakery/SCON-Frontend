@@ -5,15 +5,11 @@
 import { useSearchParams } from 'next/navigation'
 
 import Filter from '@/app/(home)/search/_components/Filter.tsx'
-import OvenCard from '@/app/(home)/search/_components/OvenCard.tsx'
-import StageCard from '@/app/(home)/search/_components/StageCard.tsx'
+import OvenList from '@/app/(home)/search/_components/OvenList.tsx'
+import StageList from '@/app/(home)/search/_components/StageList.tsx'
 import Tabs from '@/app/(home)/search/_components/Tabs.tsx'
 import SearchBar from '@/components/Searchbar/index.tsx'
-import {
-  OvenList,
-  SearchFilterList,
-  StageList,
-} from '@/constants/search/index.ts'
+import { SearchFilterList } from '@/constants/search/index.ts'
 
 export default function SearchPage() {
   const searchParams = useSearchParams()
@@ -31,14 +27,7 @@ export default function SearchPage() {
       {/* 탭 === 오븐 */}
       {searchParams.get('tab') === 'oven' && (
         <div className="w-full h-full px-7 pt-6 pb-8 flex flex-col gap-3">
-          {OvenList.map((oven) => (
-            <OvenCard
-              key={oven.id}
-              name={oven.name}
-              image={oven.image}
-              recentStage={oven.recentStage}
-            />
-          ))}
+          <OvenList />
         </div>
       )}
       {/* 탭 === 스테이지 */}
@@ -46,16 +35,7 @@ export default function SearchPage() {
         <div className="w-full flex flex-col items-end pt-6 pb-8 px-7 relative">
           <Filter filterList={SearchFilterList} />
           <div className="w-full h-full flex flex-col gap-8 mt-8">
-            {StageList.map((stage) => (
-              <StageCard
-                key={stage.id}
-                title={stage.title}
-                location={stage.location}
-                time={stage.time}
-                image={stage.image}
-                category={stage.category}
-              />
-            ))}
+            <StageList />
           </div>
         </div>
       )}
