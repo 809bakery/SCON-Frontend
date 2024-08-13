@@ -19,7 +19,7 @@ export default function StageList({
   data: stageList,
   isLoading,
 }: StageListProps) {
-  const showLoading = useMinimumLoadingTime(isLoading, 500)
+  const showLoading = useMinimumLoadingTime(isLoading, 400)
   const handleClick = (cat: StageCategory) => {
     if (setCategory) {
       setCategory(cat)
@@ -97,6 +97,7 @@ export default function StageList({
             {stageList.map((stage: EventType) => (
               <Card
                 key={stage.id}
+                id={stage.id}
                 title={stage.title}
                 location={stage.location}
                 sDate={stage.startDate}

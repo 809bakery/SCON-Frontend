@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-boolean-value */
 import Image, { StaticImageData } from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import {
   StageCategory,
@@ -7,22 +8,31 @@ import {
 } from '@/features/event/types/StageCategory.ts'
 
 interface StageCardProps {
+  id: number
   title: string
   location: string
   time: string
   image: string | StaticImageData
   category: StageCategory
+  status: string
 }
 
 export default function StageCard({
+  id,
   title,
   location,
   time,
   image,
   category,
+  status,
 }: StageCardProps) {
+  const router = useRouter()
   return (
-    <div className="w-full hover:bg-lightgray-1 cursor-pointer">
+    <div
+      role="presentation"
+      className="w-full hover:bg-lightgray-1 cursor-pointer"
+      onClick={() => router.push(`/stage/detail/${id}`)}
+    >
       <div className="w-full rounded-xl flex px-5 py-[1.875rem] shadow-border">
         <div className="min-h-[12.25rem] max-h-[12.25rem] min-w-[10rem] max-w-[10rem] relative">
           <Image
@@ -35,7 +45,7 @@ export default function StageCard({
         <div className="w-full flex flex-col pl-7 gap-5">
           <div className="flex space-x-3 h-[1.875rem] text-xs font-bold">
             <div className="bg-primary px-2 py-1 flex justify-center items-center rounded">
-              <span>예매중</span>
+              <span>{status === 'Ready' ? '예매중' : '스테이지 종료'}</span>
             </div>
             <div className="border border-primary px-2 py-1 flex justify-center items-center rounded">
               <span>인기</span>
