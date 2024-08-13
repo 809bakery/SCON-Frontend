@@ -16,8 +16,9 @@ export default function Filter({ filterList }: FilterProps) {
   const { replace } = useRouter()
   const pathname = usePathname()
   const params = useSearchParams()
-  const [filterQuery, setFilterQuery] = useState<string | null>(
-    params.get('sort'),
+  const [filterQuery, setFilterQuery] = useState<string>(
+    filterList.find((f) => f.name === params.get('sort'))?.label ||
+      '판매많은순',
   )
 
   useEffect(() => {

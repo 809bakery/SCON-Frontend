@@ -12,7 +12,9 @@ export default function SearchBar() {
   const { replace } = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get('keyword') || '',
+  )
   const debouncedValue = useDebounce<string>(searchQuery, 200)
 
   useEffect(() => {
