@@ -1,12 +1,59 @@
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
+import { privateApi } from '@/api/config/privateApi.ts'
+import Loader from '@/components/loader/index.tsx'
 import CheckGIF from '@/static/gif/checked.gif'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import Step4SVG from '@/static/svg/oven/oven-register-step4.svg'
 
+import useCreateOvenStore from '@/store/CreateOvenStore.ts'
+
 function OvenJoinRegister() {
+  const ovenName = useCreateOvenStore((state) => state.ovenName)
+  const ovenDetail = useCreateOvenStore((state) => state.ovenDetail)
+  const bankName = useCreateOvenStore((state) => state.bankName)
+  const wishCategory = useCreateOvenStore((state) => state.wishCategory)
+  const account = useCreateOvenStore((state) => state.account)
+  const accountName = useCreateOvenStore((state) => state.accountName)
+  const image = useCreateOvenStore((state) => state.image)
+
+  const { isLoading, isError } = useQuery({
+    queryKey: ['ovenSignUp'],
+    queryFn: async () => {
+      let response
+      const formData = new FormData()
+      formData.append('ovenName', ovenName)
+      formData.append('ovenDetail', ovenDetail)
+      formData.append('bankName', bankName)
+      formData.append('wishCategory', wishCategory.join(','))
+      formData.append('account', account)
+      formData.append('accountName', accountName)
+      if (image) formData.append('image', image)
+
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+
+      // eslint-disable-next-line prefer-const
+      response = await privateApi.post('/api/oven', formData, config)
+
+      if (response.status === 200) {
+        localStorage.removeItem('createOvenState')
+        return response.status
+      }
+      localStorage.removeItem('createOvenState')
+      throw new Error(`Request failed with status ${response.status}`)
+    },
+  })
   const router = useRouter()
+
+  if (isLoading) return <Loader />
+
+  if (isError) return <div>Error...</div>
   return (
     <div className="pt-14 pb-[6.25rem] px-7 flex flex-col gap-y-14">
       <div className="flex flex-col gap-7">

@@ -9,23 +9,13 @@ import Step1SVG from '@/static/svg/oven/oven-register-step1.svg'
 import RequiredSVG from '@/static/svg/required-star.svg'
 import UploadSVG from '@/static/svg/upload-icon.svg'
 
-interface OvenProfileRegisterProps {
-  ovenRegister: OvenRegisterType
-  setOvenRegister: React.Dispatch<React.SetStateAction<OvenRegisterType>>
-}
+import useCreateOvenStore from '@/store/CreateOvenStore.ts'
 
-interface OvenRegisterType {
-  ovenName: string
-  ovenDetail: string
-  bankName: string
-  account: string
-  wishCategory: string[]
-  accountName: string
-  image: string | StaticImageData
-}
+function OvenProfileRegister() {
+  const setImageState = useCreateOvenStore((state) => state.setImage)
+  const setOvenNameState = useCreateOvenStore((state) => state.setOvenName)
+  const setOvenDetailState = useCreateOvenStore((state) => state.setOvenDetail)
 
-function OvenProfileRegister(props: OvenProfileRegisterProps) {
-  const { ovenRegister, setOvenRegister } = props
   const [profileOvenName, setProfileOvenName] = useState<string>('')
   const [profileOvenDetail, setProfileOvenDetail] = useState<string>('')
   const [profileImage, setProfileImage] = useState<string | StaticImageData>('')
@@ -61,12 +51,10 @@ function OvenProfileRegister(props: OvenProfileRegisterProps) {
     if (!profileImage) {
       setProfileImage(DefaultProfile)
     }
-    setOvenRegister({
-      ...ovenRegister,
-      ovenName: profileOvenName,
-      ovenDetail: profileOvenDetail,
-      image: profileImage,
-    })
+    setImageState(profileImage)
+    setOvenNameState(profileOvenName)
+    setOvenDetailState(profileOvenDetail)
+
     router.push('/oven/register/cate')
   }
   return (
