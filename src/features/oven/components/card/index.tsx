@@ -18,8 +18,10 @@ function OvenCard(props: OvenCardProps) {
     >
       <Image
         src={image}
+        width={140}
+        height={140}
         alt="oven profile"
-        className="pt-2 px-2 rounded-xl aspect-square object-cover"
+        className="w-full pt-2 px-2 rounded-xl aspect-square object-cover"
       />
       <p className="py-3 flex items-center justify-center">{ovenName}</p>
     </button>

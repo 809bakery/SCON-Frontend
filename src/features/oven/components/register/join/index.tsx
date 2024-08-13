@@ -19,7 +19,7 @@ function OvenJoinRegister() {
   const accountName = useCreateOvenStore((state) => state.accountName)
   const image = useCreateOvenStore((state) => state.image)
 
-  const { isLoading, isError } = useQuery({
+  const { isLoading, isError, error } = useQuery({
     queryKey: ['ovenSignUp'],
     queryFn: async () => {
       let response
@@ -53,7 +53,7 @@ function OvenJoinRegister() {
 
   if (isLoading) return <Loader />
 
-  if (isError) return <div>Error...</div>
+  if (isError) return <div>Error... {error.message}</div>
   return (
     <div className="pt-14 pb-[6.25rem] px-7 flex flex-col gap-y-14">
       <div className="flex flex-col gap-7">

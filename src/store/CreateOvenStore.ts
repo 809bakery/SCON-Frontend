@@ -14,8 +14,8 @@ interface CreateOvenStore {
   setAccount: (account: string) => void
   accountName: string
   setAccountName: (accountName: string) => void
-  image: string
-  setImage: (image: string) => void
+  image: File | string
+  setImage: (image: File | string) => void
 }
 
 const useCreateOvenStore = create(

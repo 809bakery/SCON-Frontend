@@ -25,7 +25,7 @@ function MyOvenPage() {
   })
 
   return (
-    <div className="px-5 pt-12 pb-10 flex flex-wrap justify-between items-center gap-x-3 gap-y-10">
+    <div className="px-5 pt-12 pb-10 flex flex-wrap justify-start items-center gap-x-[5%] gap-y-10">
       {OvenList?.map((data: OvenType) => (
         <OvenCard
           ovenId={data.ovenId}

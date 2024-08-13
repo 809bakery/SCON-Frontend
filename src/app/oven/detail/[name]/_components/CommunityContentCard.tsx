@@ -2,12 +2,12 @@
 
 'use client'
 
-import Image, { StaticImageData } from 'next/image'
+import Image from 'next/image'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 interface CommunityContentCardProps {
   content?: string
-  image: string | StaticImageData
+  image: string | null
   bestCount?: number
   expectCount?: number
   congratulationCount?: number
@@ -15,7 +15,7 @@ interface CommunityContentCardProps {
   cheerCount?: number
   createdAt?: string
   nickname: string
-  profile: string | StaticImageData
+  profile: string
 }
 
 export default function CommunityContentCard({

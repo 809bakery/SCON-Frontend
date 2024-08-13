@@ -31,6 +31,7 @@ function OvenProfileRegister() {
     }
 
     const file = files?.[0]
+    setImageState(file as File)
     const fileReader = new FileReader()
     fileReader.readAsDataURL(file as Blob)
     fileReader.onloadend = (finishedEvent) => {
@@ -51,7 +52,6 @@ function OvenProfileRegister() {
     if (!profileImage) {
       setProfileImage(DefaultProfile)
     }
-    setImageState(profileImage)
     setOvenNameState(profileOvenName)
     setOvenDetailState(profileOvenDetail)
 
