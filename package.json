@@ -12,6 +12,7 @@
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.7",
     "@portone/browser-sdk": "^0.0.9",
+    "@stomp/stompjs": "^7.0.0",
     "@tanstack/react-query": "^5.50.1",
     "@tanstack/react-query-devtools": "^5.50.1",
     "axios": "^1.7.2",
@@ -25,6 +26,7 @@
     "react-qr-code": "^2.0.15",
     "react-qr-reader": "^3.0.0-beta-1",
     "react-quill": "^2.0.0",
+    "sockjs-client": "^1.6.1",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
@@ -33,6 +35,8 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/sockjs-client": "^1.5.4",
+    "@types/stompjs": "^2.3.9",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
     "@typescript-eslint/parser": "^7.16.0",
     "eslint": "^8",
