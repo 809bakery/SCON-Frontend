@@ -11,6 +11,7 @@ interface StageListProps {
   isLoading: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: EventType[] | []
+  type: 'all' | 'recommend' | 'my'
 }
 
 export default function StageList({
@@ -18,6 +19,7 @@ export default function StageList({
   setCategory,
   data: stageList,
   isLoading,
+  type,
 }: StageListProps) {
   const showLoading = useMinimumLoadingTime(isLoading, 400)
   const handleClick = (cat: StageCategory) => {
@@ -88,7 +90,8 @@ export default function StageList({
           <div className="w-full flex bg-yellow bg-opacity-40 justify-center items-center rounded-xl">
             <div className="flex flex-col items-center py-10 gap-5">
               <p className="font-medium text-base">
-                아직 좋아요를 누른 스테이지가 없습니다.
+                {type === 'my' && '아직 좋아요를 누른 스테이지가 없습니다.'}
+                {type !== 'my' && '아직 등록된 누른 스테이지가 없습니다.'}
               </p>
             </div>
           </div>
