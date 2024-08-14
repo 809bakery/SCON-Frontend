@@ -11,6 +11,7 @@ import CategoryList from '@/components/CategoryList.tsx'
 import Loader from '@/components/loader/index.tsx'
 import SearchBar from '@/components/Searchbar/index.tsx'
 import Card from '@/features/event/components/stage/Card/index.tsx'
+import { useMinimumLoadingTime } from '@/hooks/useMinimumLoadingTime.ts'
 
 interface StageType {
   id: number
@@ -44,7 +45,7 @@ export default function AllStageList() {
       const keywordParam = searchParams ? `&keyword=${searchParams}` : ''
       const cursorParam = pageParam ? `&cursor=${pageParam}` : ''
       const response = await publicApi.get(
-        `/api/event/list/inf?category=${category}${cursorParam}${keywordParam}`,
+        `/api/event/search/inf?category=${category}${cursorParam}${keywordParam}`,
       )
       return response.data
     },
@@ -54,6 +55,7 @@ export default function AllStageList() {
     initialPageParam: null,
     select: (data) => (data?.pages ?? []).flatMap((page) => page.content),
   })
+  const showLoading = useMinimumLoadingTime(isLoading, 400)
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -82,7 +84,7 @@ export default function AllStageList() {
         <CategoryList />
       </div>
       <div className="w-full flex flex-wrap items-center justify-between gap-y-3 gap-x-3 px-5 py-3">
-        {isLoading ? (
+        {showLoading ? (
           <>
             {Array.from({ length: 6 }, (_, index) => (
               <div
@@ -103,6 +105,7 @@ export default function AllStageList() {
             {stageList.map((stage: StageType) => (
               <Card
                 key={stage.id}
+                id={stage.id}
                 title={stage.title}
                 location={stage.location}
                 sDate={stage.startDate}
@@ -118,13 +121,15 @@ export default function AllStageList() {
             )}
           </>
         ) : (
-          !isLoading &&
+          !showLoading &&
           (stageList?.length === 0 || stageList === undefined) && (
-            <p>스테이지 정보가 없습니다.</p>
+            <div className="flex justify-center items-center w-full h-[25rem] text-xl text-disabled font-normal">
+              검색 결과가 없습니다
+            </div>
           )
         )}
+        <div ref={loaderRef}>{isFetchingNextPage && <Loader />}</div>
       </div>
-      <div ref={loaderRef}>{isFetchingNextPage && <Loader />}</div>
     </div>
   )
 }

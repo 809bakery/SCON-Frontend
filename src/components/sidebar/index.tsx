@@ -42,7 +42,7 @@ function SideBar() {
         {user && (
           <SideBarProfile
             nickname={user?.nickname}
-            isOvener={user?.isOvener}
+            isOvener={user?.ovener}
             image={user?.image}
           />
         )}
@@ -53,13 +53,20 @@ function SideBar() {
         <SideBarMenu text="홈" url="/main" />
         <SideBarMenu text="스테이지 둘러보기" url="/stage/list/all" />
         <SideBarMenu text="오븐 둘러보기" url="/oven/detail" />
-        <SideBarMenu text="양도 게시판" />
-        <SideBarMenu text="예매 내역 확인하기" url="/ticket/my" />
-        <SideBarMenu text="스콘톡" url="/scontalk" />
-        <SideBarMenu text="마이페이지" url="/mypage" />
+        {user ? (
+          <SideBarMenu text="예매 내역 확인하기" url="/ticket/my" />
+        ) : (
+          <SideBarMenu text="예매 내역 확인하기" />
+        )}
+        {user && <SideBarMenu text="스콘톡" url="/scontalk" />}
+        {user ? (
+          <SideBarMenu text="마이페이지" url="/mypage" />
+        ) : (
+          <SideBarMenu text="마이페이지" />
+        )}
 
-        {user?.isOvener ? (
-          <SideBarMenu text="오븐 관리하기" url="/oven/1" />
+        {user?.ovener ? (
+          <SideBarMenu text="오븐 관리하기" url="/oven/my" />
         ) : (
           <SideBarMenu text="오브너 등록하기" url="/signup/oven" />
         )}

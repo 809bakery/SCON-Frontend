@@ -1,5 +1,6 @@
 import { StaticImageData } from 'next/image'
 
+import { StageCategory } from '@/features/event/types/StageCategory.ts'
 import DummyOvenProfile1 from '@/static/img/dummy/search/dummy-oven-profile1.jpg'
 import DummyOvenProfile2 from '@/static/img/dummy/search/dummy-oven-profile2.jpg'
 import DummyOvenProfile3 from '@/static/img/dummy/search/dummy-oven-profile3.jpg'
@@ -35,7 +36,8 @@ export type StageType = {
   location: string
   time: string
   image: string | StaticImageData
-  category?: string
+  category: StageCategory
+  status: string
 }
 
 export const SearchFilterList: FilterType[] = [
@@ -59,17 +61,17 @@ export const SearchFilterList: FilterType[] = [
 export const OvenDetailFilterList: FilterType[] = [
   {
     id: 1,
-    name: '',
+    name: 'follow',
     label: '인기순',
   },
   {
     id: 2,
-    name: '',
+    name: 'alp',
     label: '가나다순',
   },
   {
     id: 3,
-    name: '',
+    name: 'recent',
     label: '최신등록순',
   },
 ]
@@ -140,7 +142,8 @@ export const StageList: StageType[] = [
     location: '소환사의 협곡 바텀 라인',
     time: '2024. 7. 22 ~ 7. 25',
     image: DummyStageProfile1,
-    category: '소모임',
+    category: StageCategory.club,
+    status: 'Ready',
   },
   {
     id: 2,
@@ -148,7 +151,8 @@ export const StageList: StageType[] = [
     location: '경희대학교 평화의 전당',
     time: '2024. 7. 12 ~ 7. 13',
     image: DummyStageProfile2,
-    category: '공연',
+    category: StageCategory.performance,
+    status: 'Ready',
   },
   {
     id: 3,
@@ -156,7 +160,8 @@ export const StageList: StageType[] = [
     location: '잠실 롯데시네마 7층',
     time: '2024. 7. 22 ~ 7. 25',
     image: DummyStageProfile3,
-    category: '공연',
+    category: StageCategory.performance,
+    status: 'Ready',
   },
   {
     id: 4,
@@ -164,6 +169,7 @@ export const StageList: StageType[] = [
     location: '인스파이어 아레나',
     time: '2024. 8.25',
     image: DummyStageProfile4,
-    category: '기타',
+    category: StageCategory.etc,
+    status: 'Done',
   },
 ]

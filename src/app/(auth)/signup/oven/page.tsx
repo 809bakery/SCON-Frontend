@@ -1,18 +1,39 @@
 'use client'
 
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+
+import { privateApi } from '@/api/config/privateApi.ts'
 
 function OvenSignUpPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isPhoneAuth, setIsPhoneAuth] = useState<boolean>(false)
   const router = useRouter()
 
+  const queryClient = useQueryClient()
+
+  const { mutate: phoneAuth } = useMutation({
+    mutationFn: async () => {
+      // axios 쏴서 번호 인증
+      const response = await privateApi.patch('/api/user/auth')
+      return response.data
+    },
+
+    onSuccess: () => {
+      toast.success('번호 인증이 완료되었습니다.')
+      queryClient.invalidateQueries({ queryKey: ['user-info'] })
+      setIsModalOpen(!isModalOpen)
+      setIsPhoneAuth(!isPhoneAuth)
+    },
+
+    onError: () => {
+      toast.error('번호 인증에 실패했습니다.')
+    },
+  })
   const handlePhoneAuth = () => {
-    toast.success('번호 인증이 완료되었습니다.')
-    setIsModalOpen(!isModalOpen)
-    setIsPhoneAuth(!isPhoneAuth)
+    phoneAuth()
   }
 
   const handleModal = () => {

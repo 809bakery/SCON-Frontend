@@ -2,49 +2,13 @@
 
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import { publicApi } from '@/api/config/publicApi.ts'
 import { RecommendEventType } from '@/features/event/types/Event.ts'
 
-const DummyStagePickList = [
-  {
-    title: 'PM에게 UX라이팅을 맡겨보아요',
-    image: '/dummy/dummy-stage-pick0.jpg',
-    ovenName: '오븐명',
-    location: '스테이지 장소',
-    time: '스테이지 일시',
-  },
-  {
-    title: '에스파표 예술 구현한 ‘아마겟돈’과 함께 화끈한 여름',
-    image: '/dummy/dummy-stage-pick1.jpg',
-    ovenName: '에스파',
-    location: '올림픽 경기장',
-    time: '2024. 08. 01',
-  },
-  {
-    title: 'BLACK PINK IN YOUR AREA!',
-    image: '/dummy/dummy-stage-pick2.jpg',
-    ovenName: '블랙핑크',
-    location: '올림픽 경기장',
-    time: '2024. 08. 01',
-  },
-  {
-    title: '이홍기의 꿀 VOICE를 현장에서 리얼하게!',
-    image: '/dummy/dummy-stage-pick3.jpg',
-    ovenName: '이홍기',
-    location: '올림픽 경기장',
-    time: '2024. 08. 01',
-  },
-  {
-    title: '당신의 `HERO`가 되어줄게!',
-    image: '/dummy/dummy-stage-pick4.jpg',
-    ovenName: '루시(LUCY)',
-    location: '도쿄돔 부도칸 요코하마아레나 일본 좋은곳 다넣어 그냥 막 다 넣어',
-    time: '2024. 08. 01 - 2024. 08. 13',
-  },
-]
-
 export default function PickStageList() {
+  const router = useRouter()
   const { data: recommendStageList } = useQuery({
     queryKey: ['list_pick'],
     queryFn: async () => {
@@ -54,7 +18,7 @@ export default function PickStageList() {
       const stageList = response.data
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const updatedStageList = stageList.map((stage: any, index: number) => {
+      const updatedStageList = stageList.map((stage: any) => {
         const formatStartDate = stage.startDate
           .split('T')[0]
           .replace(/-/g, '. ')
@@ -67,7 +31,6 @@ export default function PickStageList() {
 
         return {
           ...stage,
-          image: DummyStagePickList[index % DummyStagePickList.length].image,
           date,
         }
       })
@@ -97,8 +60,10 @@ export default function PickStageList() {
       <div className="py-10 px-7 flex flex-col gap-5">
         {recommendStageList?.map((stage: RecommendEventType) => (
           <div
-            className="w-full rounded-xl border border-border"
+            role="presentation"
             key={stage.id}
+            onClick={() => router.push(`/stage/detail/${stage?.id}`)}
+            className="w-full rounded-xl border border-border cursor-pointer"
           >
             <Image
               src={stage?.image}

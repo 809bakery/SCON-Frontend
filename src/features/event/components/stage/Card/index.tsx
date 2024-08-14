@@ -1,10 +1,11 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface CardProps {
+  id: number
   title: string
   location: string
   sDate: string
@@ -15,8 +16,9 @@ interface CardProps {
 }
 
 function Card(props: CardProps) {
-  const { title, location, sDate, eDate, posterUrl, isEnd } = props
+  const router = useRouter()
   const [date, setDate] = useState<string>('')
+  const { id, title, location, sDate, eDate, posterUrl, isEnd } = props
 
   useEffect(() => {
     handleDate()
@@ -39,20 +41,23 @@ function Card(props: CardProps) {
     <div className="w-[30%] rounded-xl shrink-0 flex flex-col gap-y-3  cursor-pointer">
       <div className="relative">
         {isEnd && (
-          <div className="absolute w-full bg-[#4C4C4C] bg-opacity-80 h-full rounded-xl flex flex-col items-center justify-center text-white text-xl">
+          <div className="absolute w-full bg-[#4C4C4C] z-50 bg-opacity-80 h-full rounded-xl flex flex-col items-center justify-center text-white text-xl">
             <p>종료된</p>
             <p>스테이지</p>
           </div>
         )}
-        <Link href="/stage/detail/1">
+        <div
+          role="presentation"
+          className="h-[13.75rem] max-h-[13.75rem] w-[10rem] max-w-[10rem] relative"
+          onClick={() => router.push(`/stage/detail/${id}`)}
+        >
           <Image
             src={posterUrl}
             alt="poster"
-            width={160}
-            height={220}
-            className="w-[10rem] h-[13.75rem] rounded-xl object-cover object-center"
+            fill
+            className=" object-cover rounded-xl"
           />
-        </Link>
+        </div>
       </div>
 
       <div className="w-full flex flex-col items-start justify-center gap-y-1">

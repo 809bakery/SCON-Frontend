@@ -1,10 +1,15 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Image, { StaticImageData } from 'next/image'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
+import { privateApi } from '@/api/config/privateApi.ts'
 import CommentSettingSVG from '@/static/svg/stage/stage-setting-icon.svg'
 
 interface StageDetailCardProps {
-  // eslint-disable-next-line react/require-default-props
+  id: string
+  boardId: number
+  isReview: boolean
   comment: string
   createdAt: string
   liked: number
@@ -15,23 +20,100 @@ interface UserType {
   nickname: string
   profile: string | StaticImageData
   isWrite: boolean
+  isLike: boolean
 }
 
 function StageDetailCommentCard(props: StageDetailCardProps) {
-  const [isLiked, setIsLiked] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isDeleteModal, seteDeleteModal] = useState<boolean>(false)
+  const [isModify, setIsModify] = useState<boolean>(false)
+  const [modifyComment, setModifyComment] = useState<string>()
 
-  const { comment, createdAt, liked, user } = props
+  const { comment, createdAt, liked, user, id, isReview, boardId } = props
 
-  const deleteComment = () => {
-    alert('해당 댓글이 삭제되었습니다.')
-    seteDeleteModal(false)
-  }
+  const queryClient = useQueryClient()
+  const { mutate: deleteComment } = useMutation({
+    mutationFn: async () => {
+      if (isReview) {
+        await privateApi.delete(`/api/board/${id}/review/${boardId}`)
+      } else {
+        await privateApi.delete(`/api/board/${id}/expect/${boardId}`)
+      }
+    },
+    onSuccess: () => {
+      toast.success('해당 댓글이 삭제되었습니다.')
+      queryClient.invalidateQueries({
+        queryKey: ['list_stage_expected_comments', id, isReview],
+      })
+    },
+    onError: () => {
+      toast.error('댓글 삭제에 실패했습니다.')
+    },
+  })
+
+  const { mutate: modifyCommentFn } = useMutation({
+    mutationFn: async () => {
+      if (isReview) {
+        await privateApi.patch(`/api/board/${id}/review/${boardId}`, {
+          content: modifyComment,
+        })
+      } else {
+        await privateApi.patch(`/api/board/${id}/expect/${boardId}`, {
+          content: modifyComment,
+        })
+      }
+    },
+    onSuccess: () => {
+      toast.success('해당 댓글이 수정되었습니다.')
+      queryClient.invalidateQueries({
+        queryKey: ['list_stage_expected_comments', id, isReview],
+      })
+    },
+    onError: () => {
+      toast.error('댓글 수정에 실패했습니다.')
+      setModifyComment(comment)
+    },
+  })
 
   const handleDeleteModal = () => {
     setIsModalOpen(false)
     seteDeleteModal(true)
+  }
+
+  const handleModifyModal = () => {
+    setIsModalOpen(false)
+    setIsModify(true)
+    setModifyComment(comment)
+  }
+
+  const handleDelete = () => {
+    deleteComment()
+    seteDeleteModal(false)
+  }
+
+  const handleModify = () => {
+    modifyCommentFn()
+    setIsModify(false)
+  }
+
+  const cancelModify = () => {
+    setIsModify(false)
+    setModifyComment(comment)
+  }
+
+  const { mutate: patchLike } = useMutation({
+    mutationFn: async () => {
+      await privateApi.patch(`/api/board/${boardId}/like`)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['list_stage_expected_comments', id, isReview],
+      })
+    },
+  })
+
+  const postLike = () => {
+    patchLike()
   }
 
   return (
@@ -44,7 +126,7 @@ function StageDetailCommentCard(props: StageDetailCardProps) {
             alt="profile"
             width={34}
             height={34}
-            className="rounded-full"
+            className="rounded-full w-8 h-8 object-cover"
           />
 
           <h3 className="font-bold">{user.nickname}</h3>
@@ -64,6 +146,7 @@ function StageDetailCommentCard(props: StageDetailCardProps) {
               <div className="absolute right-14 text-xs flex flex-col items-center justify-center bg-white border border-border rounded-xl">
                 <button
                   type="button"
+                  onClick={() => handleModifyModal()}
                   className="px-6 py-2 flex items-center justify-center border-b border-border"
                 >
                   수정
@@ -81,16 +164,41 @@ function StageDetailCommentCard(props: StageDetailCardProps) {
         )}
       </div>
 
-      {comment && <div>{comment}</div>}
-
+      <textarea
+        placeholder={
+          user.isWrite
+            ? '내용을 입력해주세요.'
+            : '예매자만 공연 종료 후 작성할 수 있습니다.'
+        }
+        disabled={!isModify}
+        value={modifyComment || comment}
+        className={`${isModify && 'text-disabled rounded-xl border border-border min-h-[5.5rem]'} w-full text-xs p-4 resize-none outline-none`}
+        onChange={(e) => setModifyComment(e.target.value)}
+      />
+      <div className="flex justify-between items-center gap-x-4">
+        <button
+          type="button"
+          onClick={handleModify}
+          className={` ${!isModify && 'hidden'} w-full text-black focus:outline-none bg-primary rounded-xl py-2`}
+        >
+          저장
+        </button>
+        <button
+          type="button"
+          onClick={cancelModify}
+          className={` ${!isModify && 'hidden'} w-full border text-disabled focus:outline-none border-border rounded-xl py-2`}
+        >
+          취소
+        </button>
+      </div>
       {/* liked */}
       <div className="w-full flex items-center justify-end">
         <button
           type="button"
-          className={`w-16  py-2 rounded-xl text-xs border ${isLiked ? 'border-primary text-primary' : 'border-border text-disabled '}`}
-          onClick={() => setIsLiked(!isLiked)}
+          className={`w-16  py-2 rounded-xl text-xs border ${user.isLike ? 'border-primary text-primary' : 'border-border text-disabled '}`}
+          onClick={postLike}
         >
-          👍 {isLiked ? liked + 1 : liked}
+          👍 {liked}
         </button>
       </div>
 
@@ -107,7 +215,7 @@ function StageDetailCommentCard(props: StageDetailCardProps) {
             <button
               type="button"
               className="flex-1 py-4 border-r border-border"
-              onClick={deleteComment}
+              onClick={handleDelete}
             >
               삭제
             </button>

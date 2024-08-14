@@ -1,4 +1,3 @@
-import { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -10,23 +9,15 @@ import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import Step3SVG from '@/static/svg/oven/oven-register-step3.svg'
 import RequiredSVG from '@/static/svg/required-star.svg'
 
-interface OvenRegisterType {
-  ovenName: string
-  ovenDetail: string
-  bankName: string
-  account: string
-  wishCategory: string[]
-  accountName: string
-  image: string | StaticImageData
-}
+import useCreateOvenStore from '@/store/CreateOvenStore.ts'
 
-interface OvenCateRegisterProps {
-  ovenRegister: OvenRegisterType
-  setOvenRegister: React.Dispatch<React.SetStateAction<OvenRegisterType>>
-}
+function OvenBankRegister() {
+  const setAccountState = useCreateOvenStore((state) => state.setAccount)
+  const setBankNameState = useCreateOvenStore((state) => state.setBankName)
+  const setAccountNameState = useCreateOvenStore(
+    (state) => state.setAccountName,
+  )
 
-function OvenBankRegister(props: OvenCateRegisterProps) {
-  const { ovenRegister, setOvenRegister } = props
   const [profileAccountName, setProfileAccountName] = useState<string>('')
   const [profileAccount, setProfileAccount] = useState<string>('')
   const [profileBankName, setProfileBankName] = useState<string>('')
@@ -61,12 +52,10 @@ function OvenBankRegister(props: OvenCateRegisterProps) {
       return
     }
 
-    setOvenRegister({
-      ...ovenRegister,
-      accountName: profileAccountName,
-      account: profileAccount,
-      bankName: profileBankName,
-    })
+    setAccountState(profileAccount)
+    setBankNameState(profileBankName)
+    setAccountNameState(profileAccountName)
+
     router.push('/oven/register/people')
   }
 
