@@ -1,4 +1,3 @@
-import { StaticImageData } from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -7,23 +6,10 @@ import OvenCheckbox from '@/features/oven/components/checkbox/index.tsx'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import Step2SVG from '@/static/svg/oven/oven-register-step2.svg'
 
-interface OvenRegisterType {
-  ovenName: string
-  ovenDetail: string
-  bankName: string
-  account: string
-  wishCategory: string[]
-  accountName: string
-  image: string | StaticImageData
-}
+import useCreateOvenStore from '@/store/CreateOvenStore.ts'
 
-interface OvenCateRegisterProps {
-  ovenRegister: OvenRegisterType
-  setOvenRegister: React.Dispatch<React.SetStateAction<OvenRegisterType>>
-}
-
-function OvenCateRegister(props: OvenCateRegisterProps) {
-  const { ovenRegister, setOvenRegister } = props
+function OvenCateRegister() {
+  const setWishState = useCreateOvenStore((state) => state.setWishCategory)
   const router = useRouter()
   const [category, setCategory] = useState<boolean[]>([
     false,
@@ -53,8 +39,7 @@ function OvenCateRegister(props: OvenCateRegisterProps) {
       }
     })
 
-    setOvenRegister({ ...ovenRegister, wishCategory: categoryArr })
-
+    setWishState(categoryArr)
     router.push('/oven/register/bank')
   }
   return (

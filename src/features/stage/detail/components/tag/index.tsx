@@ -1,6 +1,6 @@
 interface StageDetailTagProps {
   text: string
-  classnames: string
+  classnames?: string
 }
 
 function StageDetailTag(props: StageDetailTagProps) {
