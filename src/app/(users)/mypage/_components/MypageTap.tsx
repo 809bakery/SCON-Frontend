@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 import ExitSVG from '@/static/svg/exit-icon.svg'
 import MyOvenSVG from '@/static/svg/my-oven-icon.svg'
@@ -10,16 +11,31 @@ import TermSVG from '@/static/svg/terms-icon.svg'
 interface MypageTapProps {
   text?: string
   url?: string
+  ex_link?: string
   color?: string
+  toastMsg?: string
   icon?: string
 }
 
-export default function MypageTap({ text, url, color, icon }: MypageTapProps) {
+export default function MypageTap({
+  text,
+  url,
+  ex_link,
+  color,
+  toastMsg,
+  icon,
+}: MypageTapProps) {
   const router = useRouter()
 
   const handleUrl = () => {
+    if (toastMsg) {
+      toast(toastMsg as string, { icon: '🍪' })
+      return
+    }
     if (url) {
       router.push(url)
+    } else if (ex_link) {
+      window.open(ex_link, '_blank')
     } else {
       // eslint-disable-next-line no-alert
       alert('준비 중 입니다🍪')

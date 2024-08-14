@@ -44,6 +44,7 @@ export default function RecommendStage() {
         setCategory={setCategory}
         data={data}
         isLoading={isLoading}
+        type="recommend"
       />
     </div>
   )

@@ -44,6 +44,7 @@ export default function AllStage() {
         setCategory={setCategory}
         data={data}
         isLoading={isLoading}
+        type="all"
       />
     </div>
   )

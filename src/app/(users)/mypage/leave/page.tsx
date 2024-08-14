@@ -1,17 +1,41 @@
 'use client'
 
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
+import { privateApi } from '@/api/config/privateApi.ts'
+import { UserInfo } from '@/app/(users)/mypage/page.tsx'
+import Loader from '@/components/loader/index.tsx'
 import RememberOnSVG from '@/static/svg/square-fill-icon.svg'
 import RememberOffSVG from '@/static/svg/square-unfill-icon.svg'
+import { removeTokenAll } from '@/utils/cookie/index.ts'
 
 export default function Leave() {
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [isAgreed, setIsAgreed] = useState<boolean>(false)
+  const { isLoading, isError } = useQuery<UserInfo>({
+    queryKey: ['user-info'],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/user/info')
+      return response.data
+    },
+  })
+
+  if (isLoading) {
+    return <Loader />
+  }
+
+  if (isError) {
+    toast.error('로그인이 필요한 서비스입니다.')
+    router.back()
+  }
 
   const handleDeleteUser = () => {
-    localStorage.clear()
+    removeTokenAll()
+    queryClient.invalidateQueries({ queryKey: ['user-info'] })
     router.push('/main')
   }
 
