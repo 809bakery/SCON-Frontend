@@ -9,7 +9,7 @@ import { useState } from 'react'
 
 import { publicApi } from '@/api/config/publicApi.ts'
 import { nicknameRegExp } from '@/constants/regex/index.ts'
-import DefaultProfile from '@/static/img/dummy/profile/default-profile.jpg'
+import DefaultProfile from '@/static/img/profile/profile-default.png'
 import Checked from '@/static/svg/checked-icon.svg'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import Step2SVG from '@/static/svg/progress/progress-step2.svg'
@@ -109,7 +109,7 @@ export default function ProfileStep() {
             <div className="flex justify-center items-center mt-10 mb-5">
               <div className="relative">
                 <label htmlFor="file-input" className="cursor-pointer">
-                  <div className="w-40 h-40  rounded-full overflow-hidden">
+                  <div className="w-40 h-40 rounded-full overflow-hidden border">
                     <Image
                       src={imageUrl}
                       alt="profile"
@@ -124,7 +124,7 @@ export default function ProfileStep() {
             </div>
           ) : (
             <div className="flex justify-center items-center mt-10 mb-5">
-              <div className="relative w-40 h-40  rounded-full">
+              <div className="relative w-40 h-40  rounded-full border">
                 <label htmlFor="file-input" className="cursor-pointer">
                   <Image
                     src={DefaultProfile}

@@ -173,7 +173,7 @@ export default function SconTalkPage({ params: { id } }: SconTalkPageProps) {
       id: chat,
       content: chat,
       nickname: '고세구',
-      profile: '/dummy/dummy-default-profile.jpg',
+      profile: '/dummy/dummy-default-profile.png',
       createdAt: getFormattedCurrentDate(),
       isOvener: false,
     }
@@ -228,7 +228,7 @@ export default function SconTalkPage({ params: { id } }: SconTalkPageProps) {
           </div>
           <button
             type="submit"
-            className="bg-primary rounded-xl px-6 py-4 text-disabled text-xl font-medium leading-7 min-w-max"
+            className="bg-primary rounded-xl px-6 py-4 text-white text-xl font-medium leading-7 min-w-max"
           >
             전송
           </button>
