@@ -20,7 +20,7 @@ function SideBarProfile(props: SideBarProfileProps) {
           src={image!}
           width={60}
           height={60}
-          className="w-15 h-15 rounded-full object-cover object-center"
+          className="h-full aspect-square rounded-full object-cover object-center"
           alt="프로필 이미지"
         />
       )}
