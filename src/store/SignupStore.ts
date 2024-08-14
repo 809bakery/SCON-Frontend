@@ -8,8 +8,8 @@ interface SignupStore {
   setPassword: (password: string) => void
   nickname: string
   setNickname: (nickname: string) => void
-  image: string
-  setImage: (image: string) => void
+  image: File | string
+  setImage: (image: File | string) => void
   type: string
   setType: (type: string) => void
 }
