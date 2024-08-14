@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { privateApi } from '@/api/config/privateApi.ts'
 import NavbarWithGoback from '@/components/Navbar/NavbarWithGoback.tsx'
 import NavbarWithoutGoback from '@/components/Navbar/NavbarWithoutGoback.tsx'
+import { getAccessToken } from '@/utils/cookie/index.ts'
 
 export const DOMAIN_NAME_MAPPING: {
   [key: string]: string
@@ -33,6 +34,7 @@ export default function Navbar() {
       const response = await privateApi.get('/api/user/info')
       return response.data
     },
+    enabled: !!getAccessToken(),
   })
   const domainList = pathname.split('/').filter(Boolean)
   const lastDomain = decodeURIComponent(domainList[domainList.length - 1])
