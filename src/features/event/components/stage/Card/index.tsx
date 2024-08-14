@@ -41,7 +41,7 @@ function Card(props: CardProps) {
     <div className="w-[30%] rounded-xl shrink-0 flex flex-col gap-y-3  cursor-pointer">
       <div className="relative">
         {isEnd && (
-          <div className="absolute w-full bg-[#4C4C4C] bg-opacity-80 h-full rounded-xl flex flex-col items-center justify-center text-white text-xl">
+          <div className="absolute w-full bg-[#4C4C4C] z-50 bg-opacity-80 h-full rounded-xl flex flex-col items-center justify-center text-white text-xl">
             <p>종료된</p>
             <p>스테이지</p>
           </div>

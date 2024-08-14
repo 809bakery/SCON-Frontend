@@ -1,11 +1,14 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-import { DUMMY_STAGE_DETAIL, DUMMY_TAGS } from '@/constants/stage/index.ts'
+import { privateApi } from '@/api/config/privateApi.ts'
+import { publicApi } from '@/api/config/publicApi.ts'
+import { DUMMY_TAGS } from '@/constants/stage/index.ts'
 import StageTabComment from '@/features/stage/detail/components/tab/comment/index.tsx'
 import StageTabInfo from '@/features/stage/detail/components/tab/info/index.tsx'
 import StageTabSale from '@/features/stage/detail/components/tab/sale/index.tsx'
@@ -13,35 +16,34 @@ import StageDetailTag from '@/features/stage/detail/components/tag/index.tsx'
 import LikeOffSVG from '@/static/svg/stage/stage-like-off-icon.svg'
 import LikeOnSVG from '@/static/svg/stage/stage-like-on-icon.svg'
 
-interface UserType {
-  nickname: string
-  email: string
-  image: string
-  isOvener: boolean
-  isAuthorized: boolean
-}
-
-function StageDetailPage() {
+function StageDetailPage({ params }: { params: { id: string } }) {
   const [tab, setTab] = useState<number>(0)
   const [isLiked, setIsLiked] = useState<boolean>(false)
-  const [loginUser, setLoginUser] = useState<UserType>()
   const router = useRouter()
 
-  useEffect(() => {
-    setLoginUser(JSON.parse(sessionStorage.getItem('user')!))
-  }, [])
+  const { data: stageDetail } = useQuery({
+    queryKey: ['stage-detail', params.id],
+    queryFn: async () => {
+      const response = await publicApi.get(`/api/event/${params.id}`)
+      return response.data
+    },
+  })
+
+  const { data: loginUser } = useQuery({
+    queryKey: ['user-info'],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/user/info')
+      return response.data
+    },
+  })
 
   const handleReserve = () => {
     if (!loginUser) {
       toast.error('로그인 후 이용해주세요.')
+      router.push('/login')
       return
     }
-    if (!loginUser?.isAuthorized) {
-      setLoginUser({ ...loginUser, isAuthorized: true })
-      toast.success('인증이 완료되었습니다.')
-      return
-    }
-    router.push('/ticket/1/')
+    router.push(`/ticket/${params.id}`)
   }
 
   return (
@@ -49,7 +51,7 @@ function StageDetailPage() {
       {/* background image */}
       <div className="w-full h-[20.5625rem] overflow-hidden absolute z-[-1]">
         <Image
-          src={DUMMY_STAGE_DETAIL.image}
+          src={stageDetail?.image}
           className="absolute translate-y-[-30%] opacity-50 overflow-hidden bg-center"
           alt="poster"
           width={600}
@@ -60,7 +62,7 @@ function StageDetailPage() {
       {/* poster */}
       <div className="w-full pt-12 flex justify-center items-center">
         <Image
-          src={DUMMY_STAGE_DETAIL.image}
+          src={stageDetail?.image}
           alt="poster"
           className="rounded-xl"
           width={229}
@@ -81,8 +83,8 @@ function StageDetailPage() {
 
       {/* title */}
       <div className="w-full px-7 py-5 flex items-center justify-center text-2xl font-bold text-center">
-        {DUMMY_STAGE_DETAIL.title} {DUMMY_STAGE_DETAIL.detail && ' - '}{' '}
-        {DUMMY_STAGE_DETAIL.detail}
+        {stageDetail?.title} {stageDetail?.detail && ' - '}{' '}
+        {stageDetail?.detail}
       </div>
       {/* tab */}
       <div className="w-full flex justify-between items-center border-b border-border">
@@ -139,7 +141,7 @@ function StageDetailPage() {
           onClick={handleReserve}
           className="flex-1 bg-primary rounded-xl text-2xl py-5 flex items-center justify-center"
         >
-          {loginUser?.isAuthorized ? '예매하기' : '인증 후 예매하기'}
+          {loginUser?.authorization ? '예매하기' : '인증 후 예매하기'}
         </button>
       </div>
     </div>
