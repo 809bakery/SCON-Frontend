@@ -29,6 +29,13 @@
       }
     }
   ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
   "rules": {
     "no-restricted-imports": [
       // 절대 경로가 아니면 ESLint 오류가 나도록 설정
