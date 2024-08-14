@@ -1,5 +1,6 @@
 'use client'
 
+import { Client, Message as MessageType } from '@stomp/stompjs'
 import { useEffect, useRef, useState } from 'react'
 
 import ChatChunk from '@/app/scontalk/[id]/_components/ChatChunk.tsx'
@@ -7,7 +8,9 @@ import NavbarWithGoback from '@/components/Navbar/NavbarWithGoback.tsx'
 import { ChatMessage, DUMMY_SCON_TALK_DETAIL } from '@/constants/dummy.ts'
 import preprocessMessages from '@/utils/chat/preprocessMessages.ts'
 import { splitMessagesIntoChunks } from '@/utils/chat/splitMessagesIntoChunks.ts'
+import { getAccessToken } from '@/utils/cookie/index.ts'
 import getFormattedCurrentDate from '@/utils/date/getFormattedCurrentDate.ts'
+import SockJS from 'sockjs-client'
 
 export interface ExtendedChatMessage extends ChatMessage {
   isFirst: boolean
@@ -16,17 +19,109 @@ export interface ExtendedChatMessage extends ChatMessage {
 
 export type ChatChunkType = ExtendedChatMessage[]
 
-export default function SconTalkPage() {
+interface SconTalkPageProps {
+  params: {
+    id: string
+  }
+}
+
+export default function SconTalkPage({ params: { id } }: SconTalkPageProps) {
+  const clientRef = useRef<Client | null>(null)
+  const [client, setClient] = useState<Client | null>(null)
+
   const messageEndRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const elementRef = useRef<HTMLTextAreaElement>(null)
-  const [message, setMessage] = useState('')
+  const [chat, setChat] = useState('')
+  const [chatList, setChatList] = useState<ExtendedChatMessage[]>([])
   const [preprocessedContent, setPreprocessedContent] = useState<
     ExtendedChatMessage[]
   >(preprocessMessages(DUMMY_SCON_TALK_DETAIL.content))
   const [chunkedContent, setChunkedContent] = useState<ChatChunkType[]>(
     splitMessagesIntoChunks(preprocessedContent),
   )
+
+  const token = getAccessToken()
+
+  const connect = () => {
+    try {
+      // const socket = new SockJS(`https://i11a809.p.ssafy.io/ws`)
+
+      clientRef.current = new Client({
+        brokerURL: `wss://i11a809.p.ssafy.io/ws`,
+        onConnect: () => {
+          console.log('WebSocket 연결이 열렸습니다.')
+          clientRef.current?.subscribe(`/api/chat/sub/room/${id}`, callback)
+        },
+        connectHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+        debug: (str) => {
+          console.log(str)
+        },
+        reconnectDelay: 5000, // 자동 재 연결
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+      })
+
+      // clientRef.current.onConnect = () => {
+      //   console.log('WebSocket 연결이 열렸습니다.')
+      //   clientRef.current?.subscribe(`/api/chat/sub/room/${id}`, callback)
+      // }
+
+      clientRef.current.onStompError = (frame) => {
+        console.log(`Broker reported error: ${frame.headers.message}`)
+        console.log(`Addtional details: ${frame.body}`)
+      }
+
+      clientRef.current.activate()
+      setClient(clientRef.current)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const disConnect = () => {
+    // 연결 끊기
+    if (client === null) {
+      return
+    }
+    client.deactivate()
+  }
+
+  const callback = (message: any) => {
+    console.log('message', message)
+    if (message.body) {
+      const msg = JSON.parse(message.body)
+      setChatList((chats: ExtendedChatMessage[]) => [...chats, msg])
+    }
+  }
+
+  useEffect(() => {
+    console.log(chatList)
+  }, [chatList])
+
+  const sendChat = () => {
+    if (chat === '') {
+      return
+    }
+
+    client?.publish({
+      destination: `/api/chat/pub/room/${id}`,
+      body: JSON.stringify({
+        content: chat,
+      }),
+    })
+
+    setChat('')
+  }
+
+  useEffect(() => {
+    // 최초 렌더링 시 , 웹소켓에 연결
+    connect()
+
+    return () => disConnect()
+  }, [])
 
   /*
     contentRef 요소의 자식 노드 또는 속성이 변경될 때,
@@ -72,9 +167,10 @@ export default function SconTalkPage() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    sendChat()
     const newChat = {
-      id: message,
-      content: message,
+      id: chat,
+      content: chat,
       nickname: '고세구',
       profile: '/dummy/dummy-default-profile.jpg',
       createdAt: getFormattedCurrentDate(),
@@ -83,7 +179,7 @@ export default function SconTalkPage() {
     setPreprocessedContent(
       preprocessMessages([...preprocessedContent, newChat]),
     )
-    setMessage('')
+    setChat('')
     const element = elementRef.current
     if (element) {
       element.style.height = 'auto'
@@ -120,12 +216,12 @@ export default function SconTalkPage() {
             <textarea
               className="w-full h-auto my-[.125rem] text-base font-medium leading-6 bg-lightgray-1 focus:outline-none resize-none scrollbar-hide max-h-[6rem]"
               placeholder="메세지를 입력해주세요."
-              value={message}
+              value={chat}
               rows={1}
               ref={elementRef}
               onChange={(e) => {
                 handleResizeHeight()
-                setMessage(e.target.value)
+                setChat(e.target.value)
               }}
             />
           </div>
