@@ -1,8 +1,9 @@
 'use client'
 
-import { Client, Message as MessageType } from '@stomp/stompjs'
+import { Client } from '@stomp/stompjs'
 import { useEffect, useRef, useState } from 'react'
 
+// import SockJS from 'sockjs-client'
 import ChatChunk from '@/app/scontalk/[id]/_components/ChatChunk.tsx'
 import NavbarWithGoback from '@/components/Navbar/NavbarWithGoback.tsx'
 import { ChatMessage, DUMMY_SCON_TALK_DETAIL } from '@/constants/dummy.ts'
@@ -10,7 +11,6 @@ import preprocessMessages from '@/utils/chat/preprocessMessages.ts'
 import { splitMessagesIntoChunks } from '@/utils/chat/splitMessagesIntoChunks.ts'
 import { getAccessToken } from '@/utils/cookie/index.ts'
 import getFormattedCurrentDate from '@/utils/date/getFormattedCurrentDate.ts'
-import SockJS from 'sockjs-client'
 
 export interface ExtendedChatMessage extends ChatMessage {
   isFirst: boolean
@@ -89,6 +89,7 @@ export default function SconTalkPage({ params: { id } }: SconTalkPageProps) {
     client.deactivate()
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const callback = (message: any) => {
     console.log('message', message)
     if (message.body) {
