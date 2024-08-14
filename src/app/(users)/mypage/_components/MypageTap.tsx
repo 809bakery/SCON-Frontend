@@ -23,7 +23,7 @@ export default function MypageTap({
   ex_link,
   color,
   toastMsg,
-  icon
+  icon,
 }: MypageTapProps) {
   const router = useRouter()
 
