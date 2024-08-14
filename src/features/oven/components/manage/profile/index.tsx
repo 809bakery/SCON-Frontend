@@ -7,6 +7,7 @@ import { CATEGORY_OBJ_MAP } from '@/constants/stage/info/index.ts'
 import OvenProfileCard from '@/features/oven/components/manage/profile/card/index.tsx'
 
 interface OvenStageType {
+  id: number
   title: string
   image: string
   detail: string
@@ -70,7 +71,7 @@ function OvenProfile() {
       <h3 className="text-2xl font-bold">스테이지</h3>
       <div className="flex flex-col gap-y-8">
         {OvenStageData?.map((item: OvenStageType) => (
-          <OvenProfileCard key={item?.createdAt}>
+          <OvenProfileCard key={item?.createdAt} id={item?.id}>
             <Image
               width={160}
               height={200}
@@ -109,7 +110,7 @@ function OvenProfile() {
                   )}
               </div>
 
-              <div>
+              <div className="flex flex-col text-start">
                 <h3 className="pb-4 text-2xl font-bold">{item.title}</h3>
                 <p className="py-2 font-bold text-disabled">{item.location}</p>
                 <p className="text-xs text-disabled">

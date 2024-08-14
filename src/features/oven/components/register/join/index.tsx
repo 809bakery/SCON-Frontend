@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -19,6 +19,7 @@ function OvenJoinRegister() {
   const accountName = useCreateOvenStore((state) => state.accountName)
   const image = useCreateOvenStore((state) => state.image)
 
+  const queryClient = useQueryClient()
   const { isLoading, isError, error } = useQuery({
     queryKey: ['ovenSignUp'],
     queryFn: async () => {
@@ -43,6 +44,7 @@ function OvenJoinRegister() {
 
       if (response.status === 200) {
         localStorage.removeItem('createOvenState')
+        queryClient.invalidateQueries({ queryKey: ['user-oven-list'] })
         return response.status
       }
       localStorage.removeItem('createOvenState')
@@ -64,7 +66,7 @@ function OvenJoinRegister() {
       <div className="pt-[4.375rem] pb-40 flex flex-col gap-y-14 items-center justify-center">
         <Image src={CheckGIF} alt="완료이미지" />
         <div className="flex flex-col items-center justify-center gap-y-6">
-          <p className="text-3xl font-bold">이세계 아이돌</p>
+          <p className="text-3xl font-bold">{ovenName}</p>
           <p className="text-2xl">오븐이 성공적으로 등록되었습니다.</p>
         </div>
       </div>

@@ -1,7 +1,6 @@
 import Image, { StaticImageData } from 'next/image'
 import { useState } from 'react'
 
-import DummyStageDetailInfo from '@/static/img/dummy/stage/dummy-stage-info.jpg'
 import ArrowBottomSVG from '@/static/svg/arrow-bottom-icon.svg'
 import ArrowTopSVG from '@/static/svg/arrow-top-icon.svg'
 
@@ -20,7 +19,13 @@ function StageDetailCollapseCard(props: StageDetailCollapseCardProps) {
     >
       <p className="font-bold">{title}</p>
       {image && (
-        <Image src={DummyStageDetailInfo} alt="poster" className="w-full" />
+        <Image
+          src={image}
+          width={500}
+          height={500}
+          alt="poster"
+          className="w-full"
+        />
       )}
       {isCollapsed ? (
         <button
