@@ -1,23 +1,18 @@
-import { useRouter } from 'next/navigation'
+import { useQuery } from '@tanstack/react-query'
+import { useParams, useRouter } from 'next/navigation'
 /* eslint-disable import/no-extraneous-dependencies */
 import toast from 'react-hot-toast'
 
+import { privateApi } from '@/api/config/privateApi.ts'
+import { publicApi } from '@/api/config/publicApi.ts'
 import { DUMMY_STAGE_DETAIL } from '@/constants/stage/index.ts'
 import TicketWrapperCard from '@/features/ticket/card/index.tsx'
 import TicketCounter from '@/features/ticket/purchase/count/index.tsx'
 import TicketChargeSVG from '@/static/svg/ticket/ticket-charge-icon.svg'
 
 interface TicketPurchaseProps {
-  stage: ContentType
   setIsCalendar: (value: number | undefined) => void
   id: number
-}
-
-interface ContentType {
-  id: number
-  episodeNumber: number
-  time: string
-  status: string
 }
 
 declare const window: typeof globalThis & {
@@ -27,18 +22,40 @@ declare const window: typeof globalThis & {
 
 function TicketPurchase(props: TicketPurchaseProps) {
   const router = useRouter()
-  const { stage, setIsCalendar, id } = props
-  const parseDate = (time: string) => {
-    const hour =
-      new Date(time).getHours() < 12
-        ? new Date(time).getHours()
-        : new Date(time).getHours() - 12
-    const min = new Date(time).getMinutes()
+  const params = useParams()
+  const { setIsCalendar, id } = props
+  // const parseDate = (time: string) => {
+  //   const hour =
+  //     new Date(time).getHours() < 12
+  //       ? new Date(time).getHours()
+  //       : new Date(time).getHours() - 12
+  //   const min = new Date(time).getMinutes()
 
-    const meridiem = new Date(time).getHours() < 12 ? '오전' : '오후'
+  //   const meridiem = new Date(time).getHours() < 12 ? '오전' : '오후'
 
-    return `${new Date(time).toLocaleDateString('ko-kr')} ${meridiem} ${hour < 10 ? `0${hour}` : hour}:${min < 10 ? `0${min}` : min}`
-  }
+  //   return `${new Date(time).toLocaleDateString('ko-kr')} ${meridiem} ${hour < 10 ? `0${hour}` : hour}:${min < 10 ? `0${min}` : min}`
+  // }
+
+  const { data: stageDetail } = useQuery({
+    queryKey: ['stage-detail', params.id],
+    queryFn: async () => {
+      let response
+      if (loginUser) {
+        response = await privateApi.get(`/api/event/${params.id}`)
+      } else {
+        response = await publicApi.get(`/api/event/${params.id}`)
+      }
+      return response.data
+    },
+  })
+
+  const { data: loginUser } = useQuery({
+    queryKey: ['user-info'],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/user/info')
+      return response.data
+    },
+  })
 
   // eslint-disable-next-line consistent-return
   const handlePurchase = async () => {
@@ -50,13 +67,13 @@ function TicketPurchase(props: TicketPurchaseProps) {
         pg: 'tosspayments',
         pay_method: 'card',
         merchant_uid: `mid_${new Date().getTime()}`,
-        name: '테스트 토스페이먼츠 결제',
+        name: stageDetail?.eventResponseDto?.title,
         amount: DUMMY_STAGE_DETAIL.cost + 500,
-        buyer_email: 'sorlti6952@gmail.com',
-        buyer_name: '박상우',
-        buyer_tel: '010-1234-5678',
-        buyer_addr: '서울특별시 강남구 신사동 661-16',
-        buyer_postcode: '06018',
+        buyer_email: loginUser.email,
+        buyer_name: loginUser.nickname,
+        buyer_tel: '010-1234-1234',
+        buyer_addr: '서울특별시 강남구 테헤란로 212',
+        buyer_postcode: '06220',
         m_redirect_url: `http://www.809bakery.com/ticket/${id}/success`,
         confirm_url: `http://www.809bakery.com/ticket/${id}/success`,
       },
@@ -83,7 +100,8 @@ function TicketPurchase(props: TicketPurchaseProps) {
       {/* title */}
       <div className="p-3 flex items-center justify-between">
         <span className="font-bold">
-          🍪{parseDate(stage?.time)} 티켓 예매진행중
+          {/* 🍪{parseDate(stage?.time)} 티켓 예매진행중 */}
+          티켓 예매진행중
         </span>
         <button
           type="button"

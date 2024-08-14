@@ -1,51 +1,65 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { DUMMY_STAGE_DETAIL } from '@/constants/stage/index.ts'
+import { privateApi } from '@/api/config/privateApi.ts'
+import { publicApi } from '@/api/config/publicApi.ts'
 import TicketCalendar from '@/features/ticket/calendar/index.tsx'
 import TicketPurchase from '@/features/ticket/purchase/index.tsx'
 
-interface ContentType {
-  id: number
-  episodeNumber: number
-  time: string
-  status: string
-}
-
 function TicketBookPage() {
-  const paramas = useParams()
+  const params = useParams()
   const [isCalendar, setIsCalendar] = useState<number | undefined>(undefined)
-  const [stage, setStage] = useState<ContentType>()
 
-  useEffect(() => {
-    setStage(DUMMY_STAGE_DETAIL.content.find((item) => item.id === isCalendar))
-  }, [isCalendar])
+  const { data: stageDetail } = useQuery({
+    queryKey: ['stage-detail', params.id],
+    queryFn: async () => {
+      let response
+      if (loginUser) {
+        response = await privateApi.get(`/api/event/${params.id}`)
+      } else {
+        response = await publicApi.get(`/api/event/${params.id}`)
+      }
+      // eslint-disable-next-line no-console
+      console.log(response.data)
+      return response.data
+    },
+  })
 
+  const { data: loginUser } = useQuery({
+    queryKey: ['user-info'],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/user/info')
+      return response.data
+    },
+  })
   return (
     <div className="w-full pb-[12.5rem]">
-      <div className="min-h-[15rem] relative">
+      <div className="min-h-[15rem] relative overflow-hidden">
         <Image
-          src={DUMMY_STAGE_DETAIL.image}
+          src={stageDetail?.eventResponseDto?.eventImage}
           alt="background stage poster"
-          layout="fill"
+          width={600}
+          height={329}
           objectFit="cover"
           className="opacity-30 absolute top-0"
         />
 
         <div className="w-full px-7 py-9 gap-y-2 flex flex-col">
-          <div className="p-3 text-2xl font-bold">{`${DUMMY_STAGE_DETAIL.title} ${DUMMY_STAGE_DETAIL.detail && `- ${DUMMY_STAGE_DETAIL.detail}`}`}</div>
+          <div className="p-3 text-2xl font-bold">{`${stageDetail?.eventResponseDto?.title} ${stageDetail?.eventResponseDto?.subTitle && `- ${stageDetail?.eventResponseDto?.subTitle}`}`}</div>
 
           <div className="p-3 flex flex-col">
-            <span>{DUMMY_STAGE_DETAIL.location}</span>
+            <span>{stageDetail?.eventResponseDto?.location}</span>
             <span>
               {`${new Date(
-                DUMMY_STAGE_DETAIL.content[0].time,
+                stageDetail?.eventResponseDto?.content[0].time,
               ).toLocaleDateString('ko-kr')} - ${new Date(
-                DUMMY_STAGE_DETAIL.content[
-                  DUMMY_STAGE_DETAIL.content.length - 1
+                stageDetail?.eventResponseDto?.content[
+                  // eslint-disable-next-line no-unsafe-optional-chaining
+                  stageDetail?.eventResponseDto?.content.length - 1
                 ].time,
               ).toLocaleDateString('ko-kr')}`}
             </span>
@@ -55,13 +69,10 @@ function TicketBookPage() {
 
       <div className="w-full px-7 pt-3">
         {isCalendar ? (
-          stage && (
-            <TicketPurchase
-              id={Number(paramas.id)}
-              stage={stage}
-              setIsCalendar={setIsCalendar}
-            />
-          )
+          <TicketPurchase
+            id={Number(params.id)}
+            setIsCalendar={setIsCalendar}
+          />
         ) : (
           <TicketCalendar setIsCalendar={setIsCalendar} />
         )}
