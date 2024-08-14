@@ -20,7 +20,7 @@ import useSignupStore from '@/store/SignupStore.ts'
 
 export default function ProfileStep() {
   const setNicknameState = useSignupStore((state) => state.setNickname)
-
+  const setImage = useSignupStore((state) => state.setImage)
   const router = useRouter()
   const [nickname, setNickname] = useState<string>('')
   const [nicknameErrorMessage, setNicknameErrorMessage] = useState<
@@ -41,6 +41,7 @@ export default function ProfileStep() {
     }
 
     const file = files?.[0]
+    setImage(file as File)
     const fileReader = new FileReader()
     fileReader.readAsDataURL(file as Blob)
     fileReader.onloadend = (finishedEvent) => {

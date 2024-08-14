@@ -40,7 +40,7 @@ export default function JoinStep() {
       }
 
       if (type === 'credentials') {
-        response = await privateApi.patch('/api/user/sign-up', formData, config)
+        response = await publicApi.post('/api/user/sign-up', formData, config)
       } else if (type === 'social') {
         response = await privateApi.patch(
           '/api/user/edit/info',
@@ -80,7 +80,7 @@ export default function JoinStep() {
   }
 
   const handleLogin = async () => {
-    const response = await publicApi.post('/api/user/log-in', {
+    const response = await publicApi.post('/api/auth/log-in', {
       email,
       password,
     })
