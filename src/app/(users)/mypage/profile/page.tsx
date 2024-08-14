@@ -10,7 +10,7 @@ import toast from 'react-hot-toast'
 
 import { privateApi } from '@/api/config/privateApi.ts'
 import { nicknameRegExp } from '@/constants/regex/index.ts'
-import DefaultProfile from '@/static/img/dummy/profile/default-profile.jpg'
+import DefaultProfile from '@/static/img/profile/profile-default.png'
 import Checked from '@/static/svg/checked-icon.svg'
 import XMarkSVG from '@/static/svg/close-circle-icon.svg'
 import Required from '@/static/svg/required-star.svg'
@@ -147,7 +147,7 @@ export default function Profile() {
               className="relative cursor-pointer"
               onClick={showModal}
             >
-              <div className="relative w-40 h-40  rounded-full overflow-hidden">
+              <div className="relative w-40 h-40  rounded-full overflow-hidden border">
                 <Image
                   src={imageUrl}
                   alt="profile"
@@ -162,7 +162,7 @@ export default function Profile() {
           <div className="flex justify-center items-center mb-5">
             <div
               role="presentation"
-              className="relative w-40 h-40  rounded-full cursor-pointer"
+              className="relative w-40 h-40  rounded-full cursor-pointer border"
               onClick={showModal}
             >
               <Image

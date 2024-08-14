@@ -106,6 +106,7 @@ export default function StageList({
                 sDate={stage.startDate}
                 eDate={stage.endDate}
                 posterUrl={stage.image}
+                isEnd={stage.endDate < new Date().toISOString()}
               />
             ))}
             {Array.from(

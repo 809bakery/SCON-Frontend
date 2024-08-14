@@ -1,44 +1,92 @@
 'use client'
 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Image, { StaticImageData } from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-import { DUMMY_OVEN_INFO } from '@/constants/oven/manage/index.ts'
+import { privateApi } from '@/api/config/privateApi.ts'
+import Loader from '@/components/loader/index.tsx'
 import { CATEGORY_MAP, CATEGORY_OBJ_MAP } from '@/constants/stage/info/index.ts'
 import RequiredSVG from '@/static/svg/required-star.svg'
 import SquareFillSVG from '@/static/svg/square-fill-icon.svg'
 import SquareUnfillSVG from '@/static/svg/square-unfill-icon.svg'
 
-interface OvenProfileType {
-  ovenId: number
-  ovenName: string
-  ovenDetail: string
-  leader: string
-  wishCategory: string[]
-  headCount: number
-  image: string | StaticImageData
-  followCount: number
-  createdAt: string
-}
 function OvenSettingProfile() {
-  const [ovenInfo, setOvenInfo] = useState<OvenProfileType>(DUMMY_OVEN_INFO)
+  const [ovenName, setOvenName] = useState<string>('')
+  const [ovenDetail, setOvenDetail] = useState<string>('')
+  const [wishCategory, setWishCategory] = useState<string[]>([])
+  const [image, setImage] = useState<string | StaticImageData>('')
+  const [imageFile, setImageFile] = useState<File | string>()
+
   const router = useRouter()
+  const segment = usePathname().split('/')[2]
+
+  const { isLoading, isFetching } = useQuery({
+    queryKey: ['ovenInfo', segment],
+    queryFn: async () => {
+      const response = await privateApi.get(`/api/oven/${segment}`)
+      if (response.data) {
+        setOvenName(response.data.ovenName)
+        setOvenDetail(response.data.ovenDetail)
+        setWishCategory(response.data.wishCategory)
+        setImage(response.data.image)
+      }
+
+      return response.data
+    },
+    staleTime: 0,
+  })
+
+  const queryClient = useQueryClient()
+
+  const { mutate: submitProfile } = useMutation({
+    mutationFn: async () => {
+      const formData = new FormData()
+      formData.append('ovenName', ovenName)
+      formData.append('ovenDetail', ovenDetail)
+      formData.append('wishCategory', wishCategory.join(','))
+      if (imageFile) formData.append('image', imageFile)
+
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+
+      const response = await privateApi.patch(
+        `/api/oven/${segment}`,
+        formData,
+        config,
+      )
+
+      return response.data
+    },
+
+    onSuccess: () => {
+      toast.success('프로필이 저장되었습니다.')
+      queryClient.invalidateQueries({ queryKey: ['ovenInfo', segment] })
+      router.push(`/oven/${segment}`)
+    },
+
+    onError: () => {
+      toast.error('프로필 저장에 실패했습니다.')
+    },
+  })
 
   const saveProfile = () => {
-    if (!ovenInfo.ovenName) {
+    if (!ovenName) {
       toast.error('오븐명은 필수 입력 사항입니다.')
       return
     }
 
-    if (ovenInfo.wishCategory.length === 0) {
+    if (wishCategory.length === 0) {
       toast.error('스테이지 분야는 필수 입력 사항입니다.')
       return
     }
 
-    toast.success('저장되었습니다.')
-    router.push(`/oven/${ovenInfo.ovenId}`)
+    submitProfile()
   }
 
   const handleProfileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +99,7 @@ function OvenSettingProfile() {
     }
 
     const file = files?.[0]
+    setImageFile(file)
     const fileReader = new FileReader()
     fileReader.readAsDataURL(file as Blob)
     fileReader.onloadend = (finishedEvent) => {
@@ -58,22 +107,24 @@ function OvenSettingProfile() {
         currentTarget: { result },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }: any = finishedEvent
-      setOvenInfo({ ...ovenInfo, image: result })
+      setImage(result)
     }
   }
 
   const handleCheck = (category: string) => {
-    if (ovenInfo.wishCategory.includes(category)) {
-      setOvenInfo({
-        ...ovenInfo,
-        wishCategory: ovenInfo.wishCategory.filter((v) => v !== category),
-      })
+    if (wishCategory.includes(category)) {
+      setWishCategory(wishCategory.filter((v) => v !== category))
     } else {
-      setOvenInfo({
-        ...ovenInfo,
-        wishCategory: [...ovenInfo.wishCategory, category],
-      })
+      setWishCategory([...wishCategory, category])
     }
+  }
+
+  if (isLoading || isFetching) {
+    return (
+      <div className="flex items-center justify-center">
+        <Loader />
+      </div>
+    )
   }
   return (
     <div className="flex flex-col relative">
@@ -82,7 +133,7 @@ function OvenSettingProfile() {
       <div className="absolute left-[50%] top-[12.5rem] -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl">
         <label htmlFor="oven-profile-file" className="cursor-pointer">
           <Image
-            src={ovenInfo.image}
+            src={image}
             alt="oven-profile"
             width={200}
             height={200}
@@ -112,10 +163,8 @@ function OvenSettingProfile() {
             id="oven-manage-profile-ovenname"
             type="text"
             className="px-8 border border-border rounded-xl text-2xl py-5 w-full focus:outline-none"
-            value={ovenInfo.ovenName}
-            onChange={(e) =>
-              setOvenInfo({ ...ovenInfo, ovenName: e.target.value })
-            }
+            value={ovenName}
+            onChange={(e) => setOvenName(e.target.value)}
           />
         </div>
 
@@ -130,10 +179,8 @@ function OvenSettingProfile() {
             id="oven-manage-profile-ovendetail"
             type="text"
             className="px-8 border border-border rounded-xl text-2xl py-5 w-full focus:outline-none"
-            value={ovenInfo.ovenDetail}
-            onChange={(e) =>
-              setOvenInfo({ ...ovenInfo, ovenDetail: e.target.value })
-            }
+            value={ovenDetail}
+            onChange={(e) => setOvenDetail(e.target.value)}
           />
         </div>
 
@@ -152,7 +199,7 @@ function OvenSettingProfile() {
                 className="w-[45%] px-7 py-4 flex items-center gap-x-7 text-disabled border border-border rounded-xl"
               >
                 <div id="oven-delete-checkbox">
-                  {ovenInfo.wishCategory.includes(category) ? (
+                  {wishCategory.includes(category) ? (
                     <SquareFillSVG className="w-8 h-8" />
                   ) : (
                     <SquareUnfillSVG className="w-8 h-8" />
@@ -168,7 +215,7 @@ function OvenSettingProfile() {
         <button
           type="button"
           onClick={saveProfile}
-          className={`mt-40 py-7 text-2xl bg-[#E5E5ED] text-disabled rounded-xl flex items-center justify-center ${ovenInfo.ovenName && ovenInfo.wishCategory.length && '!bg-primary !text-black'} `}
+          className={`mt-40 py-7 text-2xl bg-[#E5E5ED] text-disabled rounded-xl flex items-center justify-center ${ovenName && wishCategory.length && '!bg-primary !text-black'} `}
         >
           저장하기
         </button>

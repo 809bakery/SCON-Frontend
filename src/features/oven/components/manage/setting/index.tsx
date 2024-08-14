@@ -1,7 +1,7 @@
 'use client'
 
 import { StaticImageData } from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -18,7 +18,7 @@ function OvenSetting() {
   const router = useRouter()
   const [loginUser, setLoginUser] = useState<UserType>()
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false)
-
+  const segment = usePathname().split('/')[2]
   useEffect(() => {
     setLoginUser(JSON.parse(sessionStorage.getItem('user')!))
   }, [])
@@ -38,7 +38,7 @@ function OvenSetting() {
 
         <button
           type="button"
-          onClick={() => router.push('/oven/[name]/profile')}
+          onClick={() => router.push(`/oven/${segment}/profile`)}
           className="w-full px-16 py-5 bg-white text-disabled border-border border-b text-start"
         >
           오븐 프로필 수정하기

@@ -1,18 +1,53 @@
-import Image, { StaticImageData } from 'next/image'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import Image from 'next/image'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-interface UserType {
-  nickname: string
-  email: string
-  image: string | StaticImageData | undefined
-  isOvener: boolean
-  isAuthorized: boolean
+import { privateApi } from '@/api/config/privateApi.ts'
+
+interface StageCommentInputCardProps {
+  id: string
+  isReview: boolean
 }
 
-function StageCommentInputCard({ user }: { user?: UserType }) {
+function StageCommentInputCard(props: StageCommentInputCardProps) {
+  const { id, isReview } = props
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [comment, setComment] = useState<string>('')
+
+  const { data: user } = useQuery({
+    queryKey: ['user-info'],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/user/info')
+      return response.data
+    },
+  })
+
+  const queryClient = useQueryClient()
+  const { mutate: createComment } = useMutation({
+    mutationFn: async () => {
+      if (isReview) {
+        await privateApi.post(`/api/board/${id}/review`, {
+          content: comment,
+        })
+      } else {
+        await privateApi.post(`/api/board/${id}/expect`, {
+          content: comment,
+        })
+      }
+    },
+
+    onSuccess: () => {
+      toast.success('코멘트가 등록되었습니다.')
+      queryClient.invalidateQueries({
+        queryKey: ['list_stage_expected_comments', id, isReview],
+      })
+      setComment('')
+    },
+    onError: () => {
+      toast.error('코멘트 등록에 실패했습니다.')
+    },
+  })
 
   const handleComment = () => {
     if (!user) {
@@ -24,8 +59,8 @@ function StageCommentInputCard({ user }: { user?: UserType }) {
       toast.error('최소 1자 이상 입력해주세요.')
       return
     }
-    setComment('')
-    toast.success('의견이 등록되었습니다.')
+
+    createComment()
   }
   return (
     <div className="w-full p-5 flex flex-col gap-y-2 border border-border rounded-xl whitespace-pre-wrap">
@@ -35,7 +70,7 @@ function StageCommentInputCard({ user }: { user?: UserType }) {
           {user?.image && (
             <Image
               src={user.image}
-              className="rounded-full"
+              className="w-8 h-8 object-cover rounded-full"
               alt="profile"
               width={34}
               height={34}

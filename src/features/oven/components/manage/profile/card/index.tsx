@@ -1,8 +1,23 @@
-function OvenProfileCard({ children }: { children: React.ReactNode }) {
+'use client'
+
+import { useRouter } from 'next/navigation'
+
+interface OvenProfileCardProps {
+  children: React.ReactNode
+  id: number
+}
+
+function OvenProfileCard(props: OvenProfileCardProps) {
+  const { children, id } = props
+  const router = useRouter()
   return (
-    <div className="bg-white py-8 px-5 flex justify-between gap-x-7 border border-border rounded-xl">
+    <button
+      type="button"
+      onClick={() => router.push(`/stage/detail/${id}`)}
+      className="bg-white py-8 px-5 flex justify-between gap-x-7 border border-border rounded-xl"
+    >
       {children}
-    </div>
+    </button>
   )
 }
 

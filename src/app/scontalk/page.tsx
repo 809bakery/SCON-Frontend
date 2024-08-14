@@ -1,13 +1,22 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { DUMMY_SCONTALK_LIST } from '@/constants/dummy.ts'
+import { privateApi } from '@/api/config/privateApi.ts'
 import calculateTimeDifferenceInHours from '@/utils/date/calculateTimeDifferenceInHours.ts'
 import formatDate from '@/utils/date/formatDate.ts'
 
-const SconTalkList = [...DUMMY_SCONTALK_LIST]
+interface Talk {
+  chatRoomId: string
+  title: string
+  time: string
+  image: string
+  state?: 'process' | 'scheduled' | 'done'
+  timeDiff?: number
+  talkTime?: Date
+}
 
 /**
  * 주어진 스콘톡의 시간과 현재 시간을 비교하여 스콘톡의 상태를 결정합니다.
@@ -27,21 +36,29 @@ function determineTalkState(talkTime: Date, now: Date): string {
   return 'done'
 }
 
-const updatedTalkList = SconTalkList.map((talk) => {
-  const now = new Date()
-  const talkTime: Date = new Date(talk.time)
-  const timeDiff = calculateTimeDifferenceInHours(talkTime, now)
-  const state = determineTalkState(talkTime, now)
-
-  return { ...talk, state, timeDiff, talkTime }
-})
-
 export default function SconTalkPage() {
+  const { data: talkList } = useQuery({
+    queryKey: ['scontalk'],
+    queryFn: async () => {
+      const response = await privateApi.get(`/api/chat/scon`)
+      return response.data.content
+    },
+  })
   const router = useRouter()
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updatedTalkList = talkList?.map((talk: any) => {
+    const now = new Date()
+    const talkTime: Date = new Date(talk.time)
+    const timeDiff = calculateTimeDifferenceInHours(talkTime, now)
+    const state = determineTalkState(talkTime, now)
+
+    return { ...talk, state, timeDiff, talkTime }
+  })
 
   return (
     <div className="flex flex-col divide-y divide-border border-b border-border">
-      {updatedTalkList.map((talk) => (
+      {updatedTalkList?.map((talk: Talk) => (
         <div
           role="presentation"
           key={talk.chatRoomId}
