@@ -1,4 +1,9 @@
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
@@ -29,6 +34,8 @@ function OvenCommunity() {
   const [image, setImage] = useState<string>('')
   const [imageFile, setImageFile] = useState<File | string>()
   const segement = usePathname().split('/')[2]
+
+  const queryClient = useQueryClient()
 
   const { data: loginUser } = useQuery({
     queryKey: ['user-info'],
@@ -64,6 +71,9 @@ function OvenCommunity() {
     },
     onSuccess: () => {
       toast.success('글이 등록되었습니다.')
+      queryClient.invalidateQueries({
+        queryKey: ['list_oven_community', segement],
+      })
       setComment('')
       setImage('')
     },

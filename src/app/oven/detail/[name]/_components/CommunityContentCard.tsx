@@ -2,8 +2,9 @@
 
 'use client'
 
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -48,6 +49,9 @@ export default function CommunityContentCard({
   const [tearCountState, setTearCountState] = useState(false)
   const [cheerCountState, setCheerCountState] = useState(false)
 
+  const queryClient = useQueryClient()
+  const segment = usePathname().split('/')[2]
+
   const { mutate: deleteReaction } = useMutation({
     mutationFn: async () => {
       const response = await privateApi.delete(
@@ -60,6 +64,9 @@ export default function CommunityContentCard({
     },
     onSuccess: () => {
       toast.success('응답이 성공적으로 반영되었습니다.')
+      queryClient.invalidateQueries({
+        queryKey: ['list_oven_community', segment],
+      })
     },
   })
   const { mutate: postReaction } = useMutation({
@@ -75,6 +82,9 @@ export default function CommunityContentCard({
     },
     onSuccess: () => {
       toast.success('응답이 성공적으로 반영되었습니다.')
+      queryClient.invalidateQueries({
+        queryKey: ['list_oven_community', segment],
+      })
     },
   })
 

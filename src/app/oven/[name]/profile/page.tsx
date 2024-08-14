@@ -1,6 +1,6 @@
 'use client'
 
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Image, { StaticImageData } from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -23,22 +23,23 @@ function OvenSettingProfile() {
   const router = useRouter()
   const segment = usePathname().split('/')[2]
 
-  const { data, isLoading } = useQuery({
+  const { isLoading, isFetching } = useQuery({
     queryKey: ['ovenInfo', segment],
     queryFn: async () => {
       const response = await privateApi.get(`/api/oven/${segment}`)
-
-      if (response.status === 200) {
+      if (response.data) {
         setOvenName(response.data.ovenName)
         setOvenDetail(response.data.ovenDetail)
         setWishCategory(response.data.wishCategory)
-        if (response.data.image) {
-          setImage(response.data.image)
-        }
+        setImage(response.data.image)
       }
+
       return response.data
     },
+    staleTime: 0,
   })
+
+  const queryClient = useQueryClient()
 
   const { mutate: submitProfile } = useMutation({
     mutationFn: async () => {
@@ -65,6 +66,7 @@ function OvenSettingProfile() {
 
     onSuccess: () => {
       toast.success('프로필이 저장되었습니다.')
+      queryClient.invalidateQueries({ queryKey: ['ovenInfo', segment] })
       router.push(`/oven/${segment}`)
     },
 
@@ -117,7 +119,7 @@ function OvenSettingProfile() {
     }
   }
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <div className="flex items-center justify-center">
         <Loader />
@@ -131,7 +133,7 @@ function OvenSettingProfile() {
       <div className="absolute left-[50%] top-[12.5rem] -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl">
         <label htmlFor="oven-profile-file" className="cursor-pointer">
           <Image
-            src={image || data?.image}
+            src={image}
             alt="oven-profile"
             width={200}
             height={200}

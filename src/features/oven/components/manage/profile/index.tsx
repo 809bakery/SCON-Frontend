@@ -19,23 +19,19 @@ interface OvenStageType {
 }
 
 function OvenProfile() {
-  const segement = usePathname()
+  const segment = usePathname().split('/')[2]
   const { data } = useQuery({
-    queryKey: ['ovenInfo', segement],
+    queryKey: ['ovenInfo', segment],
     queryFn: async () => {
-      const response = await privateApi.get(
-        `/api/oven/${segement.split('/')[2]}`,
-      )
+      const response = await privateApi.get(`/api/oven/${segment}`)
       return response.data
     },
   })
 
   const { data: OvenStageData } = useQuery({
-    queryKey: ['ovenStage', segement],
+    queryKey: ['ovenStage', segment],
     queryFn: async () => {
-      const response = await privateApi.get(
-        `/api/event/oven/${segement.split('/')[2]}`,
-      )
+      const response = await privateApi.get(`/api/event/oven/${segment}`)
       return response.data
     },
   })

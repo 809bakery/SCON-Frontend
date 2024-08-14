@@ -13,7 +13,7 @@ import OvenTalk from '@/features/oven/components/manage/talk/index.tsx'
 
 export default function OvenPage() {
   const [tab, setTab] = useState<number>(0)
-  const segement = usePathname()
+  const segement = usePathname().split('/')[2]
   const { data } = useQuery({
     queryKey: ['ovenInfo', segement],
     queryFn: async () => {
