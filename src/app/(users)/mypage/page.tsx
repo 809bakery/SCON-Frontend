@@ -83,14 +83,23 @@ export default function Mypage() {
           }
         />
         <MypageTap text="내 오븐 관리" url="/oven/my" icon="my-oven" />
-        <MypageTap text="알림 설정" url="/mypage/push_settings" icon="notification-setting" />
+        <MypageTap
+          text="알림 설정"
+          url="/mypage/push_settings"
+          icon="notification-setting"
+        />
         <MypageTap
           text="이용 약관"
           ex_link="
 https://hazzz.notion.site/339bc8aeb14a40f9a4a2e44c95764474?pvs=4"
           icon="term"
         />
-        <MypageTap text="회원 탈퇴" url="/mypage/leave" color="#F85252" icon="exit" />
+        <MypageTap
+          text="회원 탈퇴"
+          url="/mypage/leave"
+          color="#F85252"
+          icon="exit"
+        />
       </div>
     </div>
   )
