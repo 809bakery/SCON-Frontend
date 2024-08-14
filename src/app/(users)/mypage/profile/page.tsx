@@ -2,10 +2,13 @@
 
 'use client'
 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
+import toast from 'react-hot-toast'
 
+import { privateApi } from '@/api/config/privateApi.ts'
 import { nicknameRegExp } from '@/constants/regex/index.ts'
 import DefaultProfile from '@/static/img/dummy/profile/default-profile.jpg'
 import Checked from '@/static/svg/checked-icon.svg'
@@ -15,17 +18,59 @@ import UploadSVG from '@/static/svg/upload-icon.svg'
 
 export default function Profile() {
   const router = useRouter()
-  const [nickname, setNickname] = useState<string>('주르르')
+  const queryClient = useQueryClient()
+  const { data: user } = useQuery({
+    queryKey: ['user-info'],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/user/info')
+      return response.data
+    },
+  })
+  const [nickname, setNickname] = useState<string>(user?.nickname ?? '')
   const [nicknameErrorMessage, setNicknameErrorMessage] = useState<
     string | null
   >(null)
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false)
   const [isNicknameCheckSuccess, setIsNicknameCheckSuccess] =
     useState<boolean>(false)
-
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [imageFile, setImageFile] = useState<File | string>()
+  const [imageUrl, setImageUrl] = useState<string | null>(user?.image ?? '')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+  const { mutate: submitProfile } = useMutation({
+    mutationFn: async () => {
+      const formData = new FormData()
+      formData.append('nickname', nickname)
+      if (imageFile instanceof File) {
+        formData.append('image', imageFile)
+      }
+
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+
+      const response = await privateApi.patch(
+        `/api/user/edit/info`,
+        formData,
+        config,
+      )
+
+      return response.data
+    },
+
+    onSuccess: () => {
+      toast.success('프로필이 저장되었습니다.')
+      queryClient.invalidateQueries({ queryKey: ['user-info'] })
+      router.push(`/mypage`)
+    },
+
+    onError: () => {
+      toast.error('프로필 저장에 실패했습니다.')
+    },
+  })
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -39,6 +84,7 @@ export default function Profile() {
     }
 
     const file = files?.[0]
+    setImageFile(file as File)
     const fileReader = new FileReader()
     fileReader.readAsDataURL(file as Blob)
     fileReader.onloadend = (finishedEvent) => {
@@ -194,7 +240,7 @@ export default function Profile() {
         <button
           type="button"
           className="w-full py-7 text-2xl font-medium bg-primary rounded-xl mt-[11.25rem]"
-          onClick={() => router.push('/mypage')}
+          onClick={() => submitProfile()}
         >
           저장
         </button>
