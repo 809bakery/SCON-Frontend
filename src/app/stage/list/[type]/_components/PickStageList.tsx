@@ -83,7 +83,7 @@ export default function PickStageList() {
           width={600}
           height={352}
           alt="thumbnail"
-          className="object-cover h-[352px]"
+          className="object-cover h-[22rem]"
         />
         <div className="absolute bottom-2 left-4 flex flex-col">
           <span className="text-2xl font-bold leading-8 text-white">
@@ -105,7 +105,7 @@ export default function PickStageList() {
               width={600}
               height={220}
               alt="thumbnail"
-              className="object-cover rounded-t-xl w-full h-[220px]"
+              className="object-cover rounded-t-xl w-full h-[13.75rem]"
             />
             <div className="flex flex-col gap-3 px-5 py-4">
               <div className="flex flex-col">
