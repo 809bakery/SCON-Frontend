@@ -5,10 +5,11 @@ import toast from 'react-hot-toast'
 
 import { privateApi } from '@/api/config/privateApi.ts'
 import { publicApi } from '@/api/config/publicApi.ts'
-import { DUMMY_STAGE_DETAIL } from '@/constants/stage/index.ts'
 import TicketWrapperCard from '@/features/ticket/card/index.tsx'
 import TicketCounter from '@/features/ticket/purchase/count/index.tsx'
 import TicketChargeSVG from '@/static/svg/ticket/ticket-charge-icon.svg'
+
+import useTicketPurchaseStore from '@/store/PurchaseTicketStore.ts'
 
 interface TicketPurchaseProps {
   setIsCalendar: (value: number | undefined) => void
@@ -23,6 +24,7 @@ declare const window: typeof globalThis & {
 function TicketPurchase(props: TicketPurchaseProps) {
   const router = useRouter()
   const params = useParams()
+  const headCountState = useTicketPurchaseStore((state) => state.headCount)
   const { setIsCalendar, id } = props
   // const parseDate = (time: string) => {
   //   const hour =
@@ -67,8 +69,8 @@ function TicketPurchase(props: TicketPurchaseProps) {
         pg: 'tosspayments',
         pay_method: 'card',
         merchant_uid: `mid_${new Date().getTime()}`,
-        name: stageDetail?.eventResponseDto?.title,
-        amount: DUMMY_STAGE_DETAIL.cost + 500,
+        name: stageDetail.eventResponseDto.title,
+        amount: stageDetail.eventResponseDto.cost * headCountState + 500,
         buyer_email: loginUser.email,
         buyer_name: loginUser.nickname,
         buyer_tel: '010-1234-1234',
@@ -99,10 +101,7 @@ function TicketPurchase(props: TicketPurchaseProps) {
     <div className="flex flex-col gap-y-3">
       {/* title */}
       <div className="p-3 flex items-center justify-between">
-        <span className="font-bold">
-          {/* 🍪{parseDate(stage?.time)} 티켓 예매진행중 */}
-          티켓 예매진행중
-        </span>
+        <span className="font-bold">🍪 티켓 예매진행중</span>
         <button
           type="button"
           className="bg-primary text-white rounded-xl py-2 px-3"
@@ -119,7 +118,7 @@ function TicketPurchase(props: TicketPurchaseProps) {
           <div className="flex flex-col">
             <span>자유석</span>
             <span className="text-xl font-bold">
-              {DUMMY_STAGE_DETAIL.cost.toLocaleString('ko-kr')}
+              {stageDetail.eventResponseDto.cost.toLocaleString('ko-kr')}
             </span>
           </div>
         </div>
@@ -131,7 +130,7 @@ function TicketPurchase(props: TicketPurchaseProps) {
         <h3 className="font-bold">예매자 정보를 입력해주세요</h3>
         <TicketWrapperCard classnames="px-4 py-2 bg-[#E5E5ED]">
           <p className="text-[#A6A6B1]">이메일 주소</p>
-          <span className="text-disabled">gkffhdnls13@gmail.com</span>
+          <span className="text-disabled">{loginUser.email}</span>
         </TicketWrapperCard>
 
         {/* <TicketWrapperCard classnames="px-4 py-2 bg-[#E5E5ED]">
@@ -143,7 +142,7 @@ function TicketPurchase(props: TicketPurchaseProps) {
           <p className="text-[#A6A6B1]">예매자 이름</p>
           <input
             className="w-full text-disabled outline-none"
-            defaultValue={DUMMY_STAGE_DETAIL.oven.accountName}
+            defaultValue={loginUser.nickname}
           />
         </TicketWrapperCard>
 
@@ -184,7 +183,9 @@ function TicketPurchase(props: TicketPurchaseProps) {
           <div>
             <p className="text-[#A6A6B1]">티켓금액</p>
             <p className="text-disabled">
-              {DUMMY_STAGE_DETAIL.cost.toLocaleString('ko-kr')}
+              {(
+                stageDetail.eventResponseDto.cost * headCountState
+              ).toLocaleString('ko-kr')}
             </p>
           </div>
           <div>
@@ -197,7 +198,10 @@ function TicketPurchase(props: TicketPurchaseProps) {
           <div>
             <p className="text-[#A6A6B1]">합계</p>
             <p className="text-disabled">
-              {(DUMMY_STAGE_DETAIL.cost + 500).toLocaleString('ko-kr')}
+              {(
+                stageDetail.eventResponseDto.cost * headCountState +
+                500
+              ).toLocaleString('ko-kr')}
             </p>
           </div>
         </div>

@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Calendar from 'react-calendar'
 
 import { privateApi } from '@/api/config/privateApi.ts'
@@ -38,15 +38,14 @@ function TicketCalendar(props: TicketCalendarProps) {
       } else {
         response = await publicApi.get(`/api/event/${params.id}`)
       }
-
-      if (response.data) {
-        setClickedDate(
-          new Date(response.data?.eventResponseDto?.content[0]?.time),
-        )
-      }
       return response.data
     },
   })
+
+  useEffect(() => {
+    if (stageDetail?.eventResponseDto?.content.length)
+      setClickedDate(new Date(stageDetail?.eventResponseDto?.content[0]?.time))
+  }, [stageDetail])
 
   const { data: loginUser } = useQuery({
     queryKey: ['user-info'],

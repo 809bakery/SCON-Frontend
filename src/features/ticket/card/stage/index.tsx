@@ -4,6 +4,8 @@ import { useParams } from 'next/navigation'
 import { privateApi } from '@/api/config/privateApi.ts'
 import { publicApi } from '@/api/config/publicApi.ts'
 
+import useTicketPurchaseStore from '@/store/PurchaseTicketStore.ts'
+
 interface StageScheduleCardProps {
   date: Date
   setIsCalendar: (isCalendar: number) => void
@@ -19,6 +21,9 @@ interface ContentType {
 function StageScheduleCard(props: StageScheduleCardProps) {
   const { date, setIsCalendar } = props
   const params = useParams()
+  const setSubEventIdState = useTicketPurchaseStore(
+    (state) => state.setSubEventId,
+  )
 
   const { data: stageDetail } = useQuery({
     queryKey: ['stage-detail', params.id],
@@ -40,6 +45,11 @@ function StageScheduleCard(props: StageScheduleCardProps) {
       return response.data
     },
   })
+
+  const handleCalendar = (id: number, episodeId: number) => {
+    setIsCalendar(id)
+    setSubEventIdState(episodeId)
+  }
 
   const parseDate = (time: string) => {
     const hour =
@@ -75,7 +85,7 @@ function StageScheduleCard(props: StageScheduleCardProps) {
               </div>
               <button
                 type="button"
-                onClick={() => setIsCalendar(stage.id)}
+                onClick={() => handleCalendar(stage.id, stage.episodeNumber)}
                 className="text-white bg-primary py-1 px-7 rounded-xl"
               >
                 선택
