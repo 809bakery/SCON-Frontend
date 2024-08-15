@@ -62,7 +62,8 @@ export default function StageCard({
               <h3 className="text-base font-bold">{location}</h3>
               <p className="text-xs font-medium mt-1">{time}</p>
               <p className="text-xs font-medium mt-1">
-                분류 : {StageCategoryMap[category]}
+                분류 :{' '}
+                {StageCategoryMap[category.toLowerCase() as StageCategory]}
               </p>
             </div>
           </div>

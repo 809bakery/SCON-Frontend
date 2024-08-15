@@ -83,7 +83,8 @@ export default function OvenDetailList() {
         <>
           {ovenDetailList.map((oven) => (
             <OvenDetailCard
-              key={oven.id}
+              key={oven.ovenId}
+              id={oven.ovenId}
               src={oven.image}
               name={oven.ovenName}
             />

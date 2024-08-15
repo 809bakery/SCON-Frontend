@@ -6,6 +6,7 @@ import { publicApi } from '@/api/config/publicApi.ts'
 import { DAY_MAP } from '@/constants/stage/info/index.ts'
 import StageDetailCollapseCard from '@/features/stage/detail/components/card/collapse/index.tsx'
 import StageDetailCard from '@/features/stage/detail/components/card/index.tsx'
+import { getAccessToken } from '@/utils/cookie/index.ts'
 
 interface ContentType {
   id: number
@@ -23,6 +24,7 @@ function StageTabInfo({ id }: { id: string }) {
       const response = await privateApi.get('/api/user/info')
       return response.data
     },
+    enabled: !!getAccessToken(),
   })
 
   const { data: stageDetail } = useQuery({

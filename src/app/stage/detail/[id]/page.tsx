@@ -14,6 +14,7 @@ import StageTabSale from '@/features/stage/detail/components/tab/sale/index.tsx'
 import StageDetailTag from '@/features/stage/detail/components/tag/index.tsx'
 import LikeOffSVG from '@/static/svg/stage/stage-like-off-icon.svg'
 import LikeOnSVG from '@/static/svg/stage/stage-like-on-icon.svg'
+import { getAccessToken } from '@/utils/cookie/index.ts'
 
 function StageDetailPage({ params }: { params: { id: string } }) {
   const [tab, setTab] = useState<number>(0)
@@ -66,6 +67,10 @@ function StageDetailPage({ params }: { params: { id: string } }) {
     },
   })
   const postLike = () => {
+    if (!getAccessToken()) {
+      toast.error('로그인 후 이용해주세요.')
+      return
+    }
     postLikeFn()
   }
 
