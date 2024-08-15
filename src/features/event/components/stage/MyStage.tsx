@@ -41,10 +41,9 @@ export default function MyStage() {
     <div className="flex flex-col">
       {isLoading ? (
         <div className="flex flex-col gap-1 animate-pulse">
-          <div className="h-6 bg-gray-300 rounded-md" />
-          <div className="flex items-center justify-between">
+          <div className="h-7 bg-gray-300 rounded-md" />
+          <div className="flex items-center justify-between h-7">
             <div className="h-4 bg-gray-300 rounded-md w-3/4" />
-            <div className="h-4 bg-gray-300 rounded-md w-1/4" />
           </div>
         </div>
       ) : (
