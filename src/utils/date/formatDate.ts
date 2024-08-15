@@ -19,8 +19,7 @@ export default function formatDate(dateString: string): string {
   const date = new Date(dateString)
   return new Intl.DateTimeFormat('ko-KR', options)
     .format(date)
-    .replace('.', '. ')
-    .replace('일', '')
+    .replace(/\.\s?/, '. ')
     .replace(',', '')
     .trim()
 }
