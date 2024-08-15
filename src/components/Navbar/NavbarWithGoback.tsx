@@ -5,6 +5,7 @@ import { privateApi } from '@/api/config/privateApi.ts'
 import { publicApi } from '@/api/config/publicApi.ts'
 import { DOMAIN_NAME_MAPPING } from '@/components/Navbar/index.tsx'
 import BackSVG from '@/static/svg/arrow-left-icon.svg'
+import HomeSVG from '@/static/svg/home-icon.svg'
 
 interface NavbarWithGobackProps {
   name?: string
@@ -32,6 +33,15 @@ export default function NavbarWithGoback({
       return response.data
     },
     enabled: type === 'stage-datail',
+  })
+
+  const { data: ovenDetail } = useQuery({
+    queryKey: ['oven-detail', name],
+    queryFn: async () => {
+      const response = await privateApi.get(`/api/oven/${name}`)
+      return response.data
+    },
+    enabled: type === 'oven-detail',
   })
 
   const { data: chatList } = useQuery({
@@ -63,6 +73,10 @@ export default function NavbarWithGoback({
     _name = chatList?.title
   }
 
+  if (ovenDetail) {
+    _name = ovenDetail?.ovenName
+  }
+
   return (
     <div className="top-0 z-10 w-full h-[60px] relative flex items-center justify-center py-[14px] border-b border-border text-center text-[#565551]">
       <div
@@ -73,6 +87,13 @@ export default function NavbarWithGoback({
         <BackSVG className="w-8 h-8 min-w-[24px] min-h-[24px]" />
       </div>
       <span className="font-bold text-[1.5rem]">{_name}</span>
+      <div
+        role="presentation"
+        className="w-7 h-7 absolute right-7 cursor-pointer"
+        onClick={() => router.push('/main')}
+      >
+        <HomeSVG className="w-7 h-7" />
+      </div>
     </div>
   )
 }

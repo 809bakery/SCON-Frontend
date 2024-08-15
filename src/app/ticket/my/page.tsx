@@ -152,6 +152,7 @@ function UserTicketListPage() {
             <button
               type="button"
               className="flex-1 py-2 flex items-center justify-center border  border-primary rounded-xl"
+              onClick={() => router.push(`/scontalk`)}
             >
               스콘톡
             </button>

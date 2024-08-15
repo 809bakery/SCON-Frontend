@@ -48,12 +48,51 @@ export default function Navbar() {
     return <NavbarWithGoback name="예매하기" />
   }
 
+  if (
+    domainList.includes('ticket') &&
+    domainList.includes('my') &&
+    lastDomain !== 'my'
+  ) {
+    return <NavbarWithGoback name="모바일 티켓" />
+  }
+
+  if (domainList.includes('ticket') && domainList.includes('my')) {
+    return <NavbarWithGoback name="예매 내역 확인" />
+  }
+
   if (domainList.includes('scontalk') && lastDomain !== 'scontalk') {
     return <NavbarWithGoback name={lastDomain} type="scontalk" />
   }
 
   if (domainList.includes('oven') && domainList.includes('my')) {
     return <NavbarWithGoback name="내 오븐" />
+  }
+
+  if (
+    domainList.includes('oven') &&
+    domainList.includes('stage') &&
+    !domainList.includes('new')
+  ) {
+    return <NavbarWithGoback name="등록된 스테이지 관리" />
+  }
+
+  if (domainList.includes('oven') && domainList.includes('register')) {
+    return <NavbarWithGoback name="오븐 등록" />
+  }
+
+  if (domainList.includes('oven') && domainList.includes('members')) {
+    return <NavbarWithGoback name="오븐 멤버" />
+  }
+
+  if (domainList.includes('oven') && domainList.includes('profile')) {
+    return <NavbarWithGoback name="오븐 프로필 수정" />
+  }
+  if (
+    domainList.includes('oven') &&
+    domainList.includes('stage') &&
+    domainList.includes('new')
+  ) {
+    return <NavbarWithGoback name="공연 등록하기" />
   }
 
   if (
@@ -74,6 +113,11 @@ export default function Navbar() {
     }
     return <NavbarWithGoback name={name} />
   }
+
+  if (domainList.includes('oven') && lastDomain !== 'oven') {
+    return <NavbarWithGoback name={lastDomain} type="oven-detail" />
+  }
+
   if (domainList[0] === 'menu') {
     return null
   }

@@ -153,7 +153,7 @@ function OvenCommunity() {
   }
 
   return (
-    <div className="p-7">
+    <div className="p-7 bg-[#FAFAFA] min-h-screen">
       {/* 글 남기기 */}
       <div className="bg-white flex flex-col gap-y-3 border border-border rounded-xl p-5">
         <h3 className="font-bold">커뮤니티 글 남기기</h3>

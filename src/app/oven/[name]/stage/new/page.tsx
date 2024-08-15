@@ -39,16 +39,16 @@ function serializeEpisodesToString(episodes: EpisodeType[]): string {
     Object.keys(episode).forEach((key) => {
       const serializedKey = `content[${index}].${key}`
       const value = episode[key as keyof EpisodeType]
-      serializedParts.push(`${serializedKey}=${value},`)
+      serializedParts.push(`${serializedKey}=${value}`)
     })
   })
 
-  if (serializedParts.length > 0) {
-    // 마지막 요소에서 쉼표 제거
-    serializedParts[serializedParts.length - 1] = serializedParts[
-      serializedParts.length - 1
-    ].slice(0, -1)
-  }
+  // if (serializedParts.length > 0) {
+  //   // 마지막 요소에서 쉼표 제거
+  //   serializedParts[serializedParts.length - 1] = serializedParts[
+  //     serializedParts.length - 1
+  //   ].slice(0, -1)
+  // }
 
   return serializedParts.join('')
 }
@@ -89,7 +89,8 @@ function OvenNewStagePage({ params: { name: id } }: OvenNewStagePageProps) {
       if (category[1]) formData.append('category', 'LECTURE')
       if (category[2]) formData.append('category', 'CLUB')
       if (category[3]) formData.append('category', 'ETC')
-      formData.append('detail', detailImage as File)
+      formData.append('detail', '')
+      formData.append('detailImage', detailImage as File)
       formData.append('image', submitImage as File)
       formData.append('headCount', String(headCount))
       formData.append('episodeAmount', String(episodes.length))
@@ -118,8 +119,8 @@ function OvenNewStagePage({ params: { name: id } }: OvenNewStagePageProps) {
       !cost ||
       !headCount ||
       !runningTime ||
-      !detail ||
-      checkEpsiodes
+      !detail
+      // checkEpsiodes
     ) {
       toast.error('미작성 항목이 있습니다.')
       return
@@ -134,9 +135,9 @@ function OvenNewStagePage({ params: { name: id } }: OvenNewStagePageProps) {
     }
   }
 
-  const checkEpsiodes = episodes.some(
-    (episode) => episode.time === '' || episode.reserveTime === '',
-  )
+  // const checkEpsiodes = episodes.some(
+  //   (episode) => episode.time === '' || episode.reserveTime === '',
+  // )
 
   const handleCategory = (index: number) => {
     setCategory((prev) => {

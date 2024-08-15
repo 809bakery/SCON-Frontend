@@ -97,7 +97,7 @@ function OvenTalk({ id: ovenId }: OvenTalkProps) {
       ))}
       {updatedTalkList?.length === 0 && (
         <div className="flex justify-center items-center w-full h-[25rem] text-xl text-disabled font-normal">
-          진행 중인 오븐이 없습니다.
+          진행 중인 오븐톡이 없습니다.
         </div>
       )}
     </div>

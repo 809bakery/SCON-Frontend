@@ -45,7 +45,7 @@ function OvenSetting() {
   }
 
   return (
-    <div className="py-8 text-xl flex flex-col gap-y-8">
+    <div className="py-8 bg-[#FAFAFA] text-xl flex flex-col gap-y-8 min-h-screen">
       <div>
         <div className="w-full px-8 py-5 bg-white border-y border-border font-bold">
           <p>오븐 관리</p>
