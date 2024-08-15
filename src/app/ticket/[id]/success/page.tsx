@@ -15,7 +15,6 @@ function TicketBookSuccessPage() {
   const params = useParams()
 
   const headCountState = useTicketPurchaseStore((state) => state.headCount)
-  // const subEventId = useTicketPurchaseStore((state) => state.subEventId)
 
   const { data: stageDetail } = useQuery({
     queryKey: ['stage-detail', params.id],

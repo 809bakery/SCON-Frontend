@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
 /* eslint-disable import/no-extraneous-dependencies */
 import toast from 'react-hot-toast'
@@ -24,20 +24,48 @@ declare const window: typeof globalThis & {
 function TicketPurchase(props: TicketPurchaseProps) {
   const router = useRouter()
   const params = useParams()
+
   const headCountState = useTicketPurchaseStore((state) => state.headCount)
+  const subEventId = useTicketPurchaseStore((state) => state.subEventId)
+
   const { setIsCalendar, id } = props
-  // const parseDate = (time: string) => {
-  //   const hour =
-  //     new Date(time).getHours() < 12
-  //       ? new Date(time).getHours()
-  //       : new Date(time).getHours() - 12
-  //   const min = new Date(time).getMinutes()
 
-  //   const meridiem = new Date(time).getHours() < 12 ? '오전' : '오후'
+  const queryClient = useQueryClient()
+  const { mutate: createOrder } = useMutation({
+    mutationFn: async () => {
+      const formData = new FormData()
+      formData.append('ovenId', stageDetail.eventResponseDto.ovenId.toString())
+      formData.append('headCount', headCountState.toString())
+      formData.append(
+        'cost',
+        (stageDetail.eventResponseDto.cost * headCountState + 500).toString(),
+      )
 
-  //   return `${new Date(time).toLocaleDateString('ko-kr')} ${meridiem} ${hour < 10 ? `0${hour}` : hour}:${min < 10 ? `0${min}` : min}`
-  // }
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
 
+      const response = await privateApi.post(
+        `/api/event/reserve/${subEventId}`,
+        formData,
+        config,
+      )
+      localStorage.removeItem('ticketPurchaseState')
+      return response.data
+    },
+
+    onSuccess: () => {
+      toast.success('결제가 완료되었습니다.')
+      queryClient.invalidateQueries({ queryKey: ['reserve- stage-list'] })
+      router.push(`/ticket/${id}/success`)
+    },
+
+    onError: (err) => {
+      console.error(err)
+    },
+  })
   const { data: stageDetail } = useQuery({
     queryKey: ['stage-detail', params.id],
     queryFn: async () => {
@@ -87,8 +115,7 @@ function TicketPurchase(props: TicketPurchaseProps) {
           if (error_msg) {
             toast.error('결제 취소')
           } else {
-            toast.success('결제 성공')
-            router.push(`/ticket/${id}/success`)
+            createOrder()
           }
         } catch (error) {
           toast.error('결제 실패')

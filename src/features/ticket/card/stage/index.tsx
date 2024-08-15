@@ -46,9 +46,9 @@ function StageScheduleCard(props: StageScheduleCardProps) {
     },
   })
 
-  const handleCalendar = (id: number, episodeId: number) => {
+  const handleCalendar = (id: number) => {
     setIsCalendar(id)
-    setSubEventIdState(episodeId)
+    setSubEventIdState(id)
   }
 
   const parseDate = (time: string) => {
@@ -85,7 +85,7 @@ function StageScheduleCard(props: StageScheduleCardProps) {
               </div>
               <button
                 type="button"
-                onClick={() => handleCalendar(stage.id, stage.episodeNumber)}
+                onClick={() => handleCalendar(stage.id)}
                 className="text-white bg-primary py-1 px-7 rounded-xl"
               >
                 선택
