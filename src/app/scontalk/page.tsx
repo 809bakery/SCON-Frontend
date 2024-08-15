@@ -57,7 +57,9 @@ export default function SconTalkPage() {
   })
 
   return (
-    <div className="flex flex-col divide-y divide-border border-b border-border">
+    <div
+      className={`flex flex-col divide-y divide-border ${updatedTalkList?.length === 0 ? 'border-b-none' : 'border-b border-border'}`}
+    >
       {updatedTalkList?.map((talk: Talk) => (
         <div
           role="presentation"
@@ -92,6 +94,11 @@ export default function SconTalkPage() {
           </div>
         </div>
       ))}
+      {updatedTalkList?.length === 0 && (
+        <div className="flex justify-center items-center w-full h-[25rem] text-xl text-disabled font-normal">
+          진행 중인 스콘톡이 없습니다.
+        </div>
+      )}
     </div>
   )
 }
