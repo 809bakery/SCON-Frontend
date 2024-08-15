@@ -1,11 +1,14 @@
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 
+import { publicApi } from '@/api/config/publicApi.ts'
 import { DOMAIN_NAME_MAPPING } from '@/components/Navbar/index.tsx'
 import BackSVG from '@/static/svg/arrow-left-icon.svg'
 
 interface NavbarWithGobackProps {
   name?: string
   nameList?: string[]
+  type?: string
 }
 
 const getNameFromDomainMapping = (nameList: string[]) => {
@@ -18,14 +21,27 @@ const getNameFromDomainMapping = (nameList: string[]) => {
 export default function NavbarWithGoback({
   name,
   nameList,
+  type,
 }: NavbarWithGobackProps) {
   const router = useRouter()
+  const { data: stageDetail } = useQuery({
+    queryKey: ['stage-detail', name],
+    queryFn: async () => {
+      const response = await publicApi.get(`/api/event/${name}`)
+      return response.data
+    },
+    enabled: type === 'stage-datail',
+  })
   // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
   let _name
   if (nameList) {
     _name = getNameFromDomainMapping(nameList)
   } else {
     _name = name
+  }
+
+  if (stageDetail) {
+    _name = stageDetail?.eventResponseDto.title
   }
 
   return (

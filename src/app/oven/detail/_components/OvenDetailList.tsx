@@ -96,7 +96,7 @@ export default function OvenDetailList() {
           )}
         </>
       ) : (
-        !showLoading &&
+        !isLoading &&
         (ovenDetailList?.length === 0 || ovenDetailList === undefined) && (
           <div className="flex justify-center items-center w-full h-[25rem] text-xl text-disabled font-normal">
             검색 결과가 없습니다

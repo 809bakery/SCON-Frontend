@@ -44,9 +44,9 @@ export default function PickStageList() {
         <Image
           src="/images/stage-pick-thumbnail.jpg"
           width={600}
-          height={280}
+          height={352}
           alt="thumbnail"
-          className="object-cover h-[17.5rem]"
+          className="object-cover h-[22rem]"
         />
         <div className="absolute bottom-2 left-4 flex flex-col">
           <span className="text-2xl font-bold leading-8 text-white">

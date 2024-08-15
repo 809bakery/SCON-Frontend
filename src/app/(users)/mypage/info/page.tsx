@@ -1,12 +1,48 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
+import { privateApi } from '@/api/config/privateApi.ts'
+import Loader from '@/components/loader/index.tsx'
 import RadioButtonActiveSVG from '@/static/svg/radio-button-active-icon.svg'
 import RadioButtonInactiveSVG from '@/static/svg/radio-button-inactive-icon.svg'
 
+interface UserInfo {
+  email: string
+  nickname: string
+  image: string
+  ovener: boolean
+  authorization: boolean
+}
+
 export default function Info() {
   const [verified, setVerified] = useState(false)
+
+  const {
+    data: user,
+    isLoading,
+    isFetching,
+  } = useQuery<UserInfo>({
+    queryKey: ['user-info', verified],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/user/info')
+      setVerified(response.data.authorization)
+      return response.data as UserInfo
+    },
+    staleTime: 0,
+  })
+
+  const handleVerify = async () => {
+    const response = await privateApi.patch('/api/user/auth')
+    if (response.status === 200) {
+      setVerified(true)
+    }
+  }
+
+  if (isLoading || isFetching) {
+    return <Loader />
+  }
 
   return (
     <div className="w-full px-10 py-12">
@@ -15,7 +51,7 @@ export default function Info() {
         <div className="w-full flex flex-col gap-[.625rem] items-start text-xl text-7 font-medium">
           <div className="flex space-x-5 items-center py-[.625rem]">
             <span className="w-[8.5rem] text-disabled">아이디 (이메일)</span>
-            <span>809bakery@gmail.com</span>
+            <span>{user?.email}</span>
           </div>
           <div className="flex space-x-5 items-center py-[.625rem]">
             <span className="w-[8.5rem] text-disabled">이름</span>
@@ -62,12 +98,12 @@ export default function Info() {
             <div className="w-full flex flex-col gap-[.625rem]">
               <span>
                 {verified ? (
-                  '2024-08-01 본인인증이 완료되었습니다.'
+                  '2024-08-16 본인인증이 완료되었습니다.'
                 ) : (
                   <button
                     type="button"
                     className="text-white px-9 py-2 text-sm font-bold leading-[1.375rem] bg-primary rounded-xl"
-                    onClick={() => setVerified(true)}
+                    onClick={handleVerify}
                   >
                     휴대폰 본인인증
                   </button>
