@@ -36,6 +36,7 @@ export default function Navbar() {
     },
     enabled: !!getAccessToken(),
   })
+
   const domainList = pathname.split('/').filter(Boolean)
   const lastDomain = decodeURIComponent(domainList[domainList.length - 1])
   if (domainList.includes('scontalk') && lastDomain !== 'scontalk') {
@@ -44,6 +45,14 @@ export default function Navbar() {
 
   if (domainList.includes('detail') && lastDomain !== 'detail') {
     return <NavbarWithGoback name={lastDomain} />
+  }
+
+  if (
+    domainList.includes('stage') &&
+    domainList.includes('detail') &&
+    lastDomain !== 'stage'
+  ) {
+    return <NavbarWithGoback name={lastDomain} type="stage-datail" />
   }
   if (domainList.includes('list') && lastDomain !== 'list') {
     let name
