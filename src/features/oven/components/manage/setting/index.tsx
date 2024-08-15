@@ -59,7 +59,7 @@ function OvenSetting() {
 
         <button
           type="button"
-          onClick={() => router.push('/oven/[name]/stage/new')}
+          onClick={() => router.push(`/oven/${segment}/stage/new`)}
           className="w-full px-16 py-5 bg-white text-disabled border-border border-b text-start"
         >
           스테이지 등록하기

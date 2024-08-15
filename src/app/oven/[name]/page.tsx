@@ -82,7 +82,7 @@ export default function OvenPage() {
       </div>
       {tab === 0 && <OvenProfile />}
       {tab === 1 && <OvenCommunity />}
-      {tab === 2 && <OvenTalk />}
+      {tab === 2 && <OvenTalk id={segement} />}
       {tab === 3 && <OvenSetting />}
     </div>
   )

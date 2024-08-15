@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 
+import { privateApi } from '@/api/config/privateApi.ts'
 import { publicApi } from '@/api/config/publicApi.ts'
 import { DOMAIN_NAME_MAPPING } from '@/components/Navbar/index.tsx'
 import BackSVG from '@/static/svg/arrow-left-icon.svg'
@@ -32,6 +33,16 @@ export default function NavbarWithGoback({
     },
     enabled: type === 'stage-datail',
   })
+
+  const { data: chatList } = useQuery({
+    queryKey: ['talk-history', name],
+    queryFn: async () => {
+      const response = await privateApi.get(`/api/chat/history/${name}`)
+      return response.data
+    },
+    enabled: type === 'scontalk',
+  })
+
   // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
   let _name
   if (nameList) {
@@ -40,12 +51,20 @@ export default function NavbarWithGoback({
     _name = name
   }
 
+  if (type) {
+    _name = ''
+  }
+
   if (stageDetail) {
     _name = stageDetail?.eventResponseDto.title
   }
 
+  if (chatList) {
+    _name = chatList?.title
+  }
+
   return (
-    <div className="abolute top-0 w-full h-[60px] relative flex items-center justify-center py-[14px] border-b border-border text-center text-[#565551]">
+    <div className="top-0 z-10 w-full h-[60px] relative flex items-center justify-center py-[14px] border-b border-border text-center text-[#565551]">
       <div
         role="presentation"
         onClick={() => router.back()}

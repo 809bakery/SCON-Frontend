@@ -1,11 +1,11 @@
 'use client'
 
-import dynamic from 'next/dynamic'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Image, { StaticImageData } from 'next/image'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
+import { privateApi } from '@/api/config/privateApi.ts'
 import OvenManageCalendar from '@/features/oven/components/manage/stage/calendar/index.tsx'
 import OvenManageCard from '@/features/oven/components/manage/stage/card/index.tsx'
 import SquareFillSVG from '@/static/svg/square-fill-icon.svg'
@@ -13,7 +13,7 @@ import SquareUnfillSVG from '@/static/svg/square-unfill-icon.svg'
 import 'react-quill/dist/quill.snow.css'
 import CameraSVG from '@/static/svg/stage/stage-camera-icon.svg'
 
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
+// const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 interface EpsiodeType {
   episodeNumber: number
@@ -21,8 +21,41 @@ interface EpsiodeType {
   reserveTime: string
 }
 
-function OvenNewStagePage() {
-  const router = useRouter()
+interface OvenNewStagePageProps {
+  params: {
+    name: string
+  }
+}
+type EpisodeType = {
+  episodeNumber: number
+  time: string
+  reserveTime: string
+}
+
+function serializeEpisodesToString(episodes: EpisodeType[]): string {
+  const serializedParts: string[] = []
+
+  episodes.forEach((episode, index) => {
+    Object.keys(episode).forEach((key) => {
+      const serializedKey = `content[${index}].${key}`
+      const value = episode[key as keyof EpisodeType]
+      serializedParts.push(`${serializedKey}=${value},`)
+    })
+  })
+
+  if (serializedParts.length > 0) {
+    // 마지막 요소에서 쉼표 제거
+    serializedParts[serializedParts.length - 1] = serializedParts[
+      serializedParts.length - 1
+    ].slice(0, -1)
+  }
+
+  return serializedParts.join('')
+}
+
+function OvenNewStagePage({ params: { name: id } }: OvenNewStagePageProps) {
+  const queryClient = useQueryClient()
+  const [submitImage, setSubmitImage] = useState<File | null>(null)
   const [stageName, setStageName] = useState<string>('')
   const [stageSubName, setStageSubName] = useState<string>('')
   const [profile, setProfile] = useState<string | StaticImageData>('')
@@ -43,7 +76,38 @@ function OvenNewStagePage() {
 
   const [episodes, setEpisodes] = useState<EpsiodeType[]>([])
 
-  const [detail, setDetail] = useState('')
+  const [detail, setDetail] = useState<string | StaticImageData>('')
+  const [detailImage, setDetailImage] = useState<File | null>(null)
+  const { mutate: createStage } = useMutation({
+    mutationFn: async () => {
+      const formData = new FormData()
+      formData.append('ovenId', id)
+      formData.append('location', location)
+      formData.append('title', stageName)
+      formData.append('subTitle', stageSubName)
+      if (category[0]) formData.append('category', 'PERFORMANCE')
+      if (category[1]) formData.append('category', 'LECTURE')
+      if (category[2]) formData.append('category', 'CLUB')
+      if (category[3]) formData.append('category', 'ETC')
+      formData.append('detail', detailImage as File)
+      formData.append('image', submitImage as File)
+      formData.append('headCount', String(headCount))
+      formData.append('episodeAmount', String(episodes.length))
+      formData.append('content', serializeEpisodesToString(episodes))
+      formData.append('cost', String(cost))
+      formData.append('runningTime', String(runningTime))
+      formData.append('reserveLimit', String(maxTicketCount))
+      const response = await privateApi.post(`/api/event/regist`, formData)
+      return response.data
+    },
+    onSuccess: () => {
+      toast.success('스테이지 등록이 완료되었습니다.')
+      queryClient.invalidateQueries({ queryKey: ['oven-detail', id] })
+    },
+    onError: () => {
+      toast.error('스테이지 등록에 실패했습니다.')
+    },
+  })
 
   const submitForm = () => {
     if (
@@ -66,7 +130,7 @@ function OvenNewStagePage() {
     )
 
     if (confirm) {
-      router.back()
+      createStage()
     }
   }
 
@@ -76,13 +140,17 @@ function OvenNewStagePage() {
 
   const handleCategory = (index: number) => {
     setCategory((prev) => {
-      const newCategory = [...prev]
-      newCategory[index] = !newCategory[index]
+      const newCategory = prev.map((_, i) =>
+        i === index ? !prev[index] : false,
+      )
       return newCategory
     })
   }
 
-  const handleProfileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProfileImage = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: string,
+  ) => {
     const {
       target: { files },
     } = e
@@ -92,6 +160,8 @@ function OvenNewStagePage() {
     }
 
     const file = files?.[0]
+    if (type === 'profile') setSubmitImage(file as File)
+    if (type === 'detail') setDetailImage(file as File)
     const fileReader = new FileReader()
     fileReader.readAsDataURL(file as Blob)
     fileReader.onloadend = (finishedEvent) => {
@@ -99,7 +169,8 @@ function OvenNewStagePage() {
         currentTarget: { result },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }: any = finishedEvent
-      setProfile(result)
+      if (type === 'profile') setProfile(result)
+      if (type === 'detail') setDetail(result)
     }
   }
 
@@ -178,7 +249,7 @@ function OvenNewStagePage() {
             id="oven-profile-file"
             accept="image/*"
             className="hidden"
-            onChange={handleProfileImage}
+            onChange={(e) => handleProfileImage(e, 'profile')}
           />
         </div>
       </OvenManageCard>
@@ -387,9 +458,39 @@ function OvenNewStagePage() {
         </div>
       </OvenManageCard>
       {/* 상세설명 */}
-      <OvenManageCard className="h-[30rem] p-5 flex flex-col gap-y-3">
+      <OvenManageCard className="p-5 flex flex-col gap-y-3">
         <h3 className="text-xl font-bold">상세 설명</h3>
-        <ReactQuill
+        <h4 className="text-disabled mb-4">
+          스테이지에 대한 상세 설명이 담긴 사진을 입력해주세요.
+        </h4>
+        <label
+          htmlFor="stage-detail-file"
+          className="cursor-pointer w-full flex items-center justify-center"
+        >
+          {profile === '' ? (
+            <div className="w-full flex flex-col gap-y-2 items-center py-32 bg-[#E5E5ED]  rounded-xl">
+              <CameraSVG className="w-6 h-6" />
+              <span className="text-xs underline">파일 선택</span>
+            </div>
+          ) : (
+            <Image
+              src={detail}
+              alt="stage-profile"
+              width={500}
+              height={300}
+              className="w-[31.25rem] rounded-xl object-cover"
+            />
+          )}
+        </label>
+        <input
+          type="file"
+          name="stage-detail-file"
+          id="stage-detail-file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => handleProfileImage(e, 'detail')}
+        />
+        {/* <ReactQuill
           theme="snow"
           style={{ height: '18.75rem' }}
           modules={{
@@ -403,7 +504,7 @@ function OvenNewStagePage() {
           }}
           value={detail}
           onChange={setDetail}
-        />
+        /> */}
       </OvenManageCard>
 
       <button
