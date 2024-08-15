@@ -1,12 +1,15 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 
+import { privateApi } from '@/api/config/privateApi.ts'
 import ChatChunk from '@/app/scontalk/[id]/_components/ChatChunk.tsx'
 import NavbarWithGoback from '@/components/Navbar/NavbarWithGoback.tsx'
 import { ChatMessage, DUMMY_SCON_TALK_DETAIL } from '@/constants/dummy.ts'
 import preprocessMessages from '@/utils/chat/preprocessMessages.ts'
 import { splitMessagesIntoChunks } from '@/utils/chat/splitMessagesIntoChunks.ts'
+import { getAccessToken } from '@/utils/cookie/index.ts'
 import getFormattedCurrentDate from '@/utils/date/getFormattedCurrentDate.ts'
 
 export interface ExtendedChatMessage extends ChatMessage {
@@ -16,7 +19,13 @@ export interface ExtendedChatMessage extends ChatMessage {
 
 export type ChatChunkType = ExtendedChatMessage[]
 
-export default function SconTalkPage() {
+interface SconTalkPageProps {
+  params: {
+    id: string
+  }
+}
+
+export default function SconTalkPage({ params: { id } }: SconTalkPageProps) {
   const messageEndRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const elementRef = useRef<HTMLTextAreaElement>(null)
@@ -28,6 +37,26 @@ export default function SconTalkPage() {
     splitMessagesIntoChunks(preprocessedContent),
   )
 
+  const { data: user } = useQuery({
+    queryKey: ['user-info'],
+    queryFn: async () => {
+      const response = await privateApi.get(`/api/user/info`)
+      return response.data
+    },
+    enabled: !!getAccessToken(),
+  })
+
+  const { data: chatList } = useQuery({
+    queryKey: ['talk-history', id],
+    queryFn: async () => {
+      const response = await privateApi.get(`/api/chat/history/${id}`)
+      return response.data
+    },
+  })
+
+  if (chatList) {
+    console.log(chatList)
+  }
   /*
     contentRef 요소의 자식 노드 또는 속성이 변경될 때,
     messageEndRef 요소로 스크롤하는 MutationObserver를 설정하여
@@ -75,8 +104,8 @@ export default function SconTalkPage() {
     const newChat = {
       id: message,
       content: message,
-      nickname: '고세구',
-      profile: '/dummy/dummy-default-profile.png',
+      nickname: user?.nickname,
+      profile: user?.image,
       createdAt: getFormattedCurrentDate(),
       isOvener: false,
     }
