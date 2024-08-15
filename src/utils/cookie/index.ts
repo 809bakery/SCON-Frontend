@@ -6,7 +6,7 @@ const cookies = new Cookies()
 export function setToken(key: 'ACCESS_TOKEN' | 'REFRESH_TOKEN', token: string) {
   const accessExpires = new Date()
   const refreshExpires = new Date()
-  accessExpires.setMinutes(accessExpires.getMinutes() + 30)
+  accessExpires.setDate(accessExpires.getDate() + 14)
   refreshExpires.setDate(refreshExpires.getDate() + 14)
 
   cookies.set(key, token, {
