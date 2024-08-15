@@ -23,7 +23,10 @@ const nextConfig = {
     missingSuspenseWithCSRBailout: false,
   },
   images: {
-    domains: ['s3.ap-northeast-2.amazonaws.com'],
+    domains: [
+      's3.ap-northeast-2.amazonaws.com',
+      'scon-bucket.s3.ap-northeast-2.amazonaws.com',
+    ],
   },
   reactStrictMode: false,
 }

@@ -139,7 +139,7 @@ export default function SconTalkPage({ params: { id } }: SconTalkPageProps) {
         ref={contentRef}
         className="chat_bg w-full min-h-screen h-full pt-[60px] px-7 pb-[7rem]"
       >
-        <div className="w-full flex justify-center mt-6">
+        <div className="w-full flex justify-center">
           {isLoading ? (
             <div className="animate-pulse">
               <div className="bg-gray-200 max-w-max border border-border rounded-xl py-[.875rem] px-[.625rem] mb-[4.125rem]">
