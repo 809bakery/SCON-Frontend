@@ -1,27 +1,34 @@
 'use client'
 
-import { StaticImageData } from 'next/image'
+import { useQuery } from '@tanstack/react-query'
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 
+import { privateApi } from '@/api/config/privateApi.ts'
 import { DUMMY_OVEN_INFO } from '@/constants/oven/manage/index.ts'
-
-interface UserType {
-  nickname: string
-  email: string
-  image: string | StaticImageData
-  isOvener: boolean
-}
 
 function OvenSetting() {
   const router = useRouter()
-  const [loginUser, setLoginUser] = useState<UserType>()
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false)
   const segment = usePathname().split('/')[2]
-  useEffect(() => {
-    setLoginUser(JSON.parse(sessionStorage.getItem('user')!))
-  }, [])
+
+  const { data } = useQuery({
+    queryKey: ['ovenInfo', segment],
+    queryFn: async () => {
+      const response = await privateApi.get(`/api/oven/${segment}`)
+      return response.data
+    },
+  })
+
+  const { data: loginUser } = useQuery({
+    queryKey: ['user-info'],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/user/info')
+      return response.data
+    },
+    enabled: !!sessionStorage.getItem('access_token'),
+  })
 
   const quitOven = () => {
     // 오븐 탈퇴 api
@@ -38,14 +45,20 @@ function OvenSetting() {
 
         <button
           type="button"
-          onClick={() => router.push(`/oven/${segment}/profile`)}
+          onClick={() => {
+            if (data?.leader === loginUser?.nickname) {
+              router.push(`/oven/${segment}/profile`)
+            } else {
+              toast.error('오븐 대표만 수정 가능합니다.')
+            }
+          }}
           className="w-full px-16 py-5 bg-white text-disabled border-border border-b text-start"
         >
           오븐 프로필 수정하기
         </button>
         <button
           type="button"
-          onClick={() => router.push('/oven/[name]/members')}
+          onClick={() => router.push(`/oven/${segment}/members`)}
           className="w-full px-16 py-5 bg-white text-disabled border-border border-b text-start"
         >
           오븐 멤버
@@ -66,7 +79,7 @@ function OvenSetting() {
         </button>
         <button
           type="button"
-          onClick={() => router.push('/oven/[name]/stage')}
+          onClick={() => router.push(`/oven/${segment}/stage`)}
           className="w-full px-16 py-5 bg-white text-disabled border-border border-b text-start"
         >
           등록된 스테이지 관리 (QR리더기 / 예매자 명단 확인)
