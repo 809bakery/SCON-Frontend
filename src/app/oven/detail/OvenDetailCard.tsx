@@ -4,13 +4,14 @@ import { useRouter } from 'next/navigation'
 interface OvenDetailCardProps {
   src: string | StaticImageData
   name: string
+  id: string
 }
 
-export default function OvenDetailCard({ src, name }: OvenDetailCardProps) {
+export default function OvenDetailCard({ src, name, id }: OvenDetailCardProps) {
   const router = useRouter()
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
-    router.push(`/oven/detail/${encodeURIComponent(name)}`)
+    router.push(`/oven/detail/${encodeURIComponent(name)}?id=${id}`)
   }
 
   return (

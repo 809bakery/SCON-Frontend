@@ -9,6 +9,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { privateApi } from '@/api/config/privateApi.ts'
+import { getAccessToken } from '@/utils/cookie/index.ts'
 
 interface CommunityContentCardProps {
   communityId: number
@@ -23,6 +24,7 @@ interface CommunityContentCardProps {
   nickname: string
   profile: string
   reaction: string
+  refetchOvenCommunity?: () => void
 }
 
 export default function CommunityContentCard({
@@ -38,6 +40,7 @@ export default function CommunityContentCard({
   nickname,
   profile,
   reaction,
+  refetchOvenCommunity,
 }: CommunityContentCardProps) {
   const contentRef = useRef<HTMLSpanElement>(null)
   const [isExpanded, setIsExpanded] = useState(false)
@@ -67,6 +70,7 @@ export default function CommunityContentCard({
       queryClient.invalidateQueries({
         queryKey: ['list_oven_community', segment],
       })
+      refetchOvenCommunity?.()
     },
   })
   const { mutate: postReaction } = useMutation({
@@ -74,7 +78,6 @@ export default function CommunityContentCard({
       const response = await privateApi.post(
         `/api/oven/community/${communityId}/reaction/${res}`,
       )
-
       return response.data
     },
     onError: () => {
@@ -85,10 +88,12 @@ export default function CommunityContentCard({
       queryClient.invalidateQueries({
         queryKey: ['list_oven_community', segment],
       })
+
+      refetchOvenCommunity?.()
     },
   })
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setBestCountState(reaction === 'best')
     setExpectCountState(reaction === 'expect')
     setCongratulationCountState(reaction === 'congratulation')
@@ -157,6 +162,10 @@ export default function CommunityContentCard({
   }
 
   const handleSubmitResponse = (response: string) => {
+    if (!getAccessToken()) {
+      toast.error('로그인 후 이용해주세요.')
+      return
+    }
     // 이미 한 번 응답했고, 같은 응답이 아니면 return
     if (isResponsed && response !== respondedType) {
       // 알아서 삭제하고, 새로운 응답을 추가하는 리퀘스트 mutation
