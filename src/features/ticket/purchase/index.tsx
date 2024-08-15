@@ -58,7 +58,7 @@ function TicketPurchase(props: TicketPurchaseProps) {
 
     onSuccess: () => {
       toast.success('결제가 완료되었습니다.')
-      queryClient.invalidateQueries({ queryKey: ['reserve- stage-list'] })
+      queryClient.invalidateQueries({ queryKey: ['reserve-stage-list'] })
       router.push(`/ticket/${id}/success`)
     },
 
@@ -114,9 +114,9 @@ function TicketPurchase(props: TicketPurchaseProps) {
           const { error_msg } = res
           if (error_msg) {
             toast.error('결제 취소')
-          } else {
-            createOrder()
+            return
           }
+          createOrder()
         } catch (error) {
           toast.error('결제 실패')
         }

@@ -1,53 +1,47 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
+import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
-import { DUMMY_RESERVED_MEMBERS } from '@/constants/oven/manage/members/index.ts'
+import { privateApi } from '@/api/config/privateApi.ts'
+import Loader from '@/components/loader/index.tsx'
 import MemberCheckbox from '@/features/oven/components/manage/members/index.tsx'
 import SquareFillSVG from '@/static/svg/square-fill-icon.svg'
 import SquareUnfillSVG from '@/static/svg/square-unfill-icon.svg'
 
 interface UserType {
+  id: number
+  headCount: number
   nickname: string
   token: string // QR 코드에 쓰일 예매 번호
   email: string
-}
-interface ReservedMembersType {
-  isEntered: boolean
-  user: UserType
+  entry: boolean
 }
 
 function OvenStageReserved() {
   const [tab, setTab] = useState<number>(0)
-  const [users, setUsers] = useState<ReservedMembersType[]>(
-    DUMMY_RESERVED_MEMBERS,
-  )
+  const param = useParams()
+  const [users, setUsers] = useState<UserType[]>()
 
-  const enterMember = (user: UserType) => {
-    const newUsers = users.map((member) => {
-      if (member.user.email === user.email) {
-        return {
-          ...member,
-          isEntered: !member.isEntered,
-        }
-      }
-      return member
-    })
-    setUsers(newUsers)
-  }
+  const { isLoading } = useQuery({
+    queryKey: ['reservedMemberList', param.name],
+    queryFn: async () => {
+      const response = await privateApi.get(`/api/reserve/manage/${param.name}`)
 
-  const leaveMember = (user: UserType) => {
-    const newUsers = users.map((member) => {
-      if (member.user.email === user.email) {
-        return {
-          ...member,
-          isEntered: !member.isEntered,
-        }
+      if (response.status === 200) {
+        setUsers(response.data as UserType[])
       }
-      return member
-    })
-    setUsers(newUsers)
-  }
+      return response.data
+    },
+  })
+
+  if (isLoading)
+    return (
+      <div>
+        <Loader />
+      </div>
+    )
   return (
     <div>
       {/* tab */}
@@ -71,47 +65,47 @@ function OvenStageReserved() {
       {/* content */}
       {tab === 0 ? (
         <div className="py-7 px-5">
-          {users.map((member, index) => (
-            <MemberCheckbox
-              key={`enter-${member.user.email}`}
-              className={`${member.isEntered && 'hidden'}`}
-            >
-              <button type="button" onClick={() => enterMember(member.user)}>
-                {' '}
-                {member.isEntered ? (
+          {users &&
+            users.map((member, index) => (
+              <MemberCheckbox
+                // eslint-disable-next-line react/no-array-index-key
+                key={`enter-${member.email}-${index}`}
+                className={`${member.entry && 'hidden'}`}
+              >
+                {member.entry ? (
                   <SquareFillSVG className="w-6 h-6" />
                 ) : (
                   <SquareUnfillSVG className="w-6 h-6" />
                 )}
-              </button>
-              <span>{index + 1}</span>
-              <span>{member.user.nickname}</span>
-              <span>{member.user.token}</span>
-              <span className="underline">{member.user.email}</span>
-            </MemberCheckbox>
-          ))}
+                <span>{member.id}</span>
+                <span>{member.nickname}</span>
+                <span className="truncate">
+                  {member.token.slice(0, 10)} ...
+                </span>
+                <span className="underline">{member.email}</span>
+              </MemberCheckbox>
+            ))}
         </div>
       ) : (
         <div className="py-7 px-5">
-          {users.map((member, index) => (
-            <MemberCheckbox
-              key={`leave-${member.user.email}`}
-              className={`${!member.isEntered && 'hidden'}`}
-            >
-              <button type="button" onClick={() => leaveMember(member.user)}>
-                {' '}
-                {member.isEntered ? (
+          {users &&
+            users.map((member, index) => (
+              <MemberCheckbox
+                // eslint-disable-next-line react/no-array-index-key
+                key={`leave-${member.email}-${index}`}
+                className={`${!member.entry && 'hidden'}`}
+              >
+                {member.entry ? (
                   <SquareFillSVG className="w-6 h-6" />
                 ) : (
                   <SquareUnfillSVG className="w-6 h-6" />
                 )}
-              </button>
-              <span>{index + 1}</span>
-              <span>{member.user.nickname}</span>
-              <span>{member.user.token}</span>
-              <span className="underline truncate">{member.user.email}</span>
-            </MemberCheckbox>
-          ))}
+                <span>{member.id}</span>
+                <span>{member.nickname}</span>
+                <span>{member.token}</span>
+                <span className="underline truncate">{member.email}</span>
+              </MemberCheckbox>
+            ))}
         </div>
       )}
     </div>

@@ -29,7 +29,6 @@ function UserTicketListPage() {
     queryFn: async () => {
       const response = await privateApi.get('/api/reserve')
       // eslint-disable-next-line no-console
-      console.log(response.data)
       return response.data
     },
   })

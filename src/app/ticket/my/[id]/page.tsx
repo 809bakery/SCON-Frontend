@@ -38,7 +38,6 @@ function TicketEnterPage() {
         },
       }
       const response = await privateApi.get(`/api/reserve/${param.id}`, config)
-      console.log(response)
       return response.data
     },
   })
@@ -60,54 +59,56 @@ function TicketEnterPage() {
       </div>
     )
   return (
-    <div className="p-20 flex flex-col gap-y-10">
+    <div className="w-full p-20 flex flex-col gap-y-10">
       <h3 className="flex items-center justify-center font-bold text-2xl">
         {stage?.title}
       </h3>
 
-      <button
-        className="w-full relative flex items-center justify-center"
-        type="button"
-        onClick={() => setIsFlipped(!isFlipped)}
-      >
-        {stage && (
-          <Image
-            src={stage?.image}
-            alt={stage?.title}
-            width={440}
-            height={600}
-            className={`w-full  object-cover !relative rounded-xl transition-all duration-300 cursor-pointer ${isFlipped && 'opacity-0'}`}
+      <div className="w-full flex items-center justify-center">
+        <button
+          className="w-[27.5rem] h-[37.5rem] relative flex items-center justify-center"
+          type="button"
+          onClick={() => setIsFlipped(!isFlipped)}
+        >
+          {stage && (
+            <Image
+              src={stage?.image}
+              alt={stage?.title}
+              width={440}
+              height={600}
+              className={`w-[27.5rem] h-[37.5rem]  object-cover !relative rounded-xl transition-all duration-300 cursor-pointer ${isFlipped && 'opacity-0'}`}
+              style={{
+                transformStyle: 'preserve-3d',
+                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+              }}
+            />
+          )}
+          <div
+            className={`w-[27.5rem] h-[37.5rem]  truncate absolute top-0 p-9 flex flex-col items-center justify-center gap-y-10 border border-border  rounded-xl transition-all duration-300 ${!isFlipped && 'opacity-0'} bg-lightgray-1`}
             style={{
               transformStyle: 'preserve-3d',
-              transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+              transform: isFlipped ? 'rotateY(0deg)' : 'rotateY(180deg)',
             }}
-          />
-        )}
-        <div
-          className={`w-full h-full truncate absolute top-0 p-9 flex flex-col items-center justify-center gap-y-10 border border-border  rounded-xl transition-all duration-300 ${!isFlipped && 'opacity-0'} bg-lightgray-1`}
-          style={{
-            transformStyle: 'preserve-3d',
-            transform: isFlipped ? 'rotateY(0deg)' : 'rotateY(180deg)',
-          }}
-        >
-          <div className="flex flex-col items-center justify-center">
-            <div className="text-warning font-bold text-2xl">
-              {isFlipped ? <Timer /> : <span>00 : 00</span>}
+          >
+            <div className="flex flex-col items-center justify-center">
+              <div className="text-warning font-bold text-2xl">
+                {isFlipped ? <Timer /> : <span>00 : 00</span>}
+              </div>
+              <span>후에 새로고침됩니다.</span>
             </div>
-            <span>후에 새로고침됩니다.</span>
+
+            {stage && <QRCode value={stage?.token} className="w-64 h-64" />}
+            <div className="w-full text-xl flex flex-col items-center justify-center">
+              <span className="px-8 w-full truncate">{stage?.token}</span>
+              <span>{stage?.nickname}</span>
+            </div>
           </div>
 
-          {stage && <QRCode value={stage?.token} className="w-64 h-64" />}
-          <div className="w-full text-xl flex flex-col items-center justify-center">
-            <span className="px-8 w-full truncate">{stage?.token}</span>
-            <span>{stage?.nickname}</span>
+          <div className="p-2 z-10 rounded-tl-xl rounded-br-xl bg-[rgba(0,0,0,0.5)] flex items-center justify-center absolute top-0 left-0">
+            <FilpSVG className="w-6 h-6" />
           </div>
-        </div>
-
-        <div className="p-2 z-10 rounded-tl-xl rounded-br-xl bg-[rgba(0,0,0,0.5)] flex items-center justify-center absolute top-0 left-0">
-          <FilpSVG className="w-6 h-6" />
-        </div>
-      </button>
+        </button>
+      </div>
 
       <div className="flex justify-between items-center gap-x-10">
         <button
