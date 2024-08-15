@@ -39,12 +39,21 @@ export default function Navbar() {
 
   const domainList = pathname.split('/').filter(Boolean)
   const lastDomain = decodeURIComponent(domainList[domainList.length - 1])
-  if (domainList.includes('scontalk') && lastDomain !== 'scontalk') {
-    return null
-  }
 
   if (domainList.includes('detail') && lastDomain !== 'detail') {
     return <NavbarWithGoback name={lastDomain} />
+  }
+
+  if (domainList.includes('ticket') && !domainList.includes('my')) {
+    return <NavbarWithGoback name="예매하기" />
+  }
+
+  if (domainList.includes('scontalk') && lastDomain !== 'scontalk') {
+    return <NavbarWithGoback name={lastDomain} type="scontalk" />
+  }
+
+  if (domainList.includes('oven') && domainList.includes('my')) {
+    return <NavbarWithGoback name="내 오븐" />
   }
 
   if (

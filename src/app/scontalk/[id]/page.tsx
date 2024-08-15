@@ -46,7 +46,7 @@ export default function SconTalkPage({ params: { id } }: SconTalkPageProps) {
     enabled: !!getAccessToken(),
   })
 
-  const { data: chatList } = useQuery({
+  const { data: chatList, isLoading } = useQuery({
     queryKey: ['talk-history', id],
     queryFn: async () => {
       const response = await privateApi.get(`/api/chat/history/${id}`)
@@ -119,20 +119,39 @@ export default function SconTalkPage({ params: { id } }: SconTalkPageProps) {
     }
   }
 
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString)
+
+    const year = date.getFullYear()
+    const month = (date.getMonth() + 1).toString().padStart(2, '0') // getMonth()는 0부터 시작하므로 1을 더해줍니다.
+    const day = date.getDate().toString().padStart(2, '0')
+    const hour = date.getHours().toString().padStart(2, '0')
+
+    return `${year}. ${month}. ${day}일 ${hour}시`
+  }
+
   return (
     <div className="w-full h-full">
       <div className="w-full fixed top-0 max-w-[598px] bg-white z-10">
-        <NavbarWithGoback name="릴파 솔로 콘서트 ‘Going Out’" />
+        <NavbarWithGoback name={id} type="scontalk" />
       </div>
       <div
         ref={contentRef}
         className="chat_bg w-full min-h-screen h-full pt-[60px] px-7 pb-[7rem]"
       >
         <div className="w-full flex justify-center mt-6">
-          <p className="max-w-max border border-border rounded-xl py-[.875rem] px-[.625rem] text-base leading-6 font-medium text-center mb-[4.125rem]">
-            2024. 07. 12일 16시에 진행되는 릴파 솔로 콘서트 ‘Going Out’
-            스콘톡입니다.
-          </p>
+          {isLoading ? (
+            <div className="animate-pulse">
+              <div className="bg-gray-200 max-w-max border border-border rounded-xl py-[.875rem] px-[.625rem] mb-[4.125rem]">
+                <div className="h-4  rounded w-[15rem]" />
+              </div>
+            </div>
+          ) : (
+            <p className="max-w-max border border-border rounded-xl py-[.875rem] px-[.625rem] text-base leading-6 font-medium text-center mb-[4.125rem]">
+              {`${formatDate(chatList?.time)}에 진행되는 ${chatList?.title}
+            스콘톡입니다.`}
+            </p>
+          )}
         </div>
         <div className="flex flex-col gap-4">
           {chunkedContent.map((chats, index) => (
