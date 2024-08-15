@@ -1,31 +1,36 @@
-import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import TicketArrowDownSVG from '@/static/svg/ticket/ticket-arrow-down-icon.svg'
 import TicketArrowUpSVG from '@/static/svg/ticket/ticket-arrow-up-icon.svg'
 
+import useTicketPurchaseStore from '@/store/PurchaseTicketStore.ts'
+
 function TicketCounter() {
-  const [count, setCount] = useState<number>(1)
+  const setHeadCountState = useTicketPurchaseStore(
+    (state) => state.setHeadCount,
+  )
+
+  const headCount = useTicketPurchaseStore((state) => state.headCount)
   const handleCountUp = () => {
-    if (count >= 4) {
+    if (headCount >= 4) {
       toast.error('1인 당 최대 4매까지만 예매 가능합니다.')
       return
     }
 
-    setCount(count + 1)
+    setHeadCountState(headCount + 1)
   }
 
   const handleCountDown = () => {
-    if (count <= 1) {
+    if (headCount <= 1) {
       return
     }
 
-    setCount(count - 1)
+    setHeadCountState(headCount - 1)
   }
   return (
     <div className="w-20 flex aspect-square border-border border">
       <div className="flex-1 flex items-center justify-center text-[#363232] text-3xl font-bold border-r border-border">
-        {count}
+        {headCount}
       </div>
       <div className="flex-1 flex flex-col">
         <button

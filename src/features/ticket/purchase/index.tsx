@@ -1,23 +1,19 @@
-import { useRouter } from 'next/navigation'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useParams, useRouter } from 'next/navigation'
 /* eslint-disable import/no-extraneous-dependencies */
 import toast from 'react-hot-toast'
 
-import { DUMMY_STAGE_DETAIL } from '@/constants/stage/index.ts'
+import { privateApi } from '@/api/config/privateApi.ts'
+import { publicApi } from '@/api/config/publicApi.ts'
 import TicketWrapperCard from '@/features/ticket/card/index.tsx'
 import TicketCounter from '@/features/ticket/purchase/count/index.tsx'
 import TicketChargeSVG from '@/static/svg/ticket/ticket-charge-icon.svg'
 
+import useTicketPurchaseStore from '@/store/PurchaseTicketStore.ts'
+
 interface TicketPurchaseProps {
-  stage: ContentType
   setIsCalendar: (value: number | undefined) => void
   id: number
-}
-
-interface ContentType {
-  id: number
-  episodeNumber: number
-  time: string
-  status: string
 }
 
 declare const window: typeof globalThis & {
@@ -27,18 +23,69 @@ declare const window: typeof globalThis & {
 
 function TicketPurchase(props: TicketPurchaseProps) {
   const router = useRouter()
-  const { stage, setIsCalendar, id } = props
-  const parseDate = (time: string) => {
-    const hour =
-      new Date(time).getHours() < 12
-        ? new Date(time).getHours()
-        : new Date(time).getHours() - 12
-    const min = new Date(time).getMinutes()
+  const params = useParams()
 
-    const meridiem = new Date(time).getHours() < 12 ? '오전' : '오후'
+  const headCountState = useTicketPurchaseStore((state) => state.headCount)
+  const subEventId = useTicketPurchaseStore((state) => state.subEventId)
 
-    return `${new Date(time).toLocaleDateString('ko-kr')} ${meridiem} ${hour < 10 ? `0${hour}` : hour}:${min < 10 ? `0${min}` : min}`
-  }
+  const { setIsCalendar, id } = props
+
+  const queryClient = useQueryClient()
+  const { mutate: createOrder } = useMutation({
+    mutationFn: async () => {
+      const formData = new FormData()
+      formData.append('ovenId', stageDetail.eventResponseDto.ovenId.toString())
+      formData.append('headCount', headCountState.toString())
+      formData.append(
+        'cost',
+        (stageDetail.eventResponseDto.cost * headCountState + 500).toString(),
+      )
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+
+      const response = await privateApi.post(
+        `/api/event/reserve/${subEventId}`,
+        formData,
+        config,
+      )
+      localStorage.removeItem('ticketPurchaseState')
+      return response.data
+    },
+
+    onSuccess: () => {
+      toast.success('결제가 완료되었습니다.')
+      queryClient.invalidateQueries({ queryKey: ['reserve- stage-list'] })
+      router.push(`/ticket/${id}/success`)
+    },
+
+    onError: (err) => {
+      console.error(err)
+    },
+  })
+  const { data: stageDetail } = useQuery({
+    queryKey: ['stage-detail', params.id],
+    queryFn: async () => {
+      let response
+      if (loginUser) {
+        response = await privateApi.get(`/api/event/${params.id}`)
+      } else {
+        response = await publicApi.get(`/api/event/${params.id}`)
+      }
+      return response.data
+    },
+  })
+
+  const { data: loginUser } = useQuery({
+    queryKey: ['user-info'],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/user/info')
+      return response.data
+    },
+  })
 
   // eslint-disable-next-line consistent-return
   const handlePurchase = async () => {
@@ -50,13 +97,13 @@ function TicketPurchase(props: TicketPurchaseProps) {
         pg: 'tosspayments',
         pay_method: 'card',
         merchant_uid: `mid_${new Date().getTime()}`,
-        name: '테스트 토스페이먼츠 결제',
-        amount: DUMMY_STAGE_DETAIL.cost + 500,
-        buyer_email: 'sorlti6952@gmail.com',
-        buyer_name: '박상우',
-        buyer_tel: '010-1234-5678',
-        buyer_addr: '서울특별시 강남구 신사동 661-16',
-        buyer_postcode: '06018',
+        name: stageDetail.eventResponseDto.title,
+        amount: stageDetail.eventResponseDto.cost * headCountState + 500,
+        buyer_email: loginUser.email,
+        buyer_name: loginUser.nickname,
+        buyer_tel: '010-1234-1234',
+        buyer_addr: '서울특별시 강남구 테헤란로 212',
+        buyer_postcode: '06220',
         m_redirect_url: `http://www.809bakery.com/ticket/${id}/success`,
         confirm_url: `http://www.809bakery.com/ticket/${id}/success`,
       },
@@ -68,8 +115,7 @@ function TicketPurchase(props: TicketPurchaseProps) {
           if (error_msg) {
             toast.error('결제 취소')
           } else {
-            toast.success('결제 성공')
-            router.push(`/ticket/${id}/success`)
+            createOrder()
           }
         } catch (error) {
           toast.error('결제 실패')
@@ -82,9 +128,7 @@ function TicketPurchase(props: TicketPurchaseProps) {
     <div className="flex flex-col gap-y-3">
       {/* title */}
       <div className="p-3 flex items-center justify-between">
-        <span className="font-bold">
-          🍪{parseDate(stage?.time)} 티켓 예매진행중
-        </span>
+        <span className="font-bold">🍪 티켓 예매진행중</span>
         <button
           type="button"
           className="bg-primary text-white rounded-xl py-2 px-3"
@@ -101,7 +145,7 @@ function TicketPurchase(props: TicketPurchaseProps) {
           <div className="flex flex-col">
             <span>자유석</span>
             <span className="text-xl font-bold">
-              {DUMMY_STAGE_DETAIL.cost.toLocaleString('ko-kr')}
+              {stageDetail.eventResponseDto.cost.toLocaleString('ko-kr')}
             </span>
           </div>
         </div>
@@ -113,7 +157,7 @@ function TicketPurchase(props: TicketPurchaseProps) {
         <h3 className="font-bold">예매자 정보를 입력해주세요</h3>
         <TicketWrapperCard classnames="px-4 py-2 bg-[#E5E5ED]">
           <p className="text-[#A6A6B1]">이메일 주소</p>
-          <span className="text-disabled">gkffhdnls13@gmail.com</span>
+          <span className="text-disabled">{loginUser.email}</span>
         </TicketWrapperCard>
 
         {/* <TicketWrapperCard classnames="px-4 py-2 bg-[#E5E5ED]">
@@ -125,7 +169,7 @@ function TicketPurchase(props: TicketPurchaseProps) {
           <p className="text-[#A6A6B1]">예매자 이름</p>
           <input
             className="w-full text-disabled outline-none"
-            defaultValue={DUMMY_STAGE_DETAIL.oven.accountName}
+            defaultValue={loginUser.nickname}
           />
         </TicketWrapperCard>
 
@@ -166,7 +210,9 @@ function TicketPurchase(props: TicketPurchaseProps) {
           <div>
             <p className="text-[#A6A6B1]">티켓금액</p>
             <p className="text-disabled">
-              {DUMMY_STAGE_DETAIL.cost.toLocaleString('ko-kr')}
+              {(
+                stageDetail.eventResponseDto.cost * headCountState
+              ).toLocaleString('ko-kr')}
             </p>
           </div>
           <div>
@@ -179,7 +225,10 @@ function TicketPurchase(props: TicketPurchaseProps) {
           <div>
             <p className="text-[#A6A6B1]">합계</p>
             <p className="text-disabled">
-              {(DUMMY_STAGE_DETAIL.cost + 500).toLocaleString('ko-kr')}
+              {(
+                stageDetail.eventResponseDto.cost * headCountState +
+                500
+              ).toLocaleString('ko-kr')}
             </p>
           </div>
         </div>

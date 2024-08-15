@@ -29,7 +29,6 @@ function StageDetailPage({ params }: { params: { id: string } }) {
       } else {
         response = await publicApi.get(`/api/event/${params.id}`)
       }
-      console.log(response.data)
       return response.data
     },
   })
