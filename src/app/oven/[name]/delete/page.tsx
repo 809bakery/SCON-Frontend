@@ -1,17 +1,50 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-import { DUMMY_OVEN_INFO } from '@/constants/oven/manage/index.ts'
-import { DUMMY_OVEN_PROFILE } from '@/constants/oven/manage/profile/index.ts'
+import { privateApi } from '@/api/config/privateApi.ts'
 import SquareFillSVG from '@/static/svg/square-fill-icon.svg'
 import SquareUnfillSVG from '@/static/svg/square-unfill-icon.svg'
 
 function OvenSettingDelete() {
   const [isChecked, setIsChecked] = useState<boolean>(false)
   const router = useRouter()
+  const segment = usePathname().split('/')[2]
+
+  const { data } = useQuery({
+    queryKey: ['ovenInfo', segment],
+    queryFn: async () => {
+      const response = await privateApi.get(`/api/oven/${segment}`)
+      return response.data
+    },
+  })
+
+  const { data: OvenStageData } = useQuery({
+    queryKey: ['ovenStage', segment],
+    queryFn: async () => {
+      const response = await privateApi.get(`/api/event/oven/${segment}`)
+      return response.data
+    },
+  })
+
+  const { mutate: quitOvenFn } = useMutation({
+    mutationFn: async () => {
+      const response = await privateApi.delete(`/api/oven/${segment}`)
+      return response.data
+    },
+
+    onSuccess: () => {
+      toast.success('오븐 삭제가 완료되었습니다.')
+      router.push('/main')
+    },
+
+    onError: () => {
+      toast.error('오븐 삭제에 실패했습니다.')
+    },
+  })
 
   const handleDelete = () => {
     if (!isChecked) {
@@ -19,20 +52,19 @@ function OvenSettingDelete() {
       return
     }
 
-    if (DUMMY_OVEN_INFO.headCount > 1) {
+    if (data.headCount > 1) {
       toast.error(
         '오븐에 자신 외에 남아있는 멤버가 있어 오븐을 삭제할 수 없습니다.',
       )
       return
     }
 
-    if (DUMMY_OVEN_PROFILE.length > 0) {
+    if (OvenStageData?.content.length > 0) {
       toast.error('개최중인 스테이지가 있어 오븐을 삭제할 수 없습니다.')
       return
     }
 
-    toast.success('오븐 삭제가 완료되었습니다.')
-    router.push('/main')
+    quitOvenFn()
   }
   return (
     <div className="py-32 px-14">

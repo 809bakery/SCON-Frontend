@@ -45,7 +45,7 @@ function OvenProfile() {
     return categoryKr.join(', ')
   }
   return (
-    <div className="px-8 py-11 flex flex-col gap-y-8 bg-[#FAFAFA]">
+    <div className="px-8 py-11 flex flex-col gap-y-8">
       <div className="bg-white mx-8 p-5 border rounded-xl border-border">
         {data?.ovenDetail}
       </div>

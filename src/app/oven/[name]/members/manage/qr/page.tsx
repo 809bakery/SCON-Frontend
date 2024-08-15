@@ -1,15 +1,39 @@
 'use client'
 
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { OnResultFunction, QrReader } from 'react-qr-reader'
 
+import { privateApi } from '@/api/config/privateApi.ts'
+
 function QRReaderPage() {
+  const param = useParams()
   const [data, setData] = useState('')
   const [rtcConst, setRtcConst] = useState('environment')
 
   const [modal, setModal] = useState<boolean>(false)
+
+  const queryClinet = useQueryClient()
+  const { mutate: enterQRcode } = useMutation({
+    mutationFn: async (code: string) => {
+      const response = await privateApi.post('/api/qr/check', { QR: code })
+      return response.data
+    },
+
+    onSuccess: () => {
+      queryClinet.invalidateQueries({
+        queryKey: ['reservedMemberList', param.name],
+      })
+      toast.success('입장 등록이 완료되었습니다.')
+    },
+
+    onError: () => {
+      toast.error('유효하지 않은 QR 코드입니다.')
+    },
+  })
 
   const handleScan: OnResultFunction = (result, error) => {
     if (result) {
@@ -24,7 +48,7 @@ function QRReaderPage() {
   }
 
   const enterUser = () => {
-    toast.success(`${data}님의 입장 등록이 완료되었습니다.`)
+    enterQRcode(data)
     setModal(false)
     setData('')
   }
@@ -35,7 +59,7 @@ function QRReaderPage() {
 
   return (
     <div className="relative w-full h-[81.25rem] flex flex-col items-center overflow-hidden">
-      <div className="absolute w-full h-[81.25rem] bg-[#4c4c4c] bg-opacity-80 z-20" />
+      <div className="absolute w-full h-[81.25rem] z-20" />
       <QrReader
         videoId="scanner"
         constraints={{ facingMode: rtcConst, aspectRatio: { ideal: 1 } }}
@@ -52,7 +76,7 @@ function QRReaderPage() {
         }}
         // eslint-disable-next-line react/no-unstable-nested-components
         ViewFinder={() => (
-          <div className="w-full absolute top-1/3 z-40 flex flex-col items-center justify-center gap-y-8">
+          <div className="w-full absolute top-1/4 z-40 flex flex-col items-center justify-center gap-y-8">
             <button
               type="button"
               onClick={handleConstraints}
@@ -76,7 +100,6 @@ function QRReaderPage() {
         <div className="w-full rounded-xl max-w-[500px] pt-8 flex flex-col justify-center items-center bg-white bottom-0">
           <div className="w-full text-xl">
             <p className="text-3xl py-8 text-center border-b border-border">
-              {data}님<br />
               입장 등록하시겠습니까?
             </p>
 

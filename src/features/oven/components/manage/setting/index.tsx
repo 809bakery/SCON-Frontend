@@ -1,12 +1,11 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { privateApi } from '@/api/config/privateApi.ts'
-import { DUMMY_OVEN_INFO } from '@/constants/oven/manage/index.ts'
 
 function OvenSetting() {
   const router = useRouter()
@@ -30,10 +29,19 @@ function OvenSetting() {
     enabled: !!sessionStorage.getItem('access_token'),
   })
 
+  const { mutate: quitOvenFn } = useMutation({
+    mutationFn: async () => {
+      const response = await privateApi.delete(`/api/oven/${segment}`)
+      return response.data
+    },
+    onSuccess: () => {
+      toast.success('오븐 탈퇴가 완료되었습니다.')
+      router.push('/main')
+    },
+  })
+
   const quitOven = () => {
-    // 오븐 탈퇴 api
-    toast.success('오븐 탈퇴가 완료되었습니다.')
-    router.push('/main')
+    quitOvenFn()
   }
 
   return (
@@ -87,23 +95,24 @@ function OvenSetting() {
       </div>
 
       <div className="mt-20">
-        {DUMMY_OVEN_INFO.leader === loginUser?.nickname ? (
+        {data.leader === loginUser?.nickname && (
           <button
             type="button"
-            onClick={() => router.push('/oven/[name]/delete')}
-            className="w-full px-16 py-5 bg-white text-warning font-bold border-border border-b text-start"
+            onClick={() => router.push(`/oven/${segment}/delete`)}
+            className="w-full px-16 py-5 bg-white text-warning font-bold border-border border-y text-start"
           >
             오븐 삭제
           </button>
-        ) : (
-          <button
+        )}
+
+        {/* <button
             type="button"
             onClick={() => setIsDeleteModal(true)}
             className="w-full px-16 py-5 bg-white text-warning font-bold border-border border-y text-start"
           >
             오븐 탈퇴
           </button>
-        )}
+        ) */}
 
         <div
           className={`${!isDeleteModal && 'hidden'} w-full h-dvh z-50 fixed left-0 top-0 flex items-center justify-center bg-[#4C4C4C] bg-opacity-80`}
