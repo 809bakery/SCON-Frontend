@@ -45,7 +45,7 @@ function OvenSetting() {
   }
 
   return (
-    <div className="py-8 bg-[#FAFAFA] text-xl flex flex-col gap-y-8">
+    <div className="py-8 text-xl flex flex-col gap-y-8">
       <div>
         <div className="w-full px-8 py-5 bg-white border-y border-border font-bold">
           <p>오븐 관리</p>
@@ -95,15 +95,19 @@ function OvenSetting() {
       </div>
 
       <div className="mt-20">
-        {data.leader === loginUser?.nickname && (
-          <button
-            type="button"
-            onClick={() => router.push(`/oven/${segment}/delete`)}
-            className="w-full px-16 py-5 bg-white text-warning font-bold border-border border-y text-start"
-          >
-            오븐 삭제
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={() => {
+            if (data?.leader === loginUser?.nickname) {
+              router.push(`/oven/${segment}/delete`)
+            } else {
+              toast.error('오븐 대표만 삭제 가능합니다.')
+            }
+          }}
+          className="w-full px-16 py-5 bg-white text-warning font-bold border-border border-y text-start"
+        >
+          오븐 삭제
+        </button>
 
         {/* <button
             type="button"

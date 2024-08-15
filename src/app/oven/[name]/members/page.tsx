@@ -1,51 +1,120 @@
 'use client'
 
-import Image, { StaticImageData } from 'next/image'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import Image from 'next/image'
+import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
-import { DUMMY_INVITED_USERS } from '@/constants/oven/invite/index.ts'
-import { DUMMY_MANAGE_MEMBERS } from '@/constants/oven/manage/setting/index.ts'
+import { privateApi } from '@/api/config/privateApi.ts'
 
 interface UserType {
   userId: number
   email: string
   nickname: string
-  image: string | StaticImageData
-  isOven: boolean
+  image: string
+  role: string
 }
 
 function OvenSettingMembers() {
   const [email, setEmail] = useState<string>('')
-  const [searchedUsers, setSearchedUsers] = useState<UserType[]>([])
-  // const [loginUser, setLoginUser] = useState<UserType>()
+  const params = useParams()
 
-  // useEffect(() => {
-  //   setLoginUser(JSON.parse(sessionStorage.getItem('user')!))
-  // }, [])
+  const { data: ovenMemberList } = useQuery({
+    queryKey: ['ovenMemberList', params.name],
+    queryFn: async () => {
+      const response = await privateApi.get(`/api/oven/${params.name}/user`)
+      return response.data
+    },
+  })
 
-  const checkMembers = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    setEmail(value)
-    if (value) {
-      const users = DUMMY_MANAGE_MEMBERS.filter((user) =>
-        user.email?.includes(value),
+  const { mutate: inviteMemberFn } = useMutation({
+    mutationFn: async (userId: number) => {
+      const response = await privateApi.post(`/api/oven/invite`, {
+        ovenId: params.name,
+        userId,
+      })
+      return response.data
+    },
+    onSuccess: () => {
+      toast.success('멤버 초대가 완료되었습니다.')
+      setEmail('')
+    },
+    onError: () => {
+      toast.error('멤버 초대에 실패했습니다.')
+    },
+  })
+
+  const { mutate: compareEmailFn } = useMutation({
+    mutationFn: async (userEmail: string) => {
+      const response = await privateApi.get(
+        `/api/oven/${params.name}/search/user/${userEmail}`,
       )
-      setSearchedUsers(users)
-    } else {
-      setSearchedUsers([])
-    }
-  }
+      return response.data
+    },
+    onSuccess: (data) => {
+      if (data.userId === null) {
+        toast.error('일치하는 아이디의 유저가 없습니다.')
+      } else {
+        inviteMemberFn(data.userId)
+      }
+    },
+  })
 
   const inviteMember = () => {
     // 조건에 따른 toast 분기
+    if (!email) {
+      toast.error('아이디(이메일)을 입력해주세요.')
+      return
+    }
+
+    compareEmailFn(email)
   }
 
-  const manageMember = () => {
-    // if(loginUser && !loginUser?.nickname DUMMY_OVEN_INFO.leader) {
-    //   toast.error('오븐 멤버에 대한 관리 권한이 없습니다.')
-    //   return
-    // }
+  const queryClient = useQueryClient()
+  const { mutate: deleteMember } = useMutation({
+    mutationFn: async (userId: number) => {
+      const response = await privateApi.delete(
+        `/api/oven/${params.name}/${userId}`,
+      )
+      return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['ovenMemberList', params.name],
+      })
+      toast.success('멤버 추방이 완료되었습니다.')
+    },
+
+    onError: () => {
+      toast.error('멤버 추방에 실패했습니다.')
+    },
+  })
+  const manageMember = (userId: number) => {
+    deleteMember(userId)
   }
+
+  const { mutate: transferLeader } = useMutation({
+    mutationFn: async (userId: number) => {
+      const response = await privateApi.patch(
+        `/api/oven/delegate/${params.name}/${userId}`,
+      )
+      return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['ovenMemberList', params.name],
+      })
+      toast.success('리더 양도가 완료되었습니다.')
+    },
+    onError: () => {
+      toast.error('리더 양도에 실패했습니다.')
+    },
+  })
+  const manageLeader = (userId: number) => {
+    transferLeader(userId)
+  }
+
   return (
     <div className="pt-5 px-7 pb-32 flex flex-col gap-y-8">
       <div className="py-3 px-5 flex flex-col gap-y-4 border rounded-xl border-border">
@@ -55,7 +124,7 @@ function OvenSettingMembers() {
             type="email"
             placeholder="초대하려는 대상의 아이디(이메일)을 입력해주세요."
             value={email}
-            onChange={checkMembers}
+            onChange={(e) => setEmail(e.target.value)}
             className="flex-1 py-3 px-5 text-[#363232] border rounded-xl border-border focus:outline-none"
           />
           <button
@@ -65,7 +134,7 @@ function OvenSettingMembers() {
           >
             초대
           </button>
-
+          {/* 
           <div
             className={`w-full py-4 absolute bottom-[-0.25rem] bg-white text-disabled border border-border rounded-xl ${!email && 'hidden'} translate-y-full overflow-hidden`}
           >
@@ -92,7 +161,7 @@ function OvenSettingMembers() {
                 ))}
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -103,39 +172,48 @@ function OvenSettingMembers() {
           <span className="w-[40%]">멤버</span>
           <span className="w-[40%]">아이디(이메일)</span>
           <div className="w-[20%] flex justify-between items-center gap-x-5">
-            <span className="flex-1 text-center">역할</span>
-            <span className="flex-1 !text-[#6B83FF] text-center">관리</span>
+            <span className="flex-1 text-center text-[#6B83FF]">대표</span>
+            <span className="flex-1 !text-warning text-center">추방</span>
           </div>
         </div>
         <div className="flex flex-col gap-y-1 overflow-y-scroll">
-          {DUMMY_INVITED_USERS.map((user) => (
-            <div
-              className="w-full px-4 py-3 flex items-center"
-              key={`${user.email}member`}
-            >
-              <div className="w-[40%] flex items-center gap-x-5">
-                <Image
-                  src={user.image}
-                  alt="user"
-                  className="w-6 h-6 rounded-full object-cover"
-                />
-                <span>{user.nickname}</span>
+          {ovenMemberList &&
+            ovenMemberList.map((user: UserType) => (
+              <div
+                className="w-full px-4 py-3 flex items-center"
+                key={`${user.email}member`}
+              >
+                <div className="w-[40%] flex items-center gap-x-5">
+                  <Image
+                    src={user.image}
+                    width={35}
+                    height={35}
+                    alt="user"
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                  <span>
+                    {user.nickname} {user.role === 'LEADER' && '👑'}
+                  </span>
+                </div>
+                <span className="w-[40%] truncate pr-4">{user.email}</span>
+                <div className="w-[20%] flex text-center justify-between items-center gap-x-5">
+                  <button
+                    type="button"
+                    onClick={() => manageLeader(user.userId)}
+                    className="flex-1 text-center text-[#6B83FF]"
+                  >
+                    양도
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => manageMember(user.userId)}
+                    className="flex-1 text-center text-warning"
+                  >
+                    추방
+                  </button>
+                </div>
               </div>
-              <span className="w-[40%] truncate pr-4">{user.email}</span>
-              <div className="w-[20%] flex text-center justify-between items-center gap-x-5">
-                <span className="flex-1">
-                  {user.role === 'MEMBER' ? '멤버' : '대표'}
-                </span>
-                <button
-                  type="button"
-                  onClick={manageMember}
-                  className="flex-1 text-center text-[#6B83FF]"
-                >
-                  관리
-                </button>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>

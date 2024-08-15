@@ -59,7 +59,7 @@ function OvenSettingDelete() {
       return
     }
 
-    if (OvenStageData?.content.length > 0) {
+    if (OvenStageData?.content?.length > 0) {
       toast.error('개최중인 스테이지가 있어 오븐을 삭제할 수 없습니다.')
       return
     }
