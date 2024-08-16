@@ -1,21 +1,36 @@
 'use client'
 
+import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 // eslint-disable-next-line import/extensions
-import { getTokenHandler } from '@/firebase/firebasedb'
+import { privateApi } from '@/api/config/privateApi.ts'
+import { getTokenHandler } from '@/firebase/firebasedb.ts'
 import LogoSVG from '@/static/svg/logo/logo-icon.svg'
 import Step4SVG from '@/static/svg/progress/progress-step4.svg'
 import AlarmSVG from '@/static/svg/push-alarm-icon.svg'
 
 function PushStep() {
   const router = useRouter()
+  const [token, setToken] = useState('')
+
+  const postPush = async () => {
+    await handleToken()
+    postPushFn()
+  }
+
+  const { mutate: postPushFn } = useMutation({
+    mutationFn: async () => {
+      await privateApi.post('/api/notification/regist', { token })
+    },
+  })
 
   const getToken = async () => {
-    const token = await getTokenHandler()
+    const tk = await getTokenHandler()
     // eslint-disable-next-line no-console
-    console.log(token)
+    setToken(tk)
   }
   const handleToken = async () => {
     if (!('Notification' in window)) {
@@ -62,7 +77,7 @@ function PushStep() {
       <div className="flex flex-col gap-y-5">
         <button
           type="button"
-          onClick={handleToken}
+          onClick={postPush}
           className="text-2xl py-7 flex items-center justify-center bg-primary rounded-xl"
         >
           알림 받기

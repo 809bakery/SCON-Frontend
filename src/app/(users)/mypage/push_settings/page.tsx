@@ -1,12 +1,68 @@
 'use client'
 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 
+import { privateApi } from '@/api/config/privateApi.ts'
+import { getTokenHandler } from '@/firebase/firebasedb.ts'
 import IndicatorSVG from '@/static/svg/indicator-icon.svg'
 
 export default function PushSettings() {
-  const [isPushOn, setIsPushOn] = useState<boolean>(false)
+  const [token, setToken] = useState('')
+  const { data: status } = useQuery({
+    queryKey: ['push-status'],
+    queryFn: async () => {
+      const response = await privateApi.get('/api/notification/status')
+      return response.data
+    },
+  })
 
+  const queryClient = useQueryClient()
+  const { mutate: postPushFn } = useMutation({
+    mutationFn: async () => {
+      if (status?.status === 'NONE') {
+        await handleToken()
+        await privateApi.post('/api/notification/regist', { token })
+      } else {
+        await privateApi.patch('/api/notification/toggle')
+      }
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['push-status'] })
+    },
+  })
+
+  const postPush = () => {
+    postPushFn()
+  }
+
+  const getToken = async () => {
+    const tk = await getTokenHandler()
+    // eslint-disable-next-line no-console
+    setToken(tk)
+  }
+  const handleToken = async () => {
+    if (!('Notification' in window)) {
+      // eslint-disable-next-line no-console
+      alert('푸시 알림을 지원하지 않는 브라우저입니다.')
+      return
+    }
+    Notification.requestPermission()
+      .then((permission) => {
+        if (permission === 'granted') {
+          // eslint-disable-next-line no-console
+          getToken()
+        } else {
+          // eslint-disable-next-line no-console
+          console.log('Unable to get permission to notify.')
+        }
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err)
+      })
+  }
   return (
     <>
       <div className="flex flex-col divide-y divide-solid">
@@ -14,13 +70,13 @@ export default function PushSettings() {
           <span className="text-xl font-bold leading-7">알림 수신</span>
           <div
             role="presentation"
-            className={`flex h-[2.5rem] border border-border rounded-[1.25rem] px-1 items-center cursor-pointer ${isPushOn ? 'bg-primary' : ''}`}
-            onClick={() => setIsPushOn((prev) => !prev)}
+            className={`flex h-[2.5rem] border border-border rounded-[1.25rem] px-1 items-center cursor-pointer ${status?.status === 'ACTIVE' ? 'bg-primary' : ''}`}
+            onClick={postPush}
           >
             <div className="w-16 h-8">
               <IndicatorSVG
-                fill={isPushOn ? '#FFFFFF' : '#E5E5ED'}
-                className={`w-8 h-8 rounded-full bg-white transition-all duration-300 ease-in-out ${isPushOn ? 'translate-x-full' : 'translate-x-0'}`}
+                fill={status?.status === 'ACTIVE' ? '#FFFFFF' : '#E5E5ED'}
+                className={`w-8 h-8 rounded-full bg-white transition-all duration-300 ease-in-out ${status?.status === 'ACTIVE' ? 'translate-x-full' : 'translate-x-0'}`}
               />
             </div>
           </div>
