@@ -65,6 +65,7 @@ export default function OvenList() {
         ovenList?.map((oven) => (
           <OvenCard
             key={oven.id}
+            ovenId={oven.ovenId}
             ovenName={oven.ovenName}
             image={oven.image}
             recentStage={oven.recentStage}

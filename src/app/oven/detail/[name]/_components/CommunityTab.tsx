@@ -26,7 +26,7 @@ export default function CommunityTab({ id }: { id: string }) {
 
   return (
     <div className="flex flex-col gap-3 py-14 px-7">
-      {Array.isArray(communityContent?.content) ? (
+      {communityContent?.content.length !== 0 ? (
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         communityContent?.content?.map((data: any) => (
           <CommunityContentCard

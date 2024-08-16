@@ -44,6 +44,10 @@ export default function Navbar() {
     return <NavbarWithGoback name={lastDomain} />
   }
 
+  if (domainList.includes('oven') && domainList.includes('detail')) {
+    return <NavbarWithGoback name="오븐 둘러보기" />
+  }
+
   if (domainList.includes('ticket') && !domainList.includes('my')) {
     return <NavbarWithGoback name="예매하기" />
   }
