@@ -5,12 +5,14 @@ interface OvenCardProps {
   ovenName: string
   recentStage: string[]
   image: string | StaticImageData
+  ovenId: string
 }
 
 export default function OvenCard({
   ovenName,
   recentStage,
   image,
+  ovenId,
 }: OvenCardProps) {
   const router = useRouter()
   const recentStageText = recentStage?.join(', ')
@@ -18,7 +20,7 @@ export default function OvenCard({
     <div
       role="presentation"
       className="w-full h-[9.25rem] border-0.5 border-border rounded-xl px-5 py-5 flex justify-between items-end hover:bg-lightgray-1 cursor-pointer"
-      onClick={() => router.push(`/oven/detail/${ovenName}`)}
+      onClick={() => router.push(`/oven/detail/${ovenName}?id=${ovenId}`)}
     >
       <div className="h-full flex gap-3 items-center">
         <Image
@@ -33,7 +35,7 @@ export default function OvenCard({
           <div className="flex flex-col gap-1  text-disabled">
             <h3 className="text-base leading-6 font-bold">최근 스테이지</h3>
             <span className="text-xs w-[15.625rem] leading-6 truncate">
-              {recentStageText}
+              {recentStageText || '최근 진행된 스테이지가 없습니다.'}
             </span>
           </div>
         </div>

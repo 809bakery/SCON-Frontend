@@ -47,7 +47,7 @@ function OvenProfile() {
   return (
     <div className="px-8 py-11 flex flex-col gap-y-8 bg-[#FAFAFA] min-h-screen">
       <div className="bg-white mx-8 p-5 border rounded-xl border-border">
-        {data?.ovenDetail}
+        {data?.ovenDetail || '아직 작성된 자기소개가 없습니다.'}
       </div>
 
       <h3 className="text-2xl font-bold">기본정보</h3>
